@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bonna — Paylasim</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body style="overflow:hidden;background:#fefdfb">
+<div class="public-header">
+  <div class="public-brand">bonna</div>
+  <div class="public-label" id="publicTitle">Yukleniyor...</div>
+</div>
+<iframe id="publicFrame" style="width:100%;height:calc(100vh - 48px);border:none" sandbox="allow-scripts allow-same-origin"></iframe>
+<script>
+const token = window.location.pathname.split('/').pop();
+
+async function load() {
+  const res = await fetch(`/api/public/${token}`);
+  if (!res.ok) {
+    document.getElementById('publicTitle').textContent = 'Bulunamadi';
+    return;
+  }
+  const data = await res.json();
+  document.getElementById('publicTitle').textContent = data.title;
+  document.title = `bonna — ${data.title}`;
+  const blob = new Blob([data.html_content], { type: 'text/html' });
+  document.getElementById('publicFrame').src = URL.createObjectURL(blob);
+}
+
+load();
+</script>
+</body>
+</html>

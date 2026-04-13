@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bonna — Giris</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-brand">bonna</div>
+    <div class="login-sub">Calisma Kutuphanesi</div>
+    <form id="loginForm">
+      <div class="form-group">
+        <label class="form-label">Kullanici Adi</label>
+        <input type="text" class="form-input" id="username" name="username" autocomplete="username" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Sifre</label>
+        <input type="password" class="form-input" id="password" name="password" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Giris Yap</button>
+      <div class="error-msg" id="errorMsg"></div>
+    </form>
+  </div>
+</div>
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const errorMsg = document.getElementById('errorMsg');
+  errorMsg.style.display = 'none';
+
+  try {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+      })
+    });
+
+    if (res.ok) {
+      window.location.href = '/';
+    } else {
+      errorMsg.textContent = 'Kullanici adi veya sifre hatali';
+      errorMsg.style.display = 'block';
+    }
+  } catch {
+    errorMsg.textContent = 'Baglanti hatasi';
+    errorMsg.style.display = 'block';
+  }
+});
+</script>
+</body>
+</html>
