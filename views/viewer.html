@@ -28,8 +28,13 @@ async function loadArtifact() {
   document.title = `bonna — ${data.title}`;
 
   const frame = document.getElementById('viewerFrame');
-  const blob = new Blob([data.html_content], { type: 'text/html' });
-  frame.src = URL.createObjectURL(blob);
+  // If artifact has a static_url, load from there (for multi-file reports with iframes)
+  if (data.static_url) {
+    frame.src = data.static_url;
+  } else {
+    const blob = new Blob([data.html_content], { type: 'text/html' });
+    frame.src = URL.createObjectURL(blob);
+  }
 }
 
 loadArtifact();

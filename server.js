@@ -280,7 +280,6 @@ app.post('/api/seed-artifacts', requireAdmin, async (req, res) => {
     { file: 'Bonna_Pazarlama_Plani_Yapisi_2026.html', title: 'Pazarlama Planı Yapısı 2026', description: 'Pazarlama planı çerçeve yapısı ve organizasyonu', category: 'Pazarlama' },
     { file: 'Bonna_SEO_GEO_Strateji_2026.html', title: 'SEO/GEO Strateji 2026', description: 'Arama motoru ve coğrafi optimizasyon stratejisi', category: 'SEO' },
     { file: 'pazarlama-yol-haritasi-2026.html', title: 'Pazarlama Yol Haritası 2026-2027', description: 'HubSpot metrikleri ve mailing performans dashboard', category: 'Performans' },
-    { file: 'dijital-iletisim-raporu-2026.html', title: 'Dijital İletişim Yönetici Raporu 2026', description: 'Ocak-Şubat 2026 dijital iletişim performans raporu — sosyal medya, reklam, lead, mailing, AI algoritmaları, site mimarisi, UI/UX süreci', category: 'Performans' }
   ];
 
   let added = 0;
@@ -293,6 +292,20 @@ app.post('/api/seed-artifacts', requireAdmin, async (req, res) => {
       added++;
     }
   }
+
+  // Dijital İletişim Raporu - static URL (multi-file with iframes)
+  const reportTitle = 'Dijital İletişim Yönetici Raporu 2026';
+  if (!existingTitles.has(reportTitle)) {
+    const { rows } = await database.pool.query(
+      `INSERT INTO artifacts (title, description, html_content, category, static_url) VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+      [reportTitle, 'Ocak-Şubat 2026 dijital iletişim performans raporu — sosyal medya, reklam, lead, mailing, AI algoritmaları, site mimarisi, UI/UX süreci', '<p>Bu rapor static olarak sunulmaktadır.</p>', 'Performans', '/reports/dijital-iletisim-2026/index.html']
+    );
+    added++;
+  } else {
+    // Update existing to use static_url
+    await database.pool.query(`UPDATE artifacts SET static_url = $1 WHERE title = $2`, ['/reports/dijital-iletisim-2026/index.html', reportTitle]);
+  }
+
   res.json({ success: true, added, total: existing.length + added });
 });
 

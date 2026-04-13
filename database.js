@@ -24,6 +24,7 @@ async function initDB() {
       description TEXT DEFAULT '',
       html_content TEXT NOT NULL,
       category TEXT DEFAULT 'Genel',
+      static_url TEXT DEFAULT NULL,
       created_at TIMESTAMPTZ DEFAULT NOW(),
       updated_at TIMESTAMPTZ DEFAULT NOW()
     );
@@ -42,6 +43,9 @@ async function initDB() {
       created_at TIMESTAMPTZ DEFAULT NOW()
     );
   `);
+
+  // Migrations
+  await pool.query(`ALTER TABLE artifacts ADD COLUMN IF NOT EXISTS static_url TEXT DEFAULT NULL`);
 
   // Seed default categories if empty
   const { rows: catRows } = await pool.query(`SELECT id FROM categories LIMIT 1`);
