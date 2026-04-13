@@ -152,6 +152,30 @@ app.delete('/api/artifacts/:id', requireAdmin, async (req, res) => {
 });
 
 // ========================
+// API: CATEGORIES
+// ========================
+
+app.post('/api/categories/rename', requireAdmin, async (req, res) => {
+  const { old_name, new_name } = req.body;
+  if (!old_name || !new_name) return res.status(400).json({ error: 'old_name and new_name required' });
+  await database.pool.query(
+    `UPDATE artifacts SET category = $1, updated_at = NOW() WHERE category = $2`,
+    [new_name.trim(), old_name]
+  );
+  res.json({ success: true });
+});
+
+app.post('/api/categories/delete', requireAdmin, async (req, res) => {
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ error: 'name required' });
+  await database.pool.query(
+    `UPDATE artifacts SET category = 'Genel', updated_at = NOW() WHERE category = $1`,
+    [name]
+  );
+  res.json({ success: true });
+});
+
+// ========================
 // API: ARTIFACT ASSIGNMENTS
 // ========================
 

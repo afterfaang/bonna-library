@@ -40,6 +40,13 @@ function setupUI() {
     document.getElementById('categoryFilter').style.display = 'block';
     document.getElementById('pageDesc').textContent = 'Tum calismalar — kullanicilara atama yapabilirsiniz';
 
+    // Add categories nav item
+    const catBtn = document.createElement('button');
+    catBtn.className = 'sb-item';
+    catBtn.dataset.page = 'categories';
+    catBtn.innerHTML = '<span class="icon">&#128278;</span> Kategoriler <span class="cnt" id="countCategories">0</span>';
+    nav.appendChild(catBtn);
+
     // Add users nav item
     const usersBtn = document.createElement('button');
     usersBtn.className = 'sb-item';
@@ -66,7 +73,9 @@ function showPage(page) {
   currentPage = page;
   document.getElementById('page-artifacts').style.display = page === 'artifacts' ? 'block' : 'none';
   document.getElementById('page-users').style.display = page === 'users' ? 'block' : 'none';
+  document.getElementById('page-categories').style.display = page === 'categories' ? 'block' : 'none';
   if (page === 'users') renderUsers();
+  if (page === 'categories') renderCategories();
 }
 
 // ========================
@@ -96,6 +105,10 @@ function buildCategoryFilters() {
       renderArtifacts();
     });
   });
+
+  // Update category count in sidebar
+  const countEl = document.getElementById('countCategories');
+  if (countEl) countEl.textContent = categories.length;
 
   // Also update datalist for add form
   const datalist = document.getElementById('categoryList');
@@ -312,6 +325,109 @@ async function saveNewUser() {
 }
 
 // ========================
+// CATEGORIES
+// ========================
+function getCategories() {
+  const cats = {};
+  artifacts.forEach(a => {
+    const c = a.category || 'Genel';
+    cats[c] = (cats[c] || 0) + 1;
+  });
+  return Object.entries(cats).sort((a, b) => a[0].localeCompare(b[0]));
+}
+
+function renderCategories() {
+  const tbody = document.getElementById('categoriesTableBody');
+  const cats = getCategories();
+
+  const countEl = document.getElementById('countCategories');
+  if (countEl) countEl.textContent = cats.length;
+
+  tbody.innerHTML = cats.map(([name, count]) => `
+    <tr>
+      <td><strong>${esc(name)}</strong></td>
+      <td>${count} calisma</td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-small btn-outline" onclick="renameCategory('${esc(name).replace(/'/g, "\\'")}')">Yeniden Adlandir</button>
+        <button class="btn btn-small btn-outline" onclick="deleteCategory('${esc(name).replace(/'/g, "\\'")}')" style="color:var(--red,#c0392b);border-color:var(--red,#c0392b)">Sil</button>
+      </td>
+    </tr>
+  `).join('');
+
+  if (cats.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--gray);padding:24px">Henuz kategori yok</td></tr>';
+  }
+}
+
+async function renameCategory(oldName) {
+  const newName = prompt(`"${oldName}" kategorisinin yeni adi:`, oldName);
+  if (!newName || newName.trim() === '' || newName.trim() === oldName) return;
+
+  const res = await fetch('/api/categories/rename', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ old_name: oldName, new_name: newName.trim() })
+  });
+  if (res.ok) {
+    await loadArtifacts();
+    renderCategories();
+    showToast(`"${oldName}" → "${newName.trim()}" olarak guncellendi`);
+  } else {
+    showToast('Hata olustu');
+  }
+}
+
+async function deleteCategory(name) {
+  if (!confirm(`"${name}" kategorisini silmek istediginize emin misiniz?\nBu kategorideki calismalar "Genel" kategorisine tasinacak.`)) return;
+
+  const res = await fetch('/api/categories/delete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name })
+  });
+  if (res.ok) {
+    if (currentFilter === name) currentFilter = 'all';
+    await loadArtifacts();
+    renderCategories();
+    showToast(`"${name}" kategorisi silindi`);
+  } else {
+    showToast('Hata olustu');
+  }
+}
+
+async function addCategory() {
+  const input = document.getElementById('newCategoryInput');
+  const name = input.value.trim();
+  if (!name) return showToast('Kategori adi gerekli');
+
+  // Check if already exists
+  if (artifacts.some(a => a.category === name)) {
+    return showToast('Bu kategori zaten mevcut');
+  }
+
+  // Create a placeholder artifact to establish the category, then delete it
+  // Actually, just create an empty artifact with this category
+  const res = await fetch('/api/artifacts', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: `${name} — Yeni Kategori`,
+      description: `${name} kategorisi icin ornek calisma`,
+      html_content: `<!DOCTYPE html><html><head><title>${name}</title></head><body><h1>${name}</h1><p>Bu kategori icin icerik ekleyin.</p></body></html>`,
+      category: name
+    })
+  });
+  if (res.ok) {
+    input.value = '';
+    await loadArtifacts();
+    renderCategories();
+    showToast(`"${name}" kategorisi eklendi`);
+  } else {
+    showToast('Hata olustu');
+  }
+}
+
+// ========================
 // DELETE ARTIFACT
 // ========================
 async function deleteArtifact(id, title) {
@@ -453,6 +569,8 @@ function setupModals() {
   });
 
   document.getElementById('addUserBtn')?.addEventListener('click', () => openModal('addUserModal'));
+  document.getElementById('addCategoryBtn')?.addEventListener('click', addCategory);
+  document.getElementById('newCategoryInput')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') addCategory(); });
 
   // Close on overlay click
   document.querySelectorAll('.modal-overlay').forEach(overlay => {

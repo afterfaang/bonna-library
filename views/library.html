@@ -115,6 +115,32 @@
         </table>
       </div>
 
+      <!-- CATEGORIES PAGE (admin only) -->
+      <div id="page-categories" style="display:none">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Kategoriler</div>
+            <div class="page-desc">Kategori ekle, duzenle ve sil</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-bottom:24px">
+          <input type="text" class="form-input" id="newCategoryInput" placeholder="Yeni kategori adi..." style="max-width:300px">
+          <button class="btn btn-sand" id="addCategoryBtn">+ Ekle</button>
+        </div>
+
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Kategori</th>
+              <th>Calisma Sayisi</th>
+              <th>Islemler</th>
+            </tr>
+          </thead>
+          <tbody id="categoriesTableBody"></tbody>
+        </table>
+      </div>
+
     </div>
   </div>
 </div>
