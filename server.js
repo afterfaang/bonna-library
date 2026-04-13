@@ -44,9 +44,9 @@ app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
-  const user = database.authenticate(username, password);
+  const user = await database.authenticate(username, password);
   if (user) {
     req.session.user = user;
     return res.json({ success: true, user });
@@ -78,36 +78,31 @@ app.get('/view/:id', requireAuth, (req, res) => {
 // API: ARTIFACTS
 // ========================
 
-// List artifacts (admin sees all, user sees only assigned)
-app.get('/api/artifacts', requireAuth, (req, res) => {
+app.get('/api/artifacts', requireAuth, async (req, res) => {
   const user = req.session.user;
   if (user.role === 'admin') {
-    const artifacts = database.getAllArtifacts();
-    // Augment with assigned users
-    const result = artifacts.map(a => ({
-      ...a,
-      assigned_users: database.getUsersForArtifact(a.id)
-    }));
+    const artifacts = await database.getAllArtifacts();
+    const result = [];
+    for (const a of artifacts) {
+      result.push({ ...a, assigned_users: await database.getUsersForArtifact(a.id) });
+    }
     return res.json(result);
   }
-  // Regular user: only assigned artifacts
-  res.json(database.getArtifactsForUser(user.id));
+  res.json(await database.getArtifactsForUser(user.id));
 });
 
-// Get single artifact (admin always, user only if assigned)
-app.get('/api/artifacts/:id', requireAuth, (req, res) => {
+app.get('/api/artifacts/:id', requireAuth, async (req, res) => {
   const user = req.session.user;
-  const artifact = database.getArtifactById(req.params.id);
+  const artifact = await database.getArtifactById(req.params.id);
   if (!artifact) return res.status(404).json({ error: 'Not found' });
 
-  if (user.role !== 'admin' && !database.canUserAccessArtifact(user.id, artifact.id)) {
+  if (user.role !== 'admin' && !(await database.canUserAccessArtifact(user.id, artifact.id))) {
     return res.status(403).json({ error: 'Access denied' });
   }
   res.json(artifact);
 });
 
-// Create artifact (admin only)
-app.post('/api/artifacts', requireAdmin, upload.single('file'), (req, res) => {
+app.post('/api/artifacts', requireAdmin, upload.single('file'), async (req, res) => {
   let htmlContent = '';
   let title = req.body.title || 'Untitled';
   const description = req.body.description || '';
@@ -124,26 +119,24 @@ app.post('/api/artifacts', requireAdmin, upload.single('file'), (req, res) => {
     return res.status(400).json({ error: 'No content provided' });
   }
 
-  const result = database.createArtifact(title, description, htmlContent, category);
+  const result = await database.createArtifact(title, description, htmlContent, category);
 
-  // Auto-assign to specified users if provided
   if (req.body.assign_users) {
     try {
       const userIds = JSON.parse(req.body.assign_users);
-      database.setArtifactUsers(result.id, userIds);
+      await database.setArtifactUsers(result.id, userIds);
     } catch (e) { /* ignore parse errors */ }
   }
 
   res.json({ success: true, ...result });
 });
 
-// Update artifact (admin only)
-app.put('/api/artifacts/:id', requireAdmin, (req, res) => {
+app.put('/api/artifacts/:id', requireAdmin, async (req, res) => {
   const { title, description, html_content, category } = req.body;
-  const existing = database.getArtifactById(req.params.id);
+  const existing = await database.getArtifactById(req.params.id);
   if (!existing) return res.status(404).json({ error: 'Not found' });
 
-  database.updateArtifact(
+  await database.updateArtifact(
     req.params.id,
     title || existing.title,
     description !== undefined ? description : existing.description,
@@ -153,9 +146,8 @@ app.put('/api/artifacts/:id', requireAdmin, (req, res) => {
   res.json({ success: true });
 });
 
-// Delete artifact (admin only)
-app.delete('/api/artifacts/:id', requireAdmin, (req, res) => {
-  database.deleteArtifact(req.params.id);
+app.delete('/api/artifacts/:id', requireAdmin, async (req, res) => {
+  await database.deleteArtifact(req.params.id);
   res.json({ success: true });
 });
 
@@ -163,138 +155,86 @@ app.delete('/api/artifacts/:id', requireAdmin, (req, res) => {
 // API: ARTIFACT ASSIGNMENTS
 // ========================
 
-// Set users for an artifact (admin only)
-app.post('/api/artifacts/:id/assign', requireAdmin, (req, res) => {
+app.post('/api/artifacts/:id/assign', requireAdmin, async (req, res) => {
   const { user_ids } = req.body;
   if (!Array.isArray(user_ids)) return res.status(400).json({ error: 'user_ids must be array' });
-  database.setArtifactUsers(req.params.id, user_ids);
-  res.json({ success: true, assigned_users: database.getUsersForArtifact(req.params.id) });
+  await database.setArtifactUsers(req.params.id, user_ids);
+  res.json({ success: true, assigned_users: await database.getUsersForArtifact(req.params.id) });
 });
 
-// Get users assigned to an artifact
-app.get('/api/artifacts/:id/users', requireAdmin, (req, res) => {
-  res.json(database.getUsersForArtifact(req.params.id));
+app.get('/api/artifacts/:id/users', requireAdmin, async (req, res) => {
+  res.json(await database.getUsersForArtifact(req.params.id));
 });
 
 // ========================
 // API: USERS (admin only)
 // ========================
 
-app.get('/api/users', requireAdmin, (req, res) => {
-  const users = database.getAllUsers();
-  // Augment with artifact count
-  const result = users.map(u => ({
-    ...u,
-    artifact_count: database.getArtifactsForUser(u.id).length
-  }));
+app.get('/api/users', requireAdmin, async (req, res) => {
+  const users = await database.getAllUsers();
+  const result = [];
+  for (const u of users) {
+    const arts = await database.getArtifactsForUser(u.id);
+    result.push({ ...u, artifact_count: arts.length });
+  }
   res.json(result);
 });
 
-app.post('/api/users', requireAdmin, (req, res) => {
+app.post('/api/users', requireAdmin, async (req, res) => {
   const { username, password, display_name, role } = req.body;
   if (!username || !password || !display_name) {
     return res.status(400).json({ error: 'username, password, display_name required' });
   }
   try {
-    const result = database.createUser(username, password, display_name, role || 'user');
+    const result = await database.createUser(username, password, display_name, role || 'user');
     res.json({ success: true, ...result });
   } catch (e) {
-    if (e.message.includes('UNIQUE')) {
+    if (e.message.includes('unique') || e.message.includes('duplicate')) {
       return res.status(400).json({ error: 'Username already exists' });
     }
     res.status(500).json({ error: e.message });
   }
 });
 
-app.put('/api/users/:id', requireAdmin, (req, res) => {
+app.put('/api/users/:id', requireAdmin, async (req, res) => {
   const { display_name, role, password } = req.body;
-  const user = database.getUserById(req.params.id);
+  const user = await database.getUserById(req.params.id);
   if (!user) return res.status(404).json({ error: 'Not found' });
 
   if (display_name || role) {
-    database.updateUser(req.params.id, display_name || user.display_name, role || user.role);
+    await database.updateUser(req.params.id, display_name || user.display_name, role || user.role);
   }
   if (password) {
-    database.updateUserPassword(req.params.id, password);
+    await database.updateUserPassword(req.params.id, password);
   }
   res.json({ success: true });
 });
 
-app.delete('/api/users/:id', requireAdmin, (req, res) => {
-  const user = database.getUserById(req.params.id);
+app.delete('/api/users/:id', requireAdmin, async (req, res) => {
+  const user = await database.getUserById(req.params.id);
   if (!user) return res.status(404).json({ error: 'Not found' });
   if (user.role === 'admin') return res.status(400).json({ error: 'Cannot delete admin' });
-  database.deleteUser(req.params.id);
+  await database.deleteUser(req.params.id);
   res.json({ success: true });
 });
 
 // ========================
-// SEED
+// SEED & START
 // ========================
-function seedIfEmpty() {
-  const artifacts = database.getAllArtifacts();
+async function seedIfEmpty() {
+  const artifacts = await database.getAllArtifacts();
   if (artifacts.length === 0) {
     const seedData = [
-      {
-        file: 'Bonna_ERP_Projeksiyon_2026.html',
-        title: 'ERP Alan Projeksiyon Raporu 2026',
-        description: 'bonna.com.tr SEO/GEO uyumlu ERP dönüşüm projeksiyon raporu',
-        category: 'ERP'
-      },
-      {
-        file: 'bonna-cati-iletisim-stratejisi.html',
-        title: 'Çatı İletişim Stratejisi',
-        description: 'Bonna markası için bütünleşik çatı iletişim stratejisi',
-        category: 'İletişim'
-      },
-      {
-        file: 'bonna-iletisim-stratejileri.html',
-        title: 'İletişim Stratejileri',
-        description: 'Bonna iletişim kanalları ve mesaj stratejileri',
-        category: 'İletişim'
-      },
-      {
-        file: 'bonna-fikir-havuzu.html',
-        title: 'Fikir Havuzu',
-        description: 'Pazarlama ve iletişim fikir havuzu',
-        category: 'Strateji'
-      },
-      {
-        file: 'Bonna_AI_Content_Mimarisi_2026.html',
-        title: 'AI İçerik Mimarisi 2026',
-        description: 'AI destekli içerik üretim ve yönetim mimarisi',
-        category: 'AI'
-      },
-      {
-        file: 'Bonna_Mikro_Hedefleme_2026_v4.html',
-        title: 'Mikro Hedefleme 2026',
-        description: 'Segmentasyon bazlı mikro hedefleme stratejisi',
-        category: 'Pazarlama'
-      },
-      {
-        file: 'Bonna_Pazarlama_Plani_2026_v4.html',
-        title: 'Pazarlama Planı 2026',
-        description: '2026 yılı kapsamlı pazarlama planı',
-        category: 'Pazarlama'
-      },
-      {
-        file: 'Bonna_Pazarlama_Plani_Yapisi_2026.html',
-        title: 'Pazarlama Planı Yapısı 2026',
-        description: 'Pazarlama planı çerçeve yapısı ve organizasyonu',
-        category: 'Pazarlama'
-      },
-      {
-        file: 'Bonna_SEO_GEO_Strateji_2026.html',
-        title: 'SEO/GEO Strateji 2026',
-        description: 'Arama motoru ve coğrafi optimizasyon stratejisi',
-        category: 'SEO'
-      },
-      {
-        file: 'pazarlama-yol-haritasi-2026.html',
-        title: 'Pazarlama Yol Haritası 2026-2027',
-        description: 'HubSpot metrikleri ve mailing performans dashboard',
-        category: 'Performans'
-      }
+      { file: 'Bonna_ERP_Projeksiyon_2026.html', title: 'ERP Alan Projeksiyon Raporu 2026', description: 'bonna.com.tr SEO/GEO uyumlu ERP dönüşüm projeksiyon raporu', category: 'ERP' },
+      { file: 'bonna-cati-iletisim-stratejisi.html', title: 'Çatı İletişim Stratejisi', description: 'Bonna markası için bütünleşik çatı iletişim stratejisi', category: 'İletişim' },
+      { file: 'bonna-iletisim-stratejileri.html', title: 'İletişim Stratejileri', description: 'Bonna iletişim kanalları ve mesaj stratejileri', category: 'İletişim' },
+      { file: 'bonna-fikir-havuzu.html', title: 'Fikir Havuzu', description: 'Pazarlama ve iletişim fikir havuzu', category: 'Strateji' },
+      { file: 'Bonna_AI_Content_Mimarisi_2026.html', title: 'AI İçerik Mimarisi 2026', description: 'AI destekli içerik üretim ve yönetim mimarisi', category: 'AI' },
+      { file: 'Bonna_Mikro_Hedefleme_2026_v4.html', title: 'Mikro Hedefleme 2026', description: 'Segmentasyon bazlı mikro hedefleme stratejisi', category: 'Pazarlama' },
+      { file: 'Bonna_Pazarlama_Plani_2026_v4.html', title: 'Pazarlama Planı 2026', description: '2026 yılı kapsamlı pazarlama planı', category: 'Pazarlama' },
+      { file: 'Bonna_Pazarlama_Plani_Yapisi_2026.html', title: 'Pazarlama Planı Yapısı 2026', description: 'Pazarlama planı çerçeve yapısı ve organizasyonu', category: 'Pazarlama' },
+      { file: 'Bonna_SEO_GEO_Strateji_2026.html', title: 'SEO/GEO Strateji 2026', description: 'Arama motoru ve coğrafi optimizasyon stratejisi', category: 'SEO' },
+      { file: 'pazarlama-yol-haritasi-2026.html', title: 'Pazarlama Yol Haritası 2026-2027', description: 'HubSpot metrikleri ve mailing performans dashboard', category: 'Performans' }
     ];
 
     let seeded = 0;
@@ -302,7 +242,7 @@ function seedIfEmpty() {
       const seedPath = path.join(__dirname, 'artifacts', item.file);
       if (fs.existsSync(seedPath)) {
         const html = fs.readFileSync(seedPath, 'utf-8');
-        database.createArtifact(item.title, item.description, html, item.category);
+        await database.createArtifact(item.title, item.description, html, item.category);
         seeded++;
       }
     }
@@ -310,8 +250,15 @@ function seedIfEmpty() {
   }
 }
 
-seedIfEmpty();
+async function start() {
+  await database.initDB();
+  await seedIfEmpty();
+  app.listen(PORT, () => {
+    console.log(`Bonna Library running on http://localhost:${PORT}`);
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(`Bonna Library running on http://localhost:${PORT}`);
+start().catch(err => {
+  console.error('Failed to start:', err);
+  process.exit(1);
 });
