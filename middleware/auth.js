@@ -1,5 +1,5 @@
 function requireAuth(req, res, next) {
-  if (req.session && req.session.authenticated) {
+  if (req.session && req.session.user) {
     return next();
   }
   if (req.path.startsWith('/api/')) {
@@ -8,4 +8,14 @@ function requireAuth(req, res, next) {
   return res.redirect('/login');
 }
 
-module.exports = { requireAuth };
+function requireAdmin(req, res, next) {
+  if (req.session && req.session.user && req.session.user.role === 'admin') {
+    return next();
+  }
+  if (req.path.startsWith('/api/')) {
+    return res.status(403).json({ error: 'Forbidden - admin only' });
+  }
+  return res.redirect('/');
+}
+
+module.exports = { requireAuth, requireAdmin };

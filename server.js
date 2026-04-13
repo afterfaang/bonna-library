@@ -5,8 +5,7 @@ const compression = require('compression');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const bcrypt = require('bcryptjs');
-const { requireAuth } = require('./middleware/auth');
+const { requireAuth, requireAdmin } = require('./middleware/auth');
 const database = require('./database');
 
 const app = express();
@@ -23,7 +22,7 @@ app.use(session({
   cookie: {
     secure: process.env.NODE_ENV === 'production' && process.env.RAILWAY_ENVIRONMENT ? true : false,
     httpOnly: true,
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    maxAge: 7 * 24 * 60 * 60 * 1000,
     sameSite: 'lax'
   },
   ...(process.env.NODE_ENV === 'production' && process.env.RAILWAY_ENVIRONMENT ? { proxy: true } : {})
@@ -35,24 +34,22 @@ if (process.env.NODE_ENV === 'production' && process.env.RAILWAY_ENVIRONMENT) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Upload config
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
 
-// --- Auth Routes ---
+// ========================
+// AUTH ROUTES
+// ========================
 app.get('/login', (req, res) => {
-  if (req.session.authenticated) return res.redirect('/');
+  if (req.session.user) return res.redirect('/');
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
-  const adminUser = process.env.ADMIN_USERNAME || 'admin';
-  const adminPass = process.env.ADMIN_PASSWORD || 'bonna2026';
-
-  if (username === adminUser && password === adminPass) {
-    req.session.authenticated = true;
-    req.session.username = username;
-    return res.json({ success: true });
+  const user = database.authenticate(username, password);
+  if (user) {
+    req.session.user = user;
+    return res.json({ success: true, user });
   }
   res.status(401).json({ error: 'Invalid credentials' });
 });
@@ -62,26 +59,13 @@ app.post('/api/logout', (req, res) => {
   res.json({ success: true });
 });
 
-// --- Public Route (no auth) ---
-app.get('/public/:token', (req, res) => {
-  const artifact = database.getArtifactByToken(req.params.token);
-  if (!artifact) return res.status(404).sendFile(path.join(__dirname, 'views', 'not-found.html'));
-  res.sendFile(path.join(__dirname, 'views', 'public-viewer.html'));
+app.get('/api/me', requireAuth, (req, res) => {
+  res.json(req.session.user);
 });
 
-app.get('/api/public/:token', (req, res) => {
-  const artifact = database.getArtifactByToken(req.params.token);
-  if (!artifact) return res.status(404).json({ error: 'Not found' });
-  res.json({
-    title: artifact.title,
-    description: artifact.description,
-    html_content: artifact.html_content,
-    category: artifact.category,
-    created_at: artifact.created_at
-  });
-});
-
-// --- Protected Routes ---
+// ========================
+// PAGES
+// ========================
 app.get('/', requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'library.html'));
 });
@@ -90,18 +74,40 @@ app.get('/view/:id', requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'viewer.html'));
 });
 
-// --- API: Artifacts ---
+// ========================
+// API: ARTIFACTS
+// ========================
+
+// List artifacts (admin sees all, user sees only assigned)
 app.get('/api/artifacts', requireAuth, (req, res) => {
-  res.json(database.getAllArtifacts());
+  const user = req.session.user;
+  if (user.role === 'admin') {
+    const artifacts = database.getAllArtifacts();
+    // Augment with assigned users
+    const result = artifacts.map(a => ({
+      ...a,
+      assigned_users: database.getUsersForArtifact(a.id)
+    }));
+    return res.json(result);
+  }
+  // Regular user: only assigned artifacts
+  res.json(database.getArtifactsForUser(user.id));
 });
 
+// Get single artifact (admin always, user only if assigned)
 app.get('/api/artifacts/:id', requireAuth, (req, res) => {
+  const user = req.session.user;
   const artifact = database.getArtifactById(req.params.id);
   if (!artifact) return res.status(404).json({ error: 'Not found' });
+
+  if (user.role !== 'admin' && !database.canUserAccessArtifact(user.id, artifact.id)) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
   res.json(artifact);
 });
 
-app.post('/api/artifacts', requireAuth, upload.single('file'), (req, res) => {
+// Create artifact (admin only)
+app.post('/api/artifacts', requireAdmin, upload.single('file'), (req, res) => {
   let htmlContent = '';
   let title = req.body.title || 'Untitled';
   const description = req.body.description || '';
@@ -119,10 +125,20 @@ app.post('/api/artifacts', requireAuth, upload.single('file'), (req, res) => {
   }
 
   const result = database.createArtifact(title, description, htmlContent, category);
+
+  // Auto-assign to specified users if provided
+  if (req.body.assign_users) {
+    try {
+      const userIds = JSON.parse(req.body.assign_users);
+      database.setArtifactUsers(result.id, userIds);
+    } catch (e) { /* ignore parse errors */ }
+  }
+
   res.json({ success: true, ...result });
 });
 
-app.put('/api/artifacts/:id', requireAuth, (req, res) => {
+// Update artifact (admin only)
+app.put('/api/artifacts/:id', requireAdmin, (req, res) => {
   const { title, description, html_content, category } = req.body;
   const existing = database.getArtifactById(req.params.id);
   if (!existing) return res.status(404).json({ error: 'Not found' });
@@ -137,18 +153,84 @@ app.put('/api/artifacts/:id', requireAuth, (req, res) => {
   res.json({ success: true });
 });
 
-app.delete('/api/artifacts/:id', requireAuth, (req, res) => {
+// Delete artifact (admin only)
+app.delete('/api/artifacts/:id', requireAdmin, (req, res) => {
   database.deleteArtifact(req.params.id);
   res.json({ success: true });
 });
 
-app.post('/api/artifacts/:id/share', requireAuth, (req, res) => {
-  const result = database.togglePublic(req.params.id);
-  if (!result) return res.status(404).json({ error: 'Not found' });
+// ========================
+// API: ARTIFACT ASSIGNMENTS
+// ========================
+
+// Set users for an artifact (admin only)
+app.post('/api/artifacts/:id/assign', requireAdmin, (req, res) => {
+  const { user_ids } = req.body;
+  if (!Array.isArray(user_ids)) return res.status(400).json({ error: 'user_ids must be array' });
+  database.setArtifactUsers(req.params.id, user_ids);
+  res.json({ success: true, assigned_users: database.getUsersForArtifact(req.params.id) });
+});
+
+// Get users assigned to an artifact
+app.get('/api/artifacts/:id/users', requireAdmin, (req, res) => {
+  res.json(database.getUsersForArtifact(req.params.id));
+});
+
+// ========================
+// API: USERS (admin only)
+// ========================
+
+app.get('/api/users', requireAdmin, (req, res) => {
+  const users = database.getAllUsers();
+  // Augment with artifact count
+  const result = users.map(u => ({
+    ...u,
+    artifact_count: database.getArtifactsForUser(u.id).length
+  }));
   res.json(result);
 });
 
-// --- Seed Initial Artifact ---
+app.post('/api/users', requireAdmin, (req, res) => {
+  const { username, password, display_name, role } = req.body;
+  if (!username || !password || !display_name) {
+    return res.status(400).json({ error: 'username, password, display_name required' });
+  }
+  try {
+    const result = database.createUser(username, password, display_name, role || 'user');
+    res.json({ success: true, ...result });
+  } catch (e) {
+    if (e.message.includes('UNIQUE')) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.put('/api/users/:id', requireAdmin, (req, res) => {
+  const { display_name, role, password } = req.body;
+  const user = database.getUserById(req.params.id);
+  if (!user) return res.status(404).json({ error: 'Not found' });
+
+  if (display_name || role) {
+    database.updateUser(req.params.id, display_name || user.display_name, role || user.role);
+  }
+  if (password) {
+    database.updateUserPassword(req.params.id, password);
+  }
+  res.json({ success: true });
+});
+
+app.delete('/api/users/:id', requireAdmin, (req, res) => {
+  const user = database.getUserById(req.params.id);
+  if (!user) return res.status(404).json({ error: 'Not found' });
+  if (user.role === 'admin') return res.status(400).json({ error: 'Cannot delete admin' });
+  database.deleteUser(req.params.id);
+  res.json({ success: true });
+});
+
+// ========================
+// SEED
+// ========================
 function seedIfEmpty() {
   const artifacts = database.getAllArtifacts();
   if (artifacts.length === 0) {

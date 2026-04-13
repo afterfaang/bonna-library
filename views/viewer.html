@@ -13,46 +13,23 @@
     <div class="viewer-title" id="viewerTitle">Yukleniyor...</div>
   </div>
   <div class="viewer-actions">
-    <button class="btn btn-outline btn-small" id="shareBtn">&#128279; Paylasim Linki</button>
     <button class="btn btn-outline btn-small" onclick="window.location.href='/'">&#8592; Kutuphane</button>
   </div>
 </div>
 <iframe id="viewerFrame" class="viewer-frame" sandbox="allow-scripts allow-same-origin"></iframe>
-<div class="toast" id="toast"></div>
 <script>
 const artifactId = window.location.pathname.split('/').pop();
-let artifactData = null;
 
 async function loadArtifact() {
   const res = await fetch(`/api/artifacts/${artifactId}`);
   if (!res.ok) { window.location.href = '/'; return; }
-  artifactData = await res.json();
-  document.getElementById('viewerTitle').textContent = artifactData.title;
-  document.title = `bonna — ${artifactData.title}`;
+  const data = await res.json();
+  document.getElementById('viewerTitle').textContent = data.title;
+  document.title = `bonna — ${data.title}`;
 
   const frame = document.getElementById('viewerFrame');
-  const blob = new Blob([artifactData.html_content], { type: 'text/html' });
+  const blob = new Blob([data.html_content], { type: 'text/html' });
   frame.src = URL.createObjectURL(blob);
-}
-
-document.getElementById('shareBtn').addEventListener('click', async () => {
-  if (!artifactData) return;
-  if (!artifactData.is_public) {
-    const res = await fetch(`/api/artifacts/${artifactId}/share`, { method: 'POST' });
-    const data = await res.json();
-    artifactData.is_public = data.is_public;
-    artifactData.share_token = data.share_token;
-  }
-  const url = `${window.location.origin}/public/${artifactData.share_token}`;
-  await navigator.clipboard.writeText(url);
-  showToast('Public link kopyalandi!');
-});
-
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
 loadArtifact();

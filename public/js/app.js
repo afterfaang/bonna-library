@@ -1,17 +1,88 @@
+let currentUser = null;
 let artifacts = [];
+let users = [];
 let currentFilter = 'all';
+let currentPage = 'artifacts';
 let uploadedFile = null;
+let assigningArtifactId = null;
 
-// --- Init ---
-document.addEventListener('DOMContentLoaded', () => {
-  loadArtifacts();
-  setupSidebar();
-  setupAddModal();
+// ========================
+// INIT
+// ========================
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadCurrentUser();
+  setupUI();
+  await loadArtifacts();
+  if (currentUser.role === 'admin') {
+    await loadUsers();
+  }
   setupLogout();
   setupFileDrop();
+  setupModals();
 });
 
-// --- Load Artifacts ---
+async function loadCurrentUser() {
+  const res = await fetch('/api/me');
+  currentUser = await res.json();
+  document.getElementById('userInfo').textContent = `${currentUser.display_name} (${currentUser.role})`;
+}
+
+// ========================
+// UI SETUP
+// ========================
+function setupUI() {
+  const nav = document.getElementById('sidebarNav');
+  const isAdmin = currentUser.role === 'admin';
+
+  if (isAdmin) {
+    // Show admin controls
+    document.getElementById('adminArtifactActions').style.display = 'block';
+    document.getElementById('categoryFilter').style.display = 'block';
+    document.getElementById('pageDesc').textContent = 'Tum calismalar — kullanicilara atama yapabilirsiniz';
+
+    // Add users nav item
+    const usersBtn = document.createElement('button');
+    usersBtn.className = 'sb-item';
+    usersBtn.dataset.page = 'users';
+    usersBtn.innerHTML = '<span class="icon">&#128101;</span> Kullanicilar <span class="cnt" id="countUsers">0</span>';
+    nav.appendChild(usersBtn);
+
+    // Category filter handlers
+    document.querySelectorAll('#categoryFilter .btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#categoryFilter .btn').forEach(b => b.classList.remove('btn-sand'));
+        btn.classList.add('btn-sand');
+        btn.classList.remove('btn-outline');
+        currentFilter = btn.dataset.filter;
+        renderArtifacts();
+      });
+    });
+  } else {
+    document.getElementById('pageTitle').textContent = 'Calismalarim';
+    document.getElementById('pageDesc').textContent = 'Size atanmis calismalar';
+  }
+
+  // Page navigation
+  nav.querySelectorAll('.sb-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      nav.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const page = btn.dataset.page;
+      if (page) showPage(page);
+    });
+  });
+}
+
+function showPage(page) {
+  currentPage = page;
+  document.getElementById('page-artifacts').style.display = page === 'artifacts' ? 'block' : 'none';
+  document.getElementById('page-users').style.display = page === 'users' ? 'block' : 'none';
+  if (page === 'users') renderUsers();
+}
+
+// ========================
+// ARTIFACTS
+// ========================
 async function loadArtifacts() {
   const res = await fetch('/api/artifacts');
   artifacts = await res.json();
@@ -19,104 +90,220 @@ async function loadArtifacts() {
   renderArtifacts();
 }
 
-// --- Render ---
 function renderArtifacts() {
   const grid = document.getElementById('artifactsGrid');
   const empty = document.getElementById('emptyState');
-  const filtered = currentFilter === 'all'
+  const isAdmin = currentUser.role === 'admin';
+
+  let filtered = currentFilter === 'all'
     ? artifacts
     : artifacts.filter(a => a.category === currentFilter);
 
   if (filtered.length === 0) {
     grid.style.display = 'none';
     empty.style.display = 'block';
+    document.getElementById('emptyDesc').textContent = isAdmin
+      ? 'Bu kategoride calisma yok — yeni ekleyebilirsiniz'
+      : 'Henuz size atanmis calisma bulunmuyor';
     return;
   }
 
   grid.style.display = 'grid';
   empty.style.display = 'none';
 
-  grid.innerHTML = filtered.map(a => `
-    <div class="artifact-card" data-id="${a.id}">
-      <div class="artifact-preview" id="preview-${a.id}"></div>
-      <div class="artifact-info">
-        <div class="artifact-category">${esc(a.category)}</div>
-        <div class="artifact-title">${esc(a.title)}</div>
-        <div class="artifact-desc">${esc(a.description || '')}</div>
-        <div class="artifact-meta">
-          <span>${formatDate(a.created_at)}</span>
-          <span class="artifact-status ${a.is_public ? 'status-public' : 'status-private'}">
-            ${a.is_public ? '&#127760; Public' : '&#128274; Private'}
-          </span>
-        </div>
-      </div>
-    </div>
-  `).join('');
+  grid.innerHTML = filtered.map(a => {
+    const assignedHtml = isAdmin && a.assigned_users
+      ? `<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:8px">
+          ${a.assigned_users.map(u =>
+            `<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:var(--sand-light);color:var(--sand);font-weight:600">${esc(u.display_name)}</span>`
+          ).join('')}
+          ${a.assigned_users.length === 0 ? '<span style="font-size:10px;color:var(--red)">Kimseye atanmadi</span>' : ''}
+        </div>`
+      : '';
 
-  // Click handlers
+    const assignBtn = isAdmin
+      ? `<button class="btn btn-small btn-outline assign-btn" data-id="${a.id}" onclick="event.stopPropagation();openAssignModal(${a.id})" style="margin-top:8px">&#128101; Ata</button>`
+      : '';
+
+    return `
+      <div class="artifact-card" data-id="${a.id}">
+        <div class="artifact-preview" id="preview-${a.id}"></div>
+        <div class="artifact-info">
+          <div class="artifact-category">${esc(a.category)}</div>
+          <div class="artifact-title">${esc(a.title)}</div>
+          <div class="artifact-desc">${esc(a.description || '')}</div>
+          ${assignedHtml}
+          <div class="artifact-meta" style="margin-top:8px">
+            <span>${formatDate(a.created_at)}</span>
+            ${assignBtn}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  // Click to view
   grid.querySelectorAll('.artifact-card').forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('.artifact-actions')) return;
+      if (e.target.closest('.assign-btn')) return;
       window.location.href = `/view/${card.dataset.id}`;
     });
   });
 
-  // Load previews (lazy)
-  filtered.forEach(a => {
-    loadPreview(a.id);
-  });
+  // Lazy load previews
+  filtered.forEach(a => loadPreview(a.id));
 }
 
 async function loadPreview(id) {
   const container = document.getElementById(`preview-${id}`);
   if (!container) return;
-  const res = await fetch(`/api/artifacts/${id}`);
-  if (!res.ok) return;
+  try {
+    const res = await fetch(`/api/artifacts/${id}`);
+    if (!res.ok) return;
+    const data = await res.json();
+    const blob = new Blob([data.html_content], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const iframe = document.createElement('iframe');
+    iframe.src = url;
+    iframe.setAttribute('sandbox', 'allow-scripts');
+    iframe.style.cssText = 'width:200%;height:200%;border:none;transform:scale(0.5);transform-origin:top left;pointer-events:none';
+    container.appendChild(iframe);
+  } catch (e) { /* silent fail */ }
+}
+
+// ========================
+// ASSIGN MODAL
+// ========================
+function openAssignModal(artifactId) {
+  assigningArtifactId = artifactId;
+  const artifact = artifacts.find(a => a.id === artifactId);
+  document.getElementById('assignModalTitle').textContent = `Ata: ${artifact ? artifact.title : ''}`;
+
+  const chips = document.getElementById('assignChips');
+  const assignedIds = (artifact.assigned_users || []).map(u => u.id);
+  const nonAdminUsers = users.filter(u => u.role !== 'admin');
+
+  chips.innerHTML = nonAdminUsers.map(u => `
+    <div class="assign-chip ${assignedIds.includes(u.id) ? 'selected' : ''}" data-uid="${u.id}">
+      ${esc(u.display_name)}
+    </div>
+  `).join('');
+
+  if (nonAdminUsers.length === 0) {
+    chips.innerHTML = '<span style="font-size:12px;color:var(--gray)">Henuz kullanici olusturulmadi</span>';
+  }
+
+  chips.querySelectorAll('.assign-chip').forEach(chip => {
+    chip.addEventListener('click', () => chip.classList.toggle('selected'));
+  });
+
+  openModal('assignModal');
+}
+
+async function saveAssignment() {
+  const selected = [...document.querySelectorAll('#assignChips .assign-chip.selected')]
+    .map(c => parseInt(c.dataset.uid));
+
+  const res = await fetch(`/api/artifacts/${assigningArtifactId}/assign`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_ids: selected })
+  });
+
+  if (res.ok) {
+    closeModal('assignModal');
+    await loadArtifacts();
+    showToast(`${selected.length} kullaniciya atandi`);
+  }
+}
+
+// ========================
+// USERS
+// ========================
+async function loadUsers() {
+  const res = await fetch('/api/users');
+  users = await res.json();
+  const countEl = document.getElementById('countUsers');
+  if (countEl) countEl.textContent = users.length;
+}
+
+function renderUsers() {
+  const tbody = document.getElementById('usersTableBody');
+  const stats = document.getElementById('userStats');
+  const nonAdminUsers = users.filter(u => u.role !== 'admin');
+
+  stats.innerHTML = `
+    <div class="stat-card"><div class="stat-num">${users.length}</div><div class="stat-label">Toplam Kullanici</div></div>
+    <div class="stat-card"><div class="stat-num">${nonAdminUsers.length}</div><div class="stat-label">Normal Kullanici</div></div>
+    <div class="stat-card"><div class="stat-num">${artifacts.length}</div><div class="stat-label">Toplam Calisma</div></div>
+  `;
+
+  tbody.innerHTML = users.map(u => `
+    <tr>
+      <td><div class="user-avatar">${esc(u.display_name.charAt(0).toUpperCase())}</div></td>
+      <td><strong>${esc(u.username)}</strong></td>
+      <td>${esc(u.display_name)}</td>
+      <td><span class="role-badge role-${u.role}">${u.role}</span></td>
+      <td>${u.artifact_count || 0} calisma</td>
+      <td>
+        ${u.role !== 'admin' ? `<button class="btn btn-small btn-outline" onclick="deleteUser(${u.id},'${esc(u.display_name)}')">Sil</button>` : '<span style="font-size:11px;color:var(--gray)">—</span>'}
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function deleteUser(id, name) {
+  if (!confirm(`"${name}" kullanicisini silmek istediginize emin misiniz?`)) return;
+  const res = await fetch(`/api/users/${id}`, { method: 'DELETE' });
+  if (res.ok) {
+    await loadUsers();
+    renderUsers();
+    showToast('Kullanici silindi');
+  }
+}
+
+async function saveNewUser() {
+  const username = document.getElementById('newUsername').value.trim();
+  const displayName = document.getElementById('newDisplayName').value.trim();
+  const password = document.getElementById('newPassword').value;
+  const role = document.getElementById('newRole').value;
+
+  if (!username || !displayName || !password) {
+    showToast('Tum alanlari doldurun');
+    return;
+  }
+
+  const res = await fetch('/api/users', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, display_name: displayName, password, role })
+  });
+
   const data = await res.json();
-  const blob = new Blob([data.html_content], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  const iframe = document.createElement('iframe');
-  iframe.src = url;
-  iframe.setAttribute('sandbox', 'allow-scripts');
-  iframe.style.cssText = 'width:200%;height:200%;border:none;transform:scale(0.5);transform-origin:top left;pointer-events:none';
-  container.appendChild(iframe);
+  if (res.ok) {
+    closeModal('addUserModal');
+    document.getElementById('newUsername').value = '';
+    document.getElementById('newDisplayName').value = '';
+    document.getElementById('newPassword').value = '';
+    await loadUsers();
+    renderUsers();
+    showToast('Kullanici olusturuldu');
+  } else {
+    showToast(data.error || 'Hata olustu');
+  }
 }
 
-// --- Sidebar ---
-function setupSidebar() {
-  document.querySelectorAll('.sb-item[data-filter]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentFilter = btn.dataset.filter;
-      const titles = {
-        all: 'Tum Calismalar',
-        ERP: 'ERP Calismalari',
-        SEO: 'SEO Calismalari',
-        Analiz: 'Analizler',
-        Strateji: 'Strateji Calismalari',
-        Genel: 'Genel Calismalar'
-      };
-      document.getElementById('pageTitle').textContent = titles[currentFilter] || 'Calismalar';
-      renderArtifacts();
-    });
-  });
-}
-
-// --- Add Modal ---
-function setupAddModal() {
-  document.getElementById('addBtn').addEventListener('click', () => {
-    openModal('addModal');
-  });
-
-  document.getElementById('saveBtn').addEventListener('click', saveArtifact);
-}
-
+// ========================
+// ADD ARTIFACT
+// ========================
 async function saveArtifact() {
   const title = document.getElementById('addTitle').value.trim();
   const desc = document.getElementById('addDesc').value.trim();
   const category = document.getElementById('addCategory').value;
   const htmlPaste = document.getElementById('addHtml').value.trim();
+
+  // Get selected users
+  const selectedUsers = [...document.querySelectorAll('#addAssignChips .assign-chip.selected')]
+    .map(c => parseInt(c.dataset.uid));
 
   if (!title && !uploadedFile) {
     showToast('Baslik gerekli');
@@ -132,12 +319,14 @@ async function saveArtifact() {
     body.append('title', title);
     body.append('description', desc);
     body.append('category', category);
+    body.append('assign_users', JSON.stringify(selectedUsers));
   } else if (htmlPaste) {
     body = JSON.stringify({
       title: title || 'Untitled',
       description: desc,
       html_content: htmlPaste,
-      category
+      category,
+      assign_users: JSON.stringify(selectedUsers)
     });
     headers['Content-Type'] = 'application/json';
   } else {
@@ -147,6 +336,15 @@ async function saveArtifact() {
 
   const res = await fetch('/api/artifacts', { method: 'POST', headers, body });
   if (res.ok) {
+    const data = await res.json();
+    // If we created with JSON and have users, assign separately
+    if (selectedUsers.length > 0 && data.id) {
+      await fetch(`/api/artifacts/${data.id}/assign`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_ids: selectedUsers })
+      });
+    }
     closeModal('addModal');
     resetAddForm();
     await loadArtifacts();
@@ -165,32 +363,39 @@ function resetAddForm() {
   document.getElementById('fileDrop').querySelector('.text').innerHTML = '<strong>HTML dosyasi secin</strong> veya surukleyin';
 }
 
-// --- File Drop ---
+function populateAssignChips(containerId) {
+  const container = document.getElementById(containerId);
+  const nonAdminUsers = users.filter(u => u.role !== 'admin');
+  container.innerHTML = nonAdminUsers.map(u => `
+    <div class="assign-chip" data-uid="${u.id}">${esc(u.display_name)}</div>
+  `).join('');
+
+  if (nonAdminUsers.length === 0) {
+    container.innerHTML = '<span style="font-size:12px;color:var(--gray)">Henuz kullanici yok</span>';
+  }
+
+  container.querySelectorAll('.assign-chip').forEach(chip => {
+    chip.addEventListener('click', () => chip.classList.toggle('selected'));
+  });
+}
+
+// ========================
+// FILE DROP
+// ========================
 function setupFileDrop() {
   const drop = document.getElementById('fileDrop');
   const input = document.getElementById('fileInput');
+  if (!drop || !input) return;
 
   drop.addEventListener('click', () => input.click());
-
-  drop.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    drop.classList.add('dragover');
-  });
-
-  drop.addEventListener('dragleave', () => {
-    drop.classList.remove('dragover');
-  });
-
+  drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('dragover'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('dragover'));
   drop.addEventListener('drop', (e) => {
     e.preventDefault();
     drop.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file) handleFile(file);
+    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
   });
-
-  input.addEventListener('change', () => {
-    if (input.files[0]) handleFile(input.files[0]);
-  });
+  input.addEventListener('change', () => { if (input.files[0]) handleFile(input.files[0]); });
 }
 
 function handleFile(file) {
@@ -201,7 +406,35 @@ function handleFile(file) {
   }
 }
 
-// --- Logout ---
+// ========================
+// MODALS
+// ========================
+function setupModals() {
+  document.getElementById('saveBtn')?.addEventListener('click', saveArtifact);
+  document.getElementById('saveAssignBtn')?.addEventListener('click', saveAssignment);
+  document.getElementById('saveUserBtn')?.addEventListener('click', saveNewUser);
+
+  document.getElementById('addBtn')?.addEventListener('click', () => {
+    populateAssignChips('addAssignChips');
+    openModal('addModal');
+  });
+
+  document.getElementById('addUserBtn')?.addEventListener('click', () => openModal('addUserModal'));
+
+  // Close on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) overlay.classList.remove('active');
+    });
+  });
+}
+
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+// ========================
+// LOGOUT
+// ========================
 function setupLogout() {
   document.getElementById('logoutBtn').addEventListener('click', async () => {
     await fetch('/api/logout', { method: 'POST' });
@@ -209,23 +442,9 @@ function setupLogout() {
   });
 }
 
-// --- Modal Utils ---
-function openModal(id) {
-  document.getElementById(id).classList.add('active');
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove('active');
-}
-
-// Close modal on overlay click
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) overlay.classList.remove('active');
-  });
-});
-
-// --- Toast ---
+// ========================
+// TOAST
+// ========================
 function showToast(msg) {
   const toast = document.getElementById('toast');
   toast.textContent = msg;
@@ -233,10 +452,12 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
-// --- Utils ---
+// ========================
+// UTILS
+// ========================
 function esc(str) {
   const div = document.createElement('div');
-  div.textContent = str;
+  div.textContent = str || '';
   return div.innerHTML;
 }
 

@@ -6,6 +6,38 @@
 <title>bonna — Calisma Kutuphanesi</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/style.css">
+<style>
+/* Extra styles for user management */
+.tab-bar { display:flex; gap:0; border-bottom:1px solid var(--border); margin-bottom:28px; }
+.tab-btn { padding:10px 20px; border:none; background:none; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; color:var(--gray); border-bottom:2px solid transparent; transition:all .15s; }
+.tab-btn.active { color:var(--ink); border-bottom-color:var(--sand); }
+.tab-btn:hover { color:var(--ink); }
+
+.users-table { width:100%; border-collapse:collapse; font-size:13px; }
+.users-table th { text-align:left; padding:10px 12px; background:var(--light); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gray); font-weight:600; border-bottom:1px solid var(--border); }
+.users-table td { padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:middle; }
+.users-table tr:hover { background:var(--sand-pale); }
+
+.role-badge { display:inline-block; padding:2px 10px; border-radius:10px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+.role-admin { background:var(--ink); color:#fff; }
+.role-user { background:var(--sand-light); color:var(--sand); }
+
+.assign-chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.assign-chip { display:inline-flex; align-items:center; gap:4px; padding:4px 12px; border-radius:16px; font-size:11px; font-weight:600; border:1px solid var(--border); background:#fff; cursor:pointer; transition:all .15s; }
+.assign-chip:hover { border-color:var(--sand); }
+.assign-chip.selected { background:var(--ink); color:#fff; border-color:var(--ink); }
+.assign-chip .remove { font-size:14px; margin-left:2px; opacity:.6; }
+
+.user-avatar { width:32px; height:32px; border-radius:50%; background:var(--sand-light); color:var(--sand); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+
+.stat-row { display:flex; gap:16px; margin-bottom:24px; }
+.stat-card { flex:1; padding:20px; border:1px solid var(--border); border-radius:12px; text-align:center; }
+.stat-num { font-family:'DM Serif Display',serif; font-size:28px; }
+.stat-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); margin-top:2px; }
+
+.assign-section { margin-top:16px; padding:16px; background:var(--sand-pale); border-radius:8px; }
+.assign-section-title { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--sand); font-weight:700; margin-bottom:8px; }
+</style>
 </head>
 <body>
 <div class="app-layout">
@@ -15,63 +47,86 @@
       <div class="brand">bonna</div>
       <div class="sub">Calisma Kutuphanesi</div>
     </div>
-    <div class="sb-nav">
+    <div class="sb-nav" id="sidebarNav">
       <div class="sb-section-label">Menu</div>
-      <button class="sb-item active" data-filter="all">
+      <button class="sb-item active" data-page="artifacts">
         <span class="icon">&#128218;</span>
-        Tum Calisma<span class="cnt" id="countAll">0</span>
+        Calismalar <span class="cnt" id="countAll">0</span>
       </button>
-      <button class="sb-item" data-filter="ERP">
-        <span class="icon">&#9881;</span>
-        ERP
-      </button>
-      <button class="sb-item" data-filter="SEO">
-        <span class="icon">&#128269;</span>
-        SEO
-      </button>
-      <button class="sb-item" data-filter="Analiz">
-        <span class="icon">&#128202;</span>
-        Analiz
-      </button>
-      <button class="sb-item" data-filter="Strateji">
-        <span class="icon">&#127919;</span>
-        Strateji
-      </button>
-      <button class="sb-item" data-filter="Genel">
-        <span class="icon">&#128196;</span>
-        Genel
-      </button>
+      <!-- Admin only items injected by JS -->
     </div>
     <div class="sb-footer">
-      <button class="logout-btn" id="logoutBtn">
-        &#8594; Cikis Yap
-      </button>
+      <div style="font-size:11px;color:var(--gray);margin-bottom:8px" id="userInfo"></div>
+      <button class="logout-btn" id="logoutBtn">&#8594; Cikis Yap</button>
     </div>
   </div>
 
   <!-- Main -->
   <div class="main-content">
     <div class="main-inner">
-      <div class="page-header">
-        <div>
-          <div class="page-title" id="pageTitle">Tum Calismalar</div>
-          <div class="page-desc" id="pageDesc">Bonna calisma kutuphanesindeki tum artifactler</div>
+
+      <!-- ARTIFACTS PAGE -->
+      <div id="page-artifacts">
+        <div class="page-header">
+          <div>
+            <div class="page-title" id="pageTitle">Calismalar</div>
+            <div class="page-desc" id="pageDesc"></div>
+          </div>
+          <div id="adminArtifactActions" style="display:none">
+            <button class="btn btn-sand" id="addBtn">+ Yeni Ekleme</button>
+          </div>
         </div>
-        <button class="btn btn-sand" id="addBtn">+ Yeni Ekleme</button>
+
+        <!-- Category filter (admin only) -->
+        <div id="categoryFilter" style="display:none;margin-bottom:20px">
+          <button class="btn btn-small btn-outline" data-filter="all" style="margin-right:4px">Tumu</button>
+          <button class="btn btn-small btn-outline" data-filter="ERP" style="margin-right:4px">ERP</button>
+          <button class="btn btn-small btn-outline" data-filter="SEO" style="margin-right:4px">SEO</button>
+          <button class="btn btn-small btn-outline" data-filter="Analiz" style="margin-right:4px">Analiz</button>
+          <button class="btn btn-small btn-outline" data-filter="Strateji" style="margin-right:4px">Strateji</button>
+          <button class="btn btn-small btn-outline" data-filter="Genel">Genel</button>
+        </div>
+
+        <div class="artifacts-grid" id="artifactsGrid"></div>
+        <div class="empty-state" id="emptyState" style="display:none">
+          <div class="icon">&#128218;</div>
+          <div class="title">Henuz calisma yok</div>
+          <div class="desc" id="emptyDesc">Henuz size atanmis calisma bulunmuyor</div>
+        </div>
       </div>
 
-      <div class="artifacts-grid" id="artifactsGrid"></div>
-      <div class="empty-state" id="emptyState" style="display:none">
-        <div class="icon">&#128218;</div>
-        <div class="title">Henuz calisma yok</div>
-        <div class="desc">Yeni bir artifact ekleyerek baslayabilirsiniz</div>
-        <button class="btn btn-sand" onclick="document.getElementById('addBtn').click()">+ Ilk Calismayi Ekle</button>
+      <!-- USERS PAGE (admin only) -->
+      <div id="page-users" style="display:none">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Kullanicilar</div>
+            <div class="page-desc">Kullanici olustur, sil ve calisma ata</div>
+          </div>
+          <button class="btn btn-sand" id="addUserBtn">+ Yeni Kullanici</button>
+        </div>
+
+        <div class="stat-row" id="userStats"></div>
+
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Kullanici</th>
+              <th>Gorunen Ad</th>
+              <th>Rol</th>
+              <th>Atanan Calisma</th>
+              <th>Islemler</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody"></tbody>
+        </table>
       </div>
+
     </div>
   </div>
 </div>
 
-<!-- Add Modal -->
+<!-- ADD ARTIFACT MODAL -->
 <div class="modal-overlay" id="addModal">
   <div class="modal">
     <div class="modal-header">
@@ -102,9 +157,13 @@
           <option value="Strateji">Strateji</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="assign-section">
+        <div class="assign-section-title">Kullanicilara Ata</div>
+        <div class="assign-chips" id="addAssignChips"></div>
+      </div>
+      <div class="form-group" style="margin-top:16px">
         <label class="form-label">veya HTML Kodu Yapistirin</label>
-        <textarea class="form-textarea" id="addHtml" placeholder="<!DOCTYPE html>..." rows="5"></textarea>
+        <textarea class="form-textarea" id="addHtml" placeholder="<!DOCTYPE html>..." rows="4"></textarea>
       </div>
     </div>
     <div class="modal-footer">
@@ -114,15 +173,56 @@
   </div>
 </div>
 
-<!-- Detail Modal -->
-<div class="modal-overlay" id="detailModal">
+<!-- ASSIGN MODAL -->
+<div class="modal-overlay" id="assignModal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title" id="detailTitle"></div>
-      <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
+      <div class="modal-title" id="assignModalTitle">Kullanici Ata</div>
+      <button class="modal-close" onclick="closeModal('assignModal')">&times;</button>
     </div>
-    <div class="modal-body" id="detailBody"></div>
-    <div class="modal-footer" id="detailFooter"></div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--gray);margin-bottom:16px">Bu calismayı gorecek kullanicilari secin:</p>
+      <div class="assign-chips" id="assignChips"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('assignModal')">Iptal</button>
+      <button class="btn btn-sand" id="saveAssignBtn">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD USER MODAL -->
+<div class="modal-overlay" id="addUserModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Yeni Kullanici</div>
+      <button class="modal-close" onclick="closeModal('addUserModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Kullanici Adi</label>
+        <input type="text" class="form-input" id="newUsername" placeholder="ornek: mehmet">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Gorunen Ad</label>
+        <input type="text" class="form-input" id="newDisplayName" placeholder="Mehmet Yilmaz">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Sifre</label>
+        <input type="text" class="form-input" id="newPassword" placeholder="Sifre belirle">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Rol</label>
+        <select class="form-input" id="newRole">
+          <option value="user">Kullanici</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addUserModal')">Iptal</button>
+      <button class="btn btn-sand" id="saveUserBtn">Olustur</button>
+    </div>
   </div>
 </div>
 
