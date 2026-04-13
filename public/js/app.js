@@ -149,7 +149,7 @@ function renderArtifacts() {
   grid.querySelectorAll('.artifact-card').forEach(card => {
     card.addEventListener('click', (e) => {
       if (e.target.closest('.assign-btn') || e.target.closest('.delete-btn')) return;
-      window.location.href = `/view/${card.dataset.id}`;
+      window.open(`/view/${card.dataset.id}`, '_blank');
     });
   });
 
