@@ -77,15 +77,8 @@
           </div>
         </div>
 
-        <!-- Category filter (admin only) -->
-        <div id="categoryFilter" style="display:none;margin-bottom:20px">
-          <button class="btn btn-small btn-outline" data-filter="all" style="margin-right:4px">Tumu</button>
-          <button class="btn btn-small btn-outline" data-filter="ERP" style="margin-right:4px">ERP</button>
-          <button class="btn btn-small btn-outline" data-filter="SEO" style="margin-right:4px">SEO</button>
-          <button class="btn btn-small btn-outline" data-filter="Analiz" style="margin-right:4px">Analiz</button>
-          <button class="btn btn-small btn-outline" data-filter="Strateji" style="margin-right:4px">Strateji</button>
-          <button class="btn btn-small btn-outline" data-filter="Genel">Genel</button>
-        </div>
+        <!-- Category filter (admin only, dynamically populated) -->
+        <div id="categoryFilter" style="display:none;margin-bottom:20px"></div>
 
         <div class="artifacts-grid" id="artifactsGrid"></div>
         <div class="empty-state" id="emptyState" style="display:none">
@@ -149,13 +142,8 @@
       </div>
       <div class="form-group">
         <label class="form-label">Kategori</label>
-        <select class="form-input" id="addCategory">
-          <option value="Genel">Genel</option>
-          <option value="ERP">ERP</option>
-          <option value="SEO">SEO</option>
-          <option value="Analiz">Analiz</option>
-          <option value="Strateji">Strateji</option>
-        </select>
+        <input type="text" class="form-input" id="addCategory" placeholder="ornek: Pazarlama, SEO, Strateji..." list="categoryList">
+        <datalist id="categoryList"></datalist>
       </div>
       <div class="assign-section">
         <div class="assign-section-title">Kullanicilara Ata</div>

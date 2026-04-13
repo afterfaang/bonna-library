@@ -46,17 +46,6 @@ function setupUI() {
     usersBtn.dataset.page = 'users';
     usersBtn.innerHTML = '<span class="icon">&#128101;</span> Kullanicilar <span class="cnt" id="countUsers">0</span>';
     nav.appendChild(usersBtn);
-
-    // Category filter handlers
-    document.querySelectorAll('#categoryFilter .btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('#categoryFilter .btn').forEach(b => b.classList.remove('btn-sand'));
-        btn.classList.add('btn-sand');
-        btn.classList.remove('btn-outline');
-        currentFilter = btn.dataset.filter;
-        renderArtifacts();
-      });
-    });
   } else {
     document.getElementById('pageTitle').textContent = 'Calismalarim';
     document.getElementById('pageDesc').textContent = 'Size atanmis calismalar';
@@ -90,7 +79,33 @@ async function loadArtifacts() {
   renderArtifacts();
 }
 
+function buildCategoryFilters() {
+  const container = document.getElementById('categoryFilter');
+  if (!container || currentUser.role !== 'admin') return;
+
+  const categories = [...new Set(artifacts.map(a => a.category).filter(Boolean))].sort();
+
+  container.innerHTML = `<button class="btn btn-small ${currentFilter === 'all' ? 'btn-sand' : 'btn-outline'}" data-filter="all" style="margin-right:4px">Tumu</button>` +
+    categories.map(c =>
+      `<button class="btn btn-small ${currentFilter === c ? 'btn-sand' : 'btn-outline'}" data-filter="${esc(c)}" style="margin-right:4px">${esc(c)}</button>`
+    ).join('');
+
+  container.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentFilter = btn.dataset.filter;
+      renderArtifacts();
+    });
+  });
+
+  // Also update datalist for add form
+  const datalist = document.getElementById('categoryList');
+  if (datalist) {
+    datalist.innerHTML = categories.map(c => `<option value="${esc(c)}">`).join('');
+  }
+}
+
 function renderArtifacts() {
+  buildCategoryFilters();
   const grid = document.getElementById('artifactsGrid');
   const empty = document.getElementById('emptyState');
   const isAdmin = currentUser.role === 'admin';
@@ -376,7 +391,7 @@ function resetAddForm() {
   document.getElementById('addTitle').value = '';
   document.getElementById('addDesc').value = '';
   document.getElementById('addHtml').value = '';
-  document.getElementById('addCategory').value = 'Genel';
+  document.getElementById('addCategory').value = '';
   uploadedFile = null;
   document.getElementById('fileDrop').querySelector('.text').innerHTML = '<strong>HTML dosyasi secin</strong> veya surukleyin';
 }
