@@ -271,7 +271,7 @@ app.post('/api/seed-artifacts', requireAdmin, async (req, res) => {
 
   const seedData = [
     { file: 'Bonna_ERP_Projeksiyon_2026.html', title: 'ERP Alan Projeksiyon Raporu 2026', description: 'bonna.com.tr SEO/GEO uyumlu ERP dönüşüm projeksiyon raporu', category: 'ERP' },
-    { file: 'bonna-cati-iletisim-stratejisi.html', title: 'Çatı İletişim Stratejisi', description: 'Bonna markası için bütünleşik çatı iletişim stratejisi', category: 'İletişim' },
+    { file: 'bonna-cati-iletisim-stratejisi.html', title: 'Bonna 2026 İletişim Projesi', description: 'Bonna markası için bütünleşik çatı iletişim stratejisi', category: 'İletişim' },
     { file: 'bonna-iletisim-stratejileri.html', title: 'İletişim Stratejileri', description: 'Bonna iletişim kanalları ve mesaj stratejileri', category: 'İletişim' },
     { file: 'bonna-fikir-havuzu.html', title: 'Fikir Havuzu', description: 'Pazarlama ve iletişim fikir havuzu', category: 'Strateji' },
     { file: 'Bonna_AI_Content_Mimarisi_2026.html', title: 'AI İçerik Mimarisi 2026', description: 'AI destekli içerik üretim ve yönetim mimarisi', category: 'AI' },
@@ -317,7 +317,7 @@ async function seedIfEmpty() {
   if (artifacts.length === 0) {
     const seedData = [
       { file: 'Bonna_ERP_Projeksiyon_2026.html', title: 'ERP Alan Projeksiyon Raporu 2026', description: 'bonna.com.tr SEO/GEO uyumlu ERP dönüşüm projeksiyon raporu', category: 'ERP' },
-      { file: 'bonna-cati-iletisim-stratejisi.html', title: 'Çatı İletişim Stratejisi', description: 'Bonna markası için bütünleşik çatı iletişim stratejisi', category: 'İletişim' },
+      { file: 'bonna-cati-iletisim-stratejisi.html', title: 'Bonna 2026 İletişim Projesi', description: 'Bonna markası için bütünleşik çatı iletişim stratejisi', category: 'İletişim' },
       { file: 'bonna-iletisim-stratejileri.html', title: 'İletişim Stratejileri', description: 'Bonna iletişim kanalları ve mesaj stratejileri', category: 'İletişim' },
       { file: 'bonna-fikir-havuzu.html', title: 'Fikir Havuzu', description: 'Pazarlama ve iletişim fikir havuzu', category: 'Strateji' },
       { file: 'Bonna_AI_Content_Mimarisi_2026.html', title: 'AI İçerik Mimarisi 2026', description: 'AI destekli içerik üretim ve yönetim mimarisi', category: 'AI' },
