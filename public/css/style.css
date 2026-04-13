@@ -376,6 +376,24 @@ body {
   margin-bottom: 6px;
 }
 
+.category-select {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--sand);
+  font-weight: 600;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 6px;
+  background: #fff;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+}
+.category-select:hover { border-color: var(--sand); }
+.category-select:focus { border-color: var(--sand); box-shadow: 0 0 0 2px rgba(192,163,121,.15); }
+
 .artifact-title {
   font-family: 'DM Serif Display', serif;
   font-size: 18px;

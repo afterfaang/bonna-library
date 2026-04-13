@@ -1,6 +1,7 @@
 let currentUser = null;
 let artifacts = [];
 let users = [];
+let categories = [];
 let currentFilter = 'all';
 let currentPage = 'artifacts';
 let uploadedFile = null;
@@ -12,6 +13,7 @@ let assigningArtifactId = null;
 document.addEventListener('DOMContentLoaded', async () => {
   await loadCurrentUser();
   setupUI();
+  await loadCategories();
   await loadArtifacts();
   if (currentUser.role === 'admin') {
     await loadUsers();
@@ -35,19 +37,16 @@ function setupUI() {
   const isAdmin = currentUser.role === 'admin';
 
   if (isAdmin) {
-    // Show admin controls
     document.getElementById('adminArtifactActions').style.display = 'block';
     document.getElementById('categoryFilter').style.display = 'block';
     document.getElementById('pageDesc').textContent = 'Tum calismalar — kullanicilara atama yapabilirsiniz';
 
-    // Add categories nav item
     const catBtn = document.createElement('button');
     catBtn.className = 'sb-item';
     catBtn.dataset.page = 'categories';
     catBtn.innerHTML = '<span class="icon">&#128278;</span> Kategoriler <span class="cnt" id="countCategories">0</span>';
     nav.appendChild(catBtn);
 
-    // Add users nav item
     const usersBtn = document.createElement('button');
     usersBtn.className = 'sb-item';
     usersBtn.dataset.page = 'users';
@@ -58,7 +57,6 @@ function setupUI() {
     document.getElementById('pageDesc').textContent = 'Size atanmis calismalar';
   }
 
-  // Page navigation
   nav.querySelectorAll('.sb-item').forEach(btn => {
     btn.addEventListener('click', () => {
       nav.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
@@ -79,24 +77,24 @@ function showPage(page) {
 }
 
 // ========================
-// ARTIFACTS
+// CATEGORIES (from DB)
 // ========================
-async function loadArtifacts() {
-  const res = await fetch('/api/artifacts');
-  artifacts = await res.json();
-  document.getElementById('countAll').textContent = artifacts.length;
-  renderArtifacts();
+async function loadCategories() {
+  const res = await fetch('/api/categories');
+  categories = await res.json();
+  const countEl = document.getElementById('countCategories');
+  if (countEl) countEl.textContent = categories.length;
+  buildCategoryFilters();
+  updateCategorySelects();
 }
 
 function buildCategoryFilters() {
   const container = document.getElementById('categoryFilter');
   if (!container || currentUser.role !== 'admin') return;
 
-  const categories = [...new Set(artifacts.map(a => a.category).filter(Boolean))].sort();
-
   container.innerHTML = `<button class="btn btn-small ${currentFilter === 'all' ? 'btn-sand' : 'btn-outline'}" data-filter="all" style="margin-right:4px">Tumu</button>` +
     categories.map(c =>
-      `<button class="btn btn-small ${currentFilter === c ? 'btn-sand' : 'btn-outline'}" data-filter="${esc(c)}" style="margin-right:4px">${esc(c)}</button>`
+      `<button class="btn btn-small ${currentFilter === c.name ? 'btn-sand' : 'btn-outline'}" data-filter="${esc(c.name)}" style="margin-right:4px">${esc(c.name)}</button>`
     ).join('');
 
   container.querySelectorAll('.btn').forEach(btn => {
@@ -105,20 +103,125 @@ function buildCategoryFilters() {
       renderArtifacts();
     });
   });
+}
 
-  // Update category count in sidebar
-  const countEl = document.getElementById('countCategories');
-  if (countEl) countEl.textContent = categories.length;
-
-  // Also update datalist for add form
+function updateCategorySelects() {
+  // Update datalist for add form
   const datalist = document.getElementById('categoryList');
   if (datalist) {
-    datalist.innerHTML = categories.map(c => `<option value="${esc(c)}">`).join('');
+    datalist.innerHTML = categories.map(c => `<option value="${esc(c.name)}">`).join('');
   }
 }
 
-function renderArtifacts() {
+function renderCategories() {
+  const tbody = document.getElementById('categoriesTableBody');
+  // Count artifacts per category
+  const countMap = {};
+  artifacts.forEach(a => {
+    const c = a.category || 'Genel';
+    countMap[c] = (countMap[c] || 0) + 1;
+  });
+
+  tbody.innerHTML = categories.map(c => `
+    <tr>
+      <td><strong>${esc(c.name)}</strong></td>
+      <td>${countMap[c.name] || 0} calisma</td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-small btn-outline" onclick="renameCategory('${esc(c.name).replace(/'/g, "\\'")}')">Yeniden Adlandir</button>
+        ${c.name !== 'Genel' ? `<button class="btn btn-small btn-outline" onclick="deleteCategoryAction('${esc(c.name).replace(/'/g, "\\'")}')" style="color:var(--red,#c0392b);border-color:var(--red,#c0392b)">Sil</button>` : ''}
+      </td>
+    </tr>
+  `).join('');
+
+  if (categories.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--gray);padding:24px">Henuz kategori yok</td></tr>';
+  }
+}
+
+async function addCategory() {
+  const input = document.getElementById('newCategoryInput');
+  const name = input.value.trim();
+  if (!name) return showToast('Kategori adi gerekli');
+
+  const res = await fetch('/api/categories', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name })
+  });
+  const data = await res.json();
+  if (res.ok) {
+    input.value = '';
+    await loadCategories();
+    renderCategories();
+    showToast(`"${name}" kategorisi eklendi`);
+  } else {
+    showToast(data.error || 'Hata olustu');
+  }
+}
+
+async function renameCategory(oldName) {
+  const newName = prompt(`"${oldName}" kategorisinin yeni adi:`, oldName);
+  if (!newName || newName.trim() === '' || newName.trim() === oldName) return;
+
+  const res = await fetch('/api/categories/rename', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ old_name: oldName, new_name: newName.trim() })
+  });
+  if (res.ok) {
+    await loadCategories();
+    await loadArtifacts();
+    renderCategories();
+    showToast(`"${oldName}" → "${newName.trim()}" olarak guncellendi`);
+  } else {
+    showToast('Hata olustu');
+  }
+}
+
+async function deleteCategoryAction(name) {
+  if (!confirm(`"${name}" kategorisini silmek istediginize emin misiniz?\nBu kategorideki calismalar "Genel" kategorisine tasinacak.`)) return;
+
+  const res = await fetch('/api/categories/delete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name })
+  });
+  if (res.ok) {
+    if (currentFilter === name) currentFilter = 'all';
+    await loadCategories();
+    await loadArtifacts();
+    renderCategories();
+    showToast(`"${name}" kategorisi silindi`);
+  } else {
+    const data = await res.json();
+    showToast(data.error || 'Hata olustu');
+  }
+}
+
+async function changeArtifactCategory(artifactId, newCategory) {
+  const res = await fetch(`/api/artifacts/${artifactId}/category`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ category: newCategory })
+  });
+  if (res.ok) {
+    await loadArtifacts();
+    showToast('Kategori guncellendi');
+  }
+}
+
+// ========================
+// ARTIFACTS
+// ========================
+async function loadArtifacts() {
+  const res = await fetch('/api/artifacts');
+  artifacts = await res.json();
+  document.getElementById('countAll').textContent = artifacts.length;
   buildCategoryFilters();
+  renderArtifacts();
+}
+
+function renderArtifacts() {
   const grid = document.getElementById('artifactsGrid');
   const empty = document.getElementById('emptyState');
   const isAdmin = currentUser.role === 'admin';
@@ -149,19 +252,26 @@ function renderArtifacts() {
         </div>`
       : '';
 
+    // Category select for admin
+    const categoryHtml = isAdmin
+      ? `<select class="category-select" data-id="${a.id}" onclick="event.stopPropagation()" onchange="changeArtifactCategory(${a.id}, this.value)">
+          ${categories.map(c => `<option value="${esc(c.name)}" ${c.name === a.category ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}
+        </select>`
+      : `<div class="artifact-category">${esc(a.category)}</div>`;
+
     const assignBtn = isAdmin
-      ? `<button class="btn btn-small btn-outline assign-btn" data-id="${a.id}" onclick="event.stopPropagation();openAssignModal(${a.id})" style="margin-top:8px">&#128101; Ata</button>`
+      ? `<button class="btn btn-small btn-outline assign-btn" onclick="event.stopPropagation();openAssignModal(${a.id})">&#128101; Ata</button>`
       : '';
 
     const deleteBtn = isAdmin
-      ? `<button class="btn btn-small btn-outline delete-btn" onclick="event.stopPropagation();deleteArtifact(${a.id},'${esc(a.title).replace(/'/g, "\\'")}')" style="margin-top:8px;color:var(--red,#c0392b);border-color:var(--red,#c0392b)">&#128465; Sil</button>`
+      ? `<button class="btn btn-small btn-outline delete-btn" onclick="event.stopPropagation();deleteArtifact(${a.id},'${esc(a.title).replace(/'/g, "\\'")}')" style="color:var(--red,#c0392b);border-color:var(--red,#c0392b)">&#128465; Sil</button>`
       : '';
 
     return `
       <div class="artifact-card" data-id="${a.id}">
         <div class="artifact-preview" id="preview-${a.id}"></div>
         <div class="artifact-info">
-          <div class="artifact-category">${esc(a.category)}</div>
+          ${categoryHtml}
           <div class="artifact-title">${esc(a.title)}</div>
           <div class="artifact-desc">${esc(a.description || '')}</div>
           ${assignedHtml}
@@ -176,7 +286,7 @@ function renderArtifacts() {
   // Click to view
   grid.querySelectorAll('.artifact-card').forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('.assign-btn') || e.target.closest('.delete-btn')) return;
+      if (e.target.closest('.assign-btn') || e.target.closest('.delete-btn') || e.target.closest('.category-select')) return;
       window.open(`/view/${card.dataset.id}`, '_blank');
     });
   });
@@ -325,109 +435,6 @@ async function saveNewUser() {
 }
 
 // ========================
-// CATEGORIES
-// ========================
-function getCategories() {
-  const cats = {};
-  artifacts.forEach(a => {
-    const c = a.category || 'Genel';
-    cats[c] = (cats[c] || 0) + 1;
-  });
-  return Object.entries(cats).sort((a, b) => a[0].localeCompare(b[0]));
-}
-
-function renderCategories() {
-  const tbody = document.getElementById('categoriesTableBody');
-  const cats = getCategories();
-
-  const countEl = document.getElementById('countCategories');
-  if (countEl) countEl.textContent = cats.length;
-
-  tbody.innerHTML = cats.map(([name, count]) => `
-    <tr>
-      <td><strong>${esc(name)}</strong></td>
-      <td>${count} calisma</td>
-      <td style="display:flex;gap:6px">
-        <button class="btn btn-small btn-outline" onclick="renameCategory('${esc(name).replace(/'/g, "\\'")}')">Yeniden Adlandir</button>
-        <button class="btn btn-small btn-outline" onclick="deleteCategory('${esc(name).replace(/'/g, "\\'")}')" style="color:var(--red,#c0392b);border-color:var(--red,#c0392b)">Sil</button>
-      </td>
-    </tr>
-  `).join('');
-
-  if (cats.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--gray);padding:24px">Henuz kategori yok</td></tr>';
-  }
-}
-
-async function renameCategory(oldName) {
-  const newName = prompt(`"${oldName}" kategorisinin yeni adi:`, oldName);
-  if (!newName || newName.trim() === '' || newName.trim() === oldName) return;
-
-  const res = await fetch('/api/categories/rename', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ old_name: oldName, new_name: newName.trim() })
-  });
-  if (res.ok) {
-    await loadArtifacts();
-    renderCategories();
-    showToast(`"${oldName}" → "${newName.trim()}" olarak guncellendi`);
-  } else {
-    showToast('Hata olustu');
-  }
-}
-
-async function deleteCategory(name) {
-  if (!confirm(`"${name}" kategorisini silmek istediginize emin misiniz?\nBu kategorideki calismalar "Genel" kategorisine tasinacak.`)) return;
-
-  const res = await fetch('/api/categories/delete', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name })
-  });
-  if (res.ok) {
-    if (currentFilter === name) currentFilter = 'all';
-    await loadArtifacts();
-    renderCategories();
-    showToast(`"${name}" kategorisi silindi`);
-  } else {
-    showToast('Hata olustu');
-  }
-}
-
-async function addCategory() {
-  const input = document.getElementById('newCategoryInput');
-  const name = input.value.trim();
-  if (!name) return showToast('Kategori adi gerekli');
-
-  // Check if already exists
-  if (artifacts.some(a => a.category === name)) {
-    return showToast('Bu kategori zaten mevcut');
-  }
-
-  // Create a placeholder artifact to establish the category, then delete it
-  // Actually, just create an empty artifact with this category
-  const res = await fetch('/api/artifacts', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      title: `${name} — Yeni Kategori`,
-      description: `${name} kategorisi icin ornek calisma`,
-      html_content: `<!DOCTYPE html><html><head><title>${name}</title></head><body><h1>${name}</h1><p>Bu kategori icin icerik ekleyin.</p></body></html>`,
-      category: name
-    })
-  });
-  if (res.ok) {
-    input.value = '';
-    await loadArtifacts();
-    renderCategories();
-    showToast(`"${name}" kategorisi eklendi`);
-  } else {
-    showToast('Hata olustu');
-  }
-}
-
-// ========================
 // DELETE ARTIFACT
 // ========================
 async function deleteArtifact(id, title) {
@@ -447,10 +454,9 @@ async function deleteArtifact(id, title) {
 async function saveArtifact() {
   const title = document.getElementById('addTitle').value.trim();
   const desc = document.getElementById('addDesc').value.trim();
-  const category = document.getElementById('addCategory').value;
+  const category = document.getElementById('addCategory').value.trim() || 'Genel';
   const htmlPaste = document.getElementById('addHtml').value.trim();
 
-  // Get selected users
   const selectedUsers = [...document.querySelectorAll('#addAssignChips .assign-chip.selected')]
     .map(c => parseInt(c.dataset.uid));
 
@@ -486,7 +492,6 @@ async function saveArtifact() {
   const res = await fetch('/api/artifacts', { method: 'POST', headers, body });
   if (res.ok) {
     const data = await res.json();
-    // If we created with JSON and have users, assign separately
     if (selectedUsers.length > 0 && data.id) {
       await fetch(`/api/artifacts/${data.id}/assign`, {
         method: 'POST',
@@ -572,7 +577,6 @@ function setupModals() {
   document.getElementById('addCategoryBtn')?.addEventListener('click', addCategory);
   document.getElementById('newCategoryInput')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') addCategory(); });
 
-  // Close on overlay click
   document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) overlay.classList.remove('active');
@@ -614,6 +618,7 @@ function esc(str) {
 
 function formatDate(dateStr) {
   if (!dateStr) return '';
-  const d = new Date(dateStr + 'Z');
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return '';
   return d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
 }

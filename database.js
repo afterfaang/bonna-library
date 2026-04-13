@@ -34,7 +34,24 @@ async function initDB() {
       assigned_at TIMESTAMPTZ DEFAULT NOW(),
       PRIMARY KEY (user_id, artifact_id)
     );
+
+    CREATE TABLE IF NOT EXISTS categories (
+      id SERIAL PRIMARY KEY,
+      name TEXT UNIQUE NOT NULL,
+      sort_order INTEGER DEFAULT 0,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    );
   `);
+
+  // Seed default categories if empty
+  const { rows: catRows } = await pool.query(`SELECT id FROM categories LIMIT 1`);
+  if (catRows.length === 0) {
+    const defaults = ['Genel', 'Pazarlama', 'SEO', 'ERP', 'AI', 'Strateji', 'Performans', 'İletişim'];
+    for (let i = 0; i < defaults.length; i++) {
+      await pool.query(`INSERT INTO categories (name, sort_order) VALUES ($1, $2) ON CONFLICT DO NOTHING`, [defaults[i], i]);
+    }
+    console.log('Seeded default categories');
+  }
 
   // Seed admin user
   const { rows } = await pool.query(`SELECT id FROM users WHERE role = 'admin' LIMIT 1`);
@@ -149,5 +166,29 @@ module.exports = {
   canUserAccessArtifact: async (userId, artifactId) => {
     const { rows } = await pool.query(`SELECT 1 FROM user_artifacts WHERE user_id = $1 AND artifact_id = $2`, [userId, artifactId]);
     return rows.length > 0;
+  },
+
+  // --- Categories ---
+  getAllCategories: async () => {
+    const { rows } = await pool.query(`SELECT * FROM categories ORDER BY sort_order, name`);
+    return rows;
+  },
+  createCategory: async (name) => {
+    const { rows } = await pool.query(
+      `INSERT INTO categories (name) VALUES ($1) RETURNING id`,
+      [name]
+    );
+    return { id: rows[0].id };
+  },
+  renameCategory: async (oldName, newName) => {
+    await pool.query(`UPDATE categories SET name = $1 WHERE name = $2`, [newName, oldName]);
+    await pool.query(`UPDATE artifacts SET category = $1 WHERE category = $2`, [newName, oldName]);
+  },
+  deleteCategory: async (name) => {
+    await pool.query(`UPDATE artifacts SET category = 'Genel' WHERE category = $1`, [name]);
+    await pool.query(`DELETE FROM categories WHERE name = $1`, [name]);
+  },
+  updateArtifactCategory: async (artifactId, category) => {
+    await pool.query(`UPDATE artifacts SET category = $1, updated_at = NOW() WHERE id = $2`, [category, artifactId]);
   },
 };
