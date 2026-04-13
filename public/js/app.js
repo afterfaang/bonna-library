@@ -125,6 +125,10 @@ function renderArtifacts() {
       ? `<button class="btn btn-small btn-outline assign-btn" data-id="${a.id}" onclick="event.stopPropagation();openAssignModal(${a.id})" style="margin-top:8px">&#128101; Ata</button>`
       : '';
 
+    const deleteBtn = isAdmin
+      ? `<button class="btn btn-small btn-outline delete-btn" onclick="event.stopPropagation();deleteArtifact(${a.id},'${esc(a.title).replace(/'/g, "\\'")}')" style="margin-top:8px;color:var(--red,#c0392b);border-color:var(--red,#c0392b)">&#128465; Sil</button>`
+      : '';
+
     return `
       <div class="artifact-card" data-id="${a.id}">
         <div class="artifact-preview" id="preview-${a.id}"></div>
@@ -135,7 +139,7 @@ function renderArtifacts() {
           ${assignedHtml}
           <div class="artifact-meta" style="margin-top:8px">
             <span>${formatDate(a.created_at)}</span>
-            ${assignBtn}
+            <div style="display:flex;gap:6px">${assignBtn}${deleteBtn}</div>
           </div>
         </div>
       </div>`;
@@ -144,7 +148,7 @@ function renderArtifacts() {
   // Click to view
   grid.querySelectorAll('.artifact-card').forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('.assign-btn')) return;
+      if (e.target.closest('.assign-btn') || e.target.closest('.delete-btn')) return;
       window.location.href = `/view/${card.dataset.id}`;
     });
   });
@@ -289,6 +293,20 @@ async function saveNewUser() {
     showToast('Kullanici olusturuldu');
   } else {
     showToast(data.error || 'Hata olustu');
+  }
+}
+
+// ========================
+// DELETE ARTIFACT
+// ========================
+async function deleteArtifact(id, title) {
+  if (!confirm(`"${title}" calismasini silmek istediginize emin misiniz?`)) return;
+  const res = await fetch(`/api/artifacts/${id}`, { method: 'DELETE' });
+  if (res.ok) {
+    await loadArtifacts();
+    showToast('Calisma silindi');
+  } else {
+    showToast('Silme islemi basarisiz');
   }
 }
 
