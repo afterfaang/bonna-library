@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonna · AI-Ready Site İçerik Mimarisi 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a1a;--sand:#C9A96E;--sand-light:#f4eed9;--sand-pale:#faf7f0;--bg:#fefdfb;--gray:#94918a;--light:#f5f3ef;--border:#e8e4dc;--sidebar:#faf8f5;--red:#b04040;--green:#3a7d44;--blue:#3a6b9f}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);display:flex;height:100vh;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:280px;min-width:280px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh}
+.sb-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border)}
+.sb-logo .brand{font-family:'DM Serif Display',serif;font-size:28px;letter-spacing:4px}
+.sb-logo .sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--sand);margin-top:4px}
+.sb-nav{flex:1;overflow-y:auto;padding:12px 0}
+.sb-section-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);padding:12px 24px 6px;font-weight:600}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 8px;border-radius:8px;cursor:pointer;transition:all .15s;font-size:13px;font-weight:500;border:none;background:none;width:calc(100% - 16px);text-align:left;font-family:inherit;color:var(--ink)}
+.sb-item:hover{background:var(--sand-light)}
+.sb-item.active{background:var(--ink);color:#fff}
+.sb-item .em{width:28px;height:28px;border-radius:6px;background:var(--light);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.sb-item.active .em{background:var(--sand)}
+.sb-item .cnt{font-size:10px;font-weight:700;background:var(--light);color:var(--gray);padding:2px 8px;border-radius:10px;margin-left:auto}
+.sb-item.active .cnt{background:var(--sand);color:#fff}
+.sb-footer{padding:16px 24px;border-top:1px solid var(--border);font-size:10px;color:var(--gray);line-height:1.6}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;height:100vh}
+.main-inner{padding:40px 48px;max-width:1040px}
+.page{display:none}.page.visible{display:block}
+.pt{font-family:'DM Serif Display',serif;font-size:32px;margin-bottom:6px}
+.pd{font-size:14px;color:var(--gray);margin-bottom:32px;line-height:1.7}
+.st{font-family:'DM Serif Display',serif;font-size:20px;margin:40px 0 8px}
+.st:first-child{margin-top:0}
+.dv{width:32px;height:2px;background:var(--sand);margin-bottom:20px}
+
+/* CARDS */
+.card{border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.card-head{padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background .15s}
+.card-head:hover{background:var(--sand-pale)}
+.card-head.open{background:var(--sand-pale)}
+.card-head .arrow{margin-left:auto;color:var(--border);transition:transform .2s;font-size:18px;flex-shrink:0}
+.card-head.open .arrow{transform:rotate(90deg);color:var(--sand)}
+.card-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border)}
+.card-head.open+.card-body{display:block}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding-top:16px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;padding-top:16px}
+.lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:2px}
+.val{font-size:13px;font-weight:500;line-height:1.5}
+
+/* CHIPS & BADGES */
+.chip{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;margin:2px;border:1px solid var(--border)}
+.chip-dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip-gold{background:var(--sand-light);color:var(--sand);border-color:var(--sand-light)}
+.chip-red{background:#fde8e8;color:var(--red);border-color:#fde8e8}
+.chip-green{background:#e8f5e9;color:var(--green);border-color:#e8f5e9}
+.chip-blue{background:#e3edf7;color:var(--blue);border-color:#e3edf7}
+
+/* STATUS */
+.status{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.s-red{background:var(--red)}.s-yellow{background:var(--sand)}.s-green{background:var(--green)}
+
+/* URL PATH */
+.url-path{font-family:'DM Sans',monospace;font-size:12px;color:var(--sand);background:var(--sand-pale);padding:3px 10px;border-radius:4px;display:inline-block;margin:2px 0}
+
+/* CONTENT BLOCK */
+.cb{border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px}
+.cb-title{font-weight:600;font-size:14px;margin-bottom:8px}
+.cb-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+
+/* SCHEMA TAG */
+.schema-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.5px;background:var(--ink);color:var(--sand)}
+
+/* TREE */
+.tree{font-family:'DM Sans',monospace;font-size:13px;line-height:2;padding:20px;background:var(--light);border-radius:12px;overflow-x:auto}
+.tree .folder{color:var(--ink);font-weight:600}
+.tree .file{color:var(--gray)}
+.tree .new{color:var(--sand);font-weight:600}
+.tree .ai{color:var(--green);font-weight:600}
+.tree .indent{padding-left:24px}
+
+/* SCORE BAR */
+.score-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.score-label{width:180px;font-size:12px;font-weight:500;flex-shrink:0}
+.score-track{flex:1;height:6px;background:var(--light);border-radius:3px;overflow:hidden}
+.score-fill{height:100%;border-radius:3px}
+.score-val{width:36px;font-size:12px;font-weight:700;text-align:right;flex-shrink:0}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.kpi{text-align:center;padding:24px 16px;border:1px solid var(--border);border-radius:12px}
+.kpi-num{font-family:'DM Serif Display',serif;font-size:32px}
+.kpi-lab{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-top:2px}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:12px}
+.tbl th{text-align:left;padding:10px 12px;background:var(--light);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gray);font-weight:600;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-weight:500}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover{background:var(--sand-pale)}
+
+/* PRIORITY */
+.pri{display:inline-block;padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700}
+.pri-h{background:var(--ink);color:#fff}
+.pri-m{background:var(--sand);color:#fff}
+.pri-l{background:var(--light);color:var(--gray)}
+
+/* AI SIGNAL BOX */
+.ai-box{background:var(--sand-pale);border:1px solid var(--sand-light);border-radius:8px;padding:14px 16px;margin-bottom:12px}
+.ai-box-title{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sand);font-weight:700;margin-bottom:6px}
+.ai-box-content{font-size:13px;line-height:1.7}
+
+/* FLOW DIAGRAM */
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:16px 0}
+.flow-node{padding:10px 16px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid var(--border);background:#fff}
+.flow-node.highlight{background:var(--ink);color:#fff;border-color:var(--ink)}
+.flow-arrow{color:var(--sand);font-size:18px;font-weight:700}
+
+/* COMPARISON */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px}
+.compare-col{padding:20px}
+.compare-col:first-child{border-right:1px solid var(--border)}
+.compare-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:12px}
+.compare-label.old{color:var(--red)}
+.compare-label.new{color:var(--green)}
+
+/* TIMELINE */
+.timeline{border-left:2px solid var(--border);margin-left:16px;padding-left:24px}
+.tl-item{position:relative;margin-bottom:24px}
+.tl-item::before{content:'';position:absolute;left:-30px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--sand);border:2px solid var(--bg)}
+.tl-q{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--sand);font-weight:700;margin-bottom:2px}
+.tl-title{font-weight:600;font-size:14px;margin-bottom:4px}
+.tl-desc{font-size:12px;color:var(--gray);line-height:1.6}
+
+/* TABBED FILTER */
+.tab-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab-btn{padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid var(--border);background:#fff;cursor:pointer;font-family:inherit;transition:all .15s}
+.tab-btn:hover{border-color:var(--sand)}
+.tab-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sb-logo">
+    <div class="brand">bonna</div>
+    <div class="sub">AI-Ready İçerik Mimarisi</div>
+  </div>
+  <div class="sb-nav" id="sbnav"></div>
+  <div class="sb-footer">bonna.com.tr<br>AI-First Content Strategy · 2026</div>
+</div>
+
+<div class="main"><div class="main-inner">
+
+<!-- ===== PAGE 1: MEVCUT vs HEDEF ===== -->
+<div class="page visible" id="pg-sitemap">
+  <div class="pt">Site Mimari Haritası</div>
+  <div class="pd">bonna.com.tr'nin mevcut URL yapısı ile AI motorları için optimize edilmiş hedef yapının karşılaştırması. Her URL, hangi AI sinyalini taşıyacağı ve hangi personaya hitap edeceği ile eşleştirilmiş.</div>
+
+  <div class="st">Mevcut vs. Hedef Yapı</div><div class="dv"></div>
+  <div class="compare">
+    <div class="compare-col">
+      <div class="compare-label old">Mevcut Yapı (Düz, Sığ)</div>
+      <div class="tree" id="tree-old"></div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-label new">AI-Ready Yapı (Derin, Anlamlı)</div>
+      <div class="tree" id="tree-new"></div>
+    </div>
+  </div>
+
+  <div class="ai-box">
+    <div class="ai-box-title">AI Motorları Neden Bu Yapıyı Tercih Eder?</div>
+    <div class="ai-box-content">AI motorları (ChatGPT, Perplexity, Gemini) entity-based retrieval kullanır. Düz bir /collections/vago sayfası tek bir ürün sinyali verir. Ama <strong>/cozumler/fine-dining/</strong> altında Vago'yu gören AI, "bu ürün fine dining segmenti için uygun" bağlam bilgisi çıkarır. Bu topic clustering yapısı AI'ın citation kararını doğrudan etkiler.</div>
+  </div>
+
+  <div class="st">URL Migrasyonu: Detaylı Harita</div><div class="dv"></div>
+  <div id="url-map"></div>
+</div>
+
+<!-- ===== PAGE 2: SAYFA ŞABLONLARI ===== -->
+<div class="page" id="pg-templates">
+  <div class="pt">Sayfa İçerik Şablonları</div>
+  <div class="pd">Her sayfa tipinin AI motorları tarafından okunabilir olması için sahip olması gereken content block'lar, schema tipleri ve sinyal yapısı.</div>
+
+  <div class="tab-bar" id="tpl-tabs"></div>
+  <div id="tpl-content"></div>
+</div>
+
+<!-- ===== PAGE 3: SCHEMA MİMARİSİ ===== -->
+<div class="page" id="pg-schema">
+  <div class="pt">Schema & Structured Data</div>
+  <div class="pd">Her sayfa tipine özel JSON-LD schema yapıları. AI motorlarının entity tanıma ve citation kararını doğrudan etkileyen teknik altyapı.</div>
+
+  <div class="st">Schema Kapsama Haritası</div><div class="dv"></div>
+  <div id="schema-coverage"></div>
+
+  <div class="st">Schema Örnekleri (JSON-LD)</div><div class="dv"></div>
+  <div id="schema-examples"></div>
+</div>
+
+<!-- ===== PAGE 4: CONTENT HUB ===== -->
+<div class="page" id="pg-hub">
+  <div class="pt">İçerik Hub & Topic Clusters</div>
+  <div class="pd">AI motorlarının topical authority tanıması için pillar-spoke yapısında içerik ağı. Her cluster bir ana konu (pillar) ve 8-12 alt yazıdan (spoke) oluşur.</div>
+
+  <div class="st">Cluster Mimarisi</div><div class="dv"></div>
+  <div id="clusters"></div>
+
+  <div class="st">İçerik Üretim Takvimi (Q2-Q3 2026)</div><div class="dv"></div>
+  <div id="content-calendar"></div>
+</div>
+
+<!-- ===== PAGE 5: AI SINYAL HARİTASI ===== -->
+<div class="page" id="pg-signals">
+  <div class="pt">AI Sinyal Haritası</div>
+  <div class="pd">Her sayfanın AI motorlarına gönderdiği sinyaller. Citation skoru, entity tanınırlığı, snippet uygunluğu ve cross-referans potansiyeli.</div>
+
+  <div class="st">Sayfa Bazlı AI Sinyal Skoru</div><div class="dv"></div>
+  <div id="signal-scores"></div>
+
+  <div class="st">AI Citation Yolu</div><div class="dv"></div>
+  <div class="ai-box">
+    <div class="ai-box-title">Bir AI Motoru "Best HoReCa tableware" Sorusuna Cevap Verirken:</div>
+    <div class="ai-box-content" id="citation-flow"></div>
+  </div>
+
+  <div class="st">Platform Bazlı Sinyal Gereksinimleri</div><div class="dv"></div>
+  <div id="platform-signals"></div>
+</div>
+
+<!-- ===== PAGE 6: SAYFA DETAYLARI ===== -->
+<div class="page" id="pg-pages">
+  <div class="pt">Sayfa Bazlı İçerik Planı</div>
+  <div class="pd">Oluşturulacak her sayfanın URL, hedef persona, anahtar kelimeler, içerik blokları, schema ve AI optimizasyon detayları.</div>
+
+  <div class="tab-bar" id="page-cat-tabs"></div>
+  <div id="page-details"></div>
+</div>
+
+<!-- ===== PAGE 7: TEKNİK ALT YAPI ===== -->
+<div class="page" id="pg-technical">
+  <div class="pt">Teknik Altyapı & Crawl</div>
+  <div class="pd">AI crawlerlarının siteyi doğru okuması için gereken teknik ayarlar: robots.txt, sitemap, hreflang, render, cache.</div>
+
+  <div class="st">AI Crawler Erişim Durumu</div><div class="dv"></div>
+  <div id="crawler-status"></div>
+
+  <div class="st">Teknik Checklist</div><div class="dv"></div>
+  <div id="tech-checklist"></div>
+
+  <div class="st">robots.txt Önerisi</div><div class="dv"></div>
+  <div class="ai-box">
+    <div class="ai-box-title">Önerilen robots.txt Yapılandırması</div>
+    <div class="ai-box-content"><pre style="font-family:'DM Sans',monospace;font-size:12px;line-height:1.8;white-space:pre-wrap">User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://bonna.com.tr/sitemap.xml
+Sitemap: https://bonna.com.tr/en/sitemap.xml</pre></div>
+  </div>
+
+  <div class="st">Uygulama Yol Haritası</div><div class="dv"></div>
+  <div class="timeline" id="roadmap"></div>
+</div>
+
+</div></div>
+
+<script>
+// ===== NAVIGATION =====
+const pages=[
+  {id:'sitemap',label:'Site Mimari Haritası',em:'🗂️',cnt:''},
+  {id:'templates',label:'Sayfa Şablonları',em:'📐',cnt:'7'},
+  {id:'schema',label:'Schema & Structured Data',em:'🧬',cnt:'12'},
+  {id:'hub',label:'İçerik Hub & Clusters',em:'🕸️',cnt:'6'},
+  {id:'signals',label:'AI Sinyal Haritası',em:'📡',cnt:''},
+  {id:'pages',label:'Sayfa Detay Planı',em:'📄',cnt:'24'},
+  {id:'technical',label:'Teknik Altyapı',em:'⚙️',cnt:''}
+];
+
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('visible'));
+  document.getElementById('pg-'+id).classList.add('visible');
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.sb-item[data-pg="${id}"]`).classList.add('active');
+  document.querySelector('.main').scrollTop=0;
+}
+
+document.getElementById('sbnav').innerHTML='<div class="sb-section-label">Mimari</div>'+pages.map(p=>`<button class="sb-item${p.id==='sitemap'?' active':''}" data-pg="${p.id}" onclick="goPage('${p.id}')"><span class="em">${p.em}</span>${p.label}${p.cnt?`<span class="cnt">${p.cnt}</span>`:''}</button>`).join('');
+
+function tog(el){const w=el.classList.contains('open');el.parentElement.parentElement.querySelectorAll('.card-head.open').forEach(x=>{if(x!==el)x.classList.remove('open')});el.classList.toggle('open',!w)}
+
+// ===== PAGE 1: SITEMAP =====
+document.getElementById('tree-old').innerHTML=`<span class="folder">bonna.com.tr/</span>
+<div class="indent"><span class="file">├── /all-collections</span></div>
+<div class="indent"><span class="file">│   ├── /collections/vago</span></div>
+<div class="indent"><span class="file">│   ├── /collections/cras</span></div>
+<div class="indent"><span class="file">│   ├── /collections/sepia</span></div>
+<div class="indent"><span class="file">│   ├── /collections/luca</span></div>
+<div class="indent"><span class="file">│   └── ... (60+ düz liste)</span></div>
+<div class="indent"><span class="file">├── /page/aboutus</span></div>
+<div class="indent"><span class="file">├── /contact</span></div>
+<div class="indent"><span class="file">├── /post/... (1 yazı)</span></div>
+<div class="indent"><span class="file">└── /en/ (ayna kopya)</span></div>`;
+
+document.getElementById('tree-new').innerHTML=`<span class="folder">bonna.com.tr/</span>
+<div class="indent"><span class="new">├── /koleksiyonlar/</span> <span class="chip chip-gold" style="font-size:9px;padding:1px 6px">HUB</span></div>
+<div class="indent"><span class="new">│   ├── /premium-vitrified/</span></div>
+<div class="indent"><span class="new">│   ├── /fusiontech/</span></div>
+<div class="indent"><span class="new">│   ├── /reaktif-sir/</span></div>
+<div class="indent"><span class="new">│   └── /[koleksiyon-adi]/</span></div>
+<div class="indent"><span class="ai">├── /cozumler/</span> <span class="chip chip-green" style="font-size:9px;padding:1px 6px">AI PERSONA</span></div>
+<div class="indent"><span class="ai">│   ├── /fine-dining/</span></div>
+<div class="indent"><span class="ai">│   ├── /otel-restoran/</span></div>
+<div class="indent"><span class="ai">│   ├── /kafe-brunch/</span></div>
+<div class="indent"><span class="ai">│   ├── /catering-etkinlik/</span></div>
+<div class="indent"><span class="ai">│   └── /kurumsal-tedarik/</span></div>
+<div class="indent"><span class="new">├── /teknoloji/</span> <span class="chip chip-blue" style="font-size:9px;padding:1px 6px">ENTITY</span></div>
+<div class="indent"><span class="new">│   ├── /fusiontech/</span></div>
+<div class="indent"><span class="new">│   ├── /vitrified/</span></div>
+<div class="indent"><span class="new">│   └── /reaktif-sir/</span></div>
+<div class="indent"><span class="ai">├── /blog/</span> <span class="chip chip-green" style="font-size:9px;padding:1px 6px">TOPIC CLUSTER</span></div>
+<div class="indent"><span class="ai">│   ├── /rehber/</span></div>
+<div class="indent"><span class="ai">│   ├── /trend/</span></div>
+<div class="indent"><span class="ai">│   ├── /vaka-calismasi/</span></div>
+<div class="indent"><span class="ai">│   └── /karsilastirma/</span></div>
+<div class="indent"><span class="new">├── /surdurulebilirlik/</span></div>
+<div class="indent"><span class="new">├── /kaynaklar/</span></div>
+<div class="indent"><span class="new">│   ├── /roi-hesaplayici/</span></div>
+<div class="indent"><span class="new">│   ├── /katalog/</span></div>
+<div class="indent"><span class="new">│   └── /numune-talebi/</span></div>
+<div class="indent"><span class="new">├── /hakkimizda/</span></div>
+<div class="indent"><span class="new">└── /en/ (hreflang mirror)</span></div>`;
+
+// URL Migration Map
+const urlMap=[
+  {old:'/all-collections',new_url:'/koleksiyonlar/',note:'Kategori hub, her teknoloji grubuna alt sayfa',priority:'Yüksek'},
+  {old:'/collections/[name]',new_url:'/koleksiyonlar/[name]/',note:'Her koleksiyona 800+ kelime hikaye, spec tablosu, FAQ',priority:'Yüksek'},
+  {old:'(yok)',new_url:'/cozumler/fine-dining/',note:'YENİ — Persona: Vizyoner Şef',priority:'Kritik'},
+  {old:'(yok)',new_url:'/cozumler/otel-restoran/',note:'YENİ — Persona: F&B Müdürü',priority:'Kritik'},
+  {old:'(yok)',new_url:'/cozumler/kafe-brunch/',note:'YENİ — Persona: Kafe Tutkunu',priority:'Kritik'},
+  {old:'(yok)',new_url:'/cozumler/catering-etkinlik/',note:'YENİ — Persona: Etkinlik Sihirbazı',priority:'Yüksek'},
+  {old:'(yok)',new_url:'/cozumler/kurumsal-tedarik/',note:'YENİ — Persona: Satın Alma Uzmanı',priority:'Yüksek'},
+  {old:'(yok)',new_url:'/teknoloji/fusiontech/',note:'YENİ — FUSIONtech entity page',priority:'Kritik'},
+  {old:'(yok)',new_url:'/teknoloji/vitrified/',note:'YENİ — Vitrified entity page',priority:'Yüksek'},
+  {old:'(yok)',new_url:'/teknoloji/reaktif-sir/',note:'YENİ — Reaktif sır entity page',priority:'Orta'},
+  {old:'/post/...',new_url:'/blog/',note:'İçerik hub, topic cluster yapısı',priority:'Kritik'},
+  {old:'(yok)',new_url:'/surdurulebilirlik/',note:'YENİ — EPD, net zero, sertifikalar',priority:'Yüksek'},
+  {old:'(yok)',new_url:'/kaynaklar/roi-hesaplayici/',note:'YENİ — İnteraktif TCO aracı',priority:'Orta'},
+  {old:'/page/aboutus',new_url:'/hakkimizda/',note:'Zenginleştirilmiş kurumsal sayfa',priority:'Orta'},
+  {old:'/en/...',new_url:'/en/...',note:'hreflang + canonical düzenleme',priority:'Yüksek'}
+];
+document.getElementById('url-map').innerHTML=`<table class="tbl"><thead><tr><th>Mevcut URL</th><th>Yeni URL</th><th>Açıklama</th><th>Öncelik</th></tr></thead><tbody>${urlMap.map(u=>`<tr><td style="font-family:monospace;font-size:11px;color:${u.old==='(yok)'?'var(--red)':'var(--gray)'}">${u.old}</td><td><span class="url-path">${u.new_url}</span></td><td style="font-size:12px">${u.note}</td><td><span class="pri ${u.priority==='Kritik'?'pri-h':u.priority==='Yüksek'?'pri-m':'pri-l'}">${u.priority}</span></td></tr>`).join('')}</tbody></table>`;
+
+// ===== PAGE 2: TEMPLATES =====
+const templates=[
+  {id:'collection',name:'Koleksiyon Sayfası',url:'/koleksiyonlar/[name]/',
+   desc:'Her koleksiyon, AI motorlarının entity olarak tanıyacağı derinlikte içerikle doldurulacak.',
+   blocks:[
+     {name:'Hero & Quick Answer',desc:'İlk 200 kelime: Koleksiyon nedir, kime hitap eder, neden özel. AI snippet\'a alınacak bölüm.',ai:'İlk 200 kelime doğrudan soruyu cevaplar — AI Overviews snippet formatı'},
+     {name:'Hikaye & İlham',desc:'Koleksiyonun tasarım felsefesi, ilham kaynağı, hangi mutfak kültürüyle örtüştüğü. 300-500 kelime.',ai:'Entity bağlam: AI "bu koleksiyon neden var" sorusunu cevaplayabilir'},
+     {name:'Teknik Spec Tablosu',desc:'Malzeme, boyutlar, ağırlık, garanti, sertifikalar. Tablo formatında.',ai:'Structured data tablosu — AI karşılaştırma sorgularında kullanır'},
+     {name:'Kullanım Senaryoları',desc:'Hangi restoran tipi için uygun, örnek menü eşleştirmeleri, şef önerileri.',ai:'Persona eşleştirme — AI "fine dining için hangi tabak" sorusunu cevaplar'},
+     {name:'Ürün Galerisi + Spec',desc:'Her ürünün görseli, boyutu, renk kodu. Product schema ile markup.',ai:'Product entity — Google Shopping + AI product comparison'},
+     {name:'FAQ Bölümü',desc:'En az 5 soru-cevap: "Bu koleksiyon hangi fırın tipinde pişiriliyor?", "Endüstriyel bulaşık makinesinde yıkanır mı?" vb.',ai:'FAQPage schema → AI soru-cevap eşleştirmesi, %30 daha yüksek citation'},
+     {name:'İlgili Koleksiyonlar',desc:'Benzer veya tamamlayıcı koleksiyonlara internal link.',ai:'Internal linking: topic authority sinyali + crawl depth'}
+   ],
+   schemas:['Product','FAQPage','BreadcrumbList','ImageObject'],
+   wordCount:'800-1200',
+   persona:'Tüm personalar (koleksiyona göre)'},
+
+  {id:'solution',name:'Çözüm Sayfası (Persona)',url:'/cozumler/[segment]/',
+   desc:'Her persona segmenti için özel landing page. AI motorlarının "X için en iyi tabak" sorusuna cevap vereceği sayfa.',
+   blocks:[
+     {name:'Hero & Value Proposition',desc:'İlk 200 kelime: Bu segment için Bonna neden en iyi tercih. Somut rakamlarla (garanti süresi, kırılma oranı, vs).',ai:'Direct answer block — "otel için en iyi tabak markası" sorgusuna snippet'},
+     {name:'Segment Analizi',desc:'Bu segmentin ihtiyaçları, bütçe yapısı, karar kriterleri. 500+ kelime.',ai:'Topical depth — AI bu sayfayı otorite kaynak olarak işaretler'},
+     {name:'Önerilen Koleksiyonlar',desc:'Bu segmente uygun 3-5 koleksiyon, neden uygun olduğu açıklamasıyla.',ai:'Entity linking: koleksiyon → segment → persona trilateral bağlam'},
+     {name:'ROI / TCO Karşılaştırma',desc:'Rakip/alternatif ile 5 yıllık maliyet karşılaştırma tablosu.',ai:'Data-rich content — AI karşılaştırma sorgularında kaynak olarak kullanır'},
+     {name:'Case Study / Referans',desc:'Bu segmentten bir müşteri hikayesi: öncesi/sonrası, metrikler.',ai:'Testimonial entity — güvenilirlik sinyali, citation oranını artırır'},
+     {name:'CTA & İletişim',desc:'Numune talebi, katalog indirme, demo randevu.',ai:'Conversion point — AI referral trafiğini yakalamak için'},
+     {name:'FAQ',desc:'Segment-spesifik 5+ soru-cevap.',ai:'FAQPage schema — segment + ürün cross-query coverage'}
+   ],
+   schemas:['WebPage','FAQPage','BreadcrumbList','Organization'],
+   wordCount:'1000-1500',
+   persona:'Segment-spesifik (1 persona)'},
+
+  {id:'technology',name:'Teknoloji Sayfası',url:'/teknoloji/[tech]/',
+   desc:'FUSIONtech, Vitrified, Reaktif Sır gibi proprietary teknolojilerin entity sayfaları.',
+   blocks:[
+     {name:'Tanım & Quick Answer',desc:'İlk 200 kelime: Bu teknoloji nedir, ne işe yarar. Wikipedia benzeri net açıklama.',ai:'Entity definition — AI "FUSIONtech nedir" sorusuna doğrudan cevap'},
+     {name:'Nasıl Çalışır',desc:'Teknik süreç açıklaması, üretim aşamaları, infografik desteği.',ai:'HowTo schema tetikleyici — "nasıl üretilir" sorguları'},
+     {name:'Karşılaştırma Tablosu',desc:'Bu teknoloji vs. geleneksel yöntem: dayanıklılık, maliyet, ömür.',ai:'Comparison data — AI "vitrified vs bone china" sorgularında kullanır'},
+     {name:'Hangi Koleksiyonlarda Kullanılır',desc:'Bu teknolojiye sahip koleksiyonlara internal link.',ai:'Entity → Product linking: AI ilişki ağı kurabilir'},
+     {name:'Sertifikalar & Test Sonuçları',desc:'Bağımsız test raporları, sertifika belgeleri, rakamlar.',ai:'Citation-worthy data — üçüncü parti doğrulama sinyali'},
+     {name:'FAQ',desc:'"Bu teknoloji ile üretilen tabaklar kaç yıl dayanır?" gibi 5+ soru.',ai:'FAQPage schema — long-tail keyword coverage'}
+   ],
+   schemas:['TechArticle','FAQPage','BreadcrumbList','HowTo'],
+   wordCount:'800-1000',
+   persona:'P01 Vizyoner Şef, P02 F&B Müdürü, P08 Yeşil Yönetici'},
+
+  {id:'blog-pillar',name:'Blog Pillar Sayfası',url:'/blog/[topic-slug]/',
+   desc:'Topic cluster merkezindeki ana sayfa. "HoReCa Tabak Seçim Rehberi" gibi kapsamlı guide.',
+   blocks:[
+     {name:'Kapsamlı Giriş',desc:'İlk 200 kelime: Bu rehberin neyi kapsadığı, kime hitap ettiği.',ai:'AI snippet candidate — "restoran tabak nasıl seçilir" ana sorgusu'},
+     {name:'İçindekiler / Jump Links',desc:'Bölümlere hızlı erişim. AI crawlerları heading hierarchy okur.',ai:'Content structure signal — AI alt sorguları bölümlere eşleştirir'},
+     {name:'Ana İçerik (2000+ kelime)',desc:'Her alt başlık bir spoke yazıya link verir. Derin, otorite içerik.',ai:'Topical authority — AI bu sayfayı hub olarak tanır'},
+     {name:'Uzman Alıntıları',desc:'Şef testimonial, endüstri uzmanı yorumu.',ai:'Quotation markup — citation güvenilirlik skoru artırıcı'},
+     {name:'İstatistik & Veri',desc:'Pazar verileri, araştırma sonuçları, Bonna iç verileri.',ai:'Data-rich signal — istatistikli sayfaların citation oranı %40 daha yüksek'},
+     {name:'Spoke Yazı Linkleri',desc:'İlgili alt yazılara internal link grid.',ai:'Cluster linking — topical authority transferi'}
+   ],
+   schemas:['Article','FAQPage','BreadcrumbList','Person'],
+   wordCount:'2000-3000',
+   persona:'Çoklu persona'},
+
+  {id:'blog-spoke',name:'Blog Spoke Yazısı',url:'/blog/[category]/[slug]/',
+   desc:'Pillar sayfaya bağlı spesifik yazı. "Vitrified vs Porselen Farkı" gibi odaklı içerik.',
+   blocks:[
+     {name:'Direct Answer',desc:'İlk paragraf soruyu doğrudan cevaplamalı. AI snippet formatı.',ai:'Featured snippet target — AI motorları ilk 200 kelimeyi öncelikli okur'},
+     {name:'Detaylı Açıklama',desc:'Konuyu 800-1200 kelimede açıklayan derinlikli içerik.',ai:'Depth signal — sığ içerik AI tarafından atlanır'},
+     {name:'Görsel / Tablo / Karşılaştırma',desc:'En az 1 tablo veya karşılaştırma chart.',ai:'Structured content — AI tablo verisini extract edebilir'},
+     {name:'Pillar\'a Geri Link',desc:'Ana rehber sayfasına dönüş linki.',ai:'Cluster coherence — AI topic authority ilişkisini güçlendirir'},
+     {name:'İlgili Ürün CTA',desc:'Yazıyla ilgili koleksiyon/çözüm sayfasına yönlendirme.',ai:'Commercial intent bridge — bilgi → ticari dönüşüm'}
+   ],
+   schemas:['Article','FAQPage','BreadcrumbList'],
+   wordCount:'800-1200',
+   persona:'Konuya göre değişir'},
+
+  {id:'sustainability',name:'Sürdürülebilirlik Hub',url:'/surdurulebilirlik/',
+   desc:'ESG, EPD, karbon ayak izi, net zero hedeflerinin toplu sayfası.',
+   blocks:[
+     {name:'Misyon & Vizyon',desc:'Bonna\'nın sürdürülebilirlik vizyonu, somut hedefler.',ai:'Organization entity enrichment — kurumsal değer sinyali'},
+     {name:'Sertifikalar Grid',desc:'EPD, ISO, ödüller — her biri bağımsız card ile.',ai:'Credential schema — güvenilirlik sinyali, AI citation artırıcı'},
+     {name:'Karbon Metrikleri',desc:'Yıllık emisyon, su tasarrufu, enerji verimliliği rakamları.',ai:'Data-rich — "sürdürülebilir tabak üreticisi" sorgusunda somut veri'},
+     {name:'Yol Haritası',desc:'Net zero hedefine giden adımlar, yıllık plan.',ai:'Timeline content — AI gelecek projeksiyonu soruları için'},
+     {name:'FAQ',desc:'"Bonna tabaklar geri dönüştürülebilir mi?" gibi ESG soruları.',ai:'FAQPage schema — ESG + product cross-query'}
+   ],
+   schemas:['Organization','FAQPage','BreadcrumbList','Article'],
+   wordCount:'1500-2000',
+   persona:'P08 Yeşil Yönetici, P02 F&B Müdürü'},
+
+  {id:'resource',name:'Kaynak / Araç Sayfası',url:'/kaynaklar/[tool]/',
+   desc:'ROI hesaplayıcı, katalog, numune talebi gibi interaktif/utility sayfalar.',
+   blocks:[
+     {name:'Araç Açıklaması',desc:'Bu aracın ne işe yaradığı, nasıl kullanılacağı.',ai:'SoftwareApplication schema — araç aramaları yakalamak için'},
+     {name:'İnteraktif Araç / Form',desc:'ROI calculator, katalog downloader, numune formu.',ai:'Engagement signal — AI referral sonrası kullanıcı tutma'},
+     {name:'Sonuç Açıklaması',desc:'Hesaplama mantığı, metodoloji açıklaması.',ai:'Transparency signal — AI veriye güvenilirlik atayabilir'},
+     {name:'İlgili Sayfalar',desc:'Çözüm ve koleksiyon sayfalarına internal link.',ai:'Cross-linking — topic authority yayılımı'}
+   ],
+   schemas:['SoftwareApplication','WebPage','BreadcrumbList'],
+   wordCount:'500-800',
+   persona:'P02 F&B Müdürü, P04 Satın Alma Uzmanı'}
+];
+
+let activeTpl=templates[0].id;
+document.getElementById('tpl-tabs').innerHTML=templates.map(t=>`<button class="tab-btn${t.id===activeTpl?' active':''}" onclick="showTpl('${t.id}')">${t.name}</button>`).join('');
+
+function showTpl(id){
+  activeTpl=id;
+  document.querySelectorAll('#tpl-tabs .tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`#tpl-tabs .tab-btn[onclick="showTpl('${id}')"]`).classList.add('active');
+  renderTpl();
+}
+
+function renderTpl(){
+  const t=templates.find(x=>x.id===activeTpl);
+  let h=`<div class="ai-box" style="margin-bottom:20px">
+    <div style="display:flex;gap:24px;flex-wrap:wrap">
+      <div><div class="lbl">URL Pattern</div><span class="url-path">${t.url}</span></div>
+      <div><div class="lbl">Kelime Sayısı</div><div class="val">${t.wordCount}</div></div>
+      <div><div class="lbl">Hedef Persona</div><div class="val">${t.persona}</div></div>
+      <div><div class="lbl">Schema</div><div>${t.schemas.map(s=>`<span class="schema-tag">${s}</span>`).join(' ')}</div></div>
+    </div>
+  </div>
+  <div style="font-size:13px;color:var(--gray);line-height:1.7;margin-bottom:20px">${t.desc}</div>`;
+
+  h+=t.blocks.map((b,i)=>`<div class="cb">
+    <div class="cb-title">${i+1}. ${b.name}</div>
+    <div style="font-size:13px;color:var(--gray);line-height:1.7;margin-bottom:8px">${b.desc}</div>
+    <div style="font-size:11px;padding:8px 12px;background:var(--sand-pale);border-radius:6px;border-left:3px solid var(--sand)"><strong style="color:var(--sand)">AI Sinyali:</strong> ${b.ai}</div>
+  </div>`).join('');
+  document.getElementById('tpl-content').innerHTML=h;
+}
+renderTpl();
+
+// ===== PAGE 3: SCHEMA =====
+const schemaCoverage=[
+  {page:'Ana Sayfa',schemas:['Organization','WebSite','SiteNavigationElement','SearchAction'],status:'Yeni',priority:'Kritik'},
+  {page:'Koleksiyon Sayfası',schemas:['Product','FAQPage','BreadcrumbList','ImageObject'],status:'Yeni',priority:'Kritik'},
+  {page:'Çözüm Sayfası',schemas:['WebPage','FAQPage','BreadcrumbList','Organization'],status:'Yeni',priority:'Kritik'},
+  {page:'Teknoloji Sayfası',schemas:['TechArticle','HowTo','FAQPage','BreadcrumbList'],status:'Yeni',priority:'Yüksek'},
+  {page:'Blog Pillar',schemas:['Article','FAQPage','BreadcrumbList','Person','ItemList'],status:'Yeni',priority:'Kritik'},
+  {page:'Blog Spoke',schemas:['Article','FAQPage','BreadcrumbList'],status:'Yeni',priority:'Yüksek'},
+  {page:'Sürdürülebilirlik',schemas:['Organization','Article','FAQPage','BreadcrumbList'],status:'Yeni',priority:'Yüksek'},
+  {page:'Kaynak/Araç',schemas:['SoftwareApplication','WebPage','BreadcrumbList'],status:'Yeni',priority:'Orta'},
+  {page:'Hakkımızda',schemas:['Organization','Person','BreadcrumbList'],status:'Güncelle',priority:'Orta'},
+  {page:'İletişim',schemas:['Organization','ContactPoint','BreadcrumbList'],status:'Güncelle',priority:'Orta'}
+];
+document.getElementById('schema-coverage').innerHTML=`<table class="tbl"><thead><tr><th>Sayfa Tipi</th><th>Schema Tipleri</th><th>Durum</th><th>Öncelik</th></tr></thead><tbody>${schemaCoverage.map(s=>`<tr><td><strong>${s.page}</strong></td><td>${s.schemas.map(x=>`<span class="schema-tag" style="margin:1px">${x}</span>`).join(' ')}</td><td><span class="chip ${s.status==='Yeni'?'chip-gold':'chip-blue'}">${s.status}</span></td><td><span class="pri ${s.priority==='Kritik'?'pri-h':s.priority==='Yüksek'?'pri-m':'pri-l'}">${s.priority}</span></td></tr>`).join('')}</tbody></table>`;
+
+const schemaExamples=[
+  {name:'Organization (Ana Sayfa)',code:`{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Bonna Premium Porcelain",
+  "url": "https://bonna.com.tr",
+  "logo": "https://bonna.com.tr/logo.png",
+  "description": "Premium vitrified porcelain manufacturer for HoReCa. FUSIONtech technology, EPD certified, edge chip warranty.",
+  "foundingDate": "1981",
+  "numberOfEmployees": "2000+",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Gebze",
+    "addressRegion": "Kocaeli",
+    "addressCountry": "TR"
+  },
+  "award": ["Red Dot Design Award", "German Design Award", "Export Champion of Turkey"],
+  "hasCredential": ["EPD Certified", "ISO 9001", "ISO 14001"],
+  "sameAs": [
+    "https://linkedin.com/company/bonnatr",
+    "https://instagram.com/bonna.tr",
+    "https://www.facebook.com/bonnatr"
+  ]
+}`},
+  {name:'Product (Koleksiyon)',code:`{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Bonna Vago Koleksiyonu",
+  "description": "Reaktif sır teknolojisiyle üretilen, her parçası benzersiz fine dining koleksiyonu. Edge chip resistant vitrified porcelain.",
+  "brand": {"@type": "Brand", "name": "Bonna"},
+  "manufacturer": {"@type": "Organization", "name": "Bonna Premium Porcelain"},
+  "material": "Vitrified Porcelain",
+  "category": "HoReCa Tableware > Fine Dining",
+  "audience": {"@type": "BusinessAudience", "audienceType": "HoReCa"},
+  "additionalProperty": [
+    {"@type": "PropertyValue", "name": "Technology", "value": "Reactive Glaze"},
+    {"@type": "PropertyValue", "name": "Warranty", "value": "Edge Chip Warranty"},
+    {"@type": "PropertyValue", "name": "Dishwasher Safe", "value": "Industrial Grade"}
+  ]
+}`},
+  {name:'FAQPage (Her Sayfa)',code:`{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "FUSIONtech teknolojisi nedir?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "FUSIONtech, Bonna'nın patentli üretim teknolojisidir. Tek pişirim sürecinde sır ve bünye eş zamanlı pişirilerek %40 daha yüksek dayanıklılık, %30 daha az enerji tüketimi sağlar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Bonna tabaklar endüstriyel bulaşık makinesinde yıkanabilir mi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Evet, tüm Bonna vitrified koleksiyonlar endüstriyel bulaşık makinesinde 85°C'ye kadar güvenle yıkanabilir."
+      }
+    }
+  ]
+}`},
+  {name:'HowTo (Teknoloji Sayfası)',code:`{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Restoran Tabak Seti Nasıl Seçilir?",
+  "description": "HoReCa için doğru tabak seçimi rehberi: dayanıklılık, estetik, maliyet ve sürdürülebilirlik kriterleri.",
+  "step": [
+    {"@type": "HowToStep", "name": "Segment Belirle", "text": "Fine dining, casual, kafe veya catering — her segmentin ihtiyacı farklıdır."},
+    {"@type": "HowToStep", "name": "Malzeme Seç", "text": "Vitrified porcelain HoReCa için en dayanıklı seçimdir."},
+    {"@type": "HowToStep", "name": "TCO Hesapla", "text": "Sadece birim fiyat değil, kırılma oranı ve ömür dahil toplam sahip olma maliyetini hesaplayın."}
+  ]
+}`}
+];
+document.getElementById('schema-examples').innerHTML=schemaExamples.map(s=>`<div class="card"><div class="card-head" onclick="tog(this)"><div style="font-weight:600;font-size:14px"><span class="schema-tag" style="margin-right:8px">JSON-LD</span>${s.name}</div><span class="arrow">›</span></div><div class="card-body"><pre style="padding-top:16px;font-family:'DM Sans',monospace;font-size:11px;line-height:1.7;white-space:pre-wrap;color:var(--gray)">${s.code}</pre></div></div>`).join('');
+
+// ===== PAGE 4: CONTENT HUB =====
+const clusters=[
+  {pillar:'HoReCa Tabak Seçim Rehberi',url:'/blog/horeca-tabak-rehberi/',persona:'P02, P03, P04',
+   aiTarget:'Ana sorgu: "restoran tabak nasıl seçilir" "HoReCa tableware guide"',
+   spokes:[
+     {title:'Vitrified vs Porselen vs Bone China: Fark Nedir?',url:'/blog/karsilastirma/vitrified-porselen-fark/',kw:'vitrified porselen farkı',intent:'Bilgi',aiNote:'Karşılaştırma tablosu → AI comparison query target'},
+     {title:'Restoran Tabak Kırılma Maliyeti Nasıl Düşürülür?',url:'/blog/rehber/kirilma-maliyeti/',kw:'tabak kırılma maliyeti',intent:'Bilgi/Ticari',aiNote:'ROI verisi → AI maliyet soruları'},
+     {title:'Edge Chip Warranty Nedir ve Neden Önemli?',url:'/blog/rehber/edge-chip-warranty/',kw:'edge chip warranty tableware',intent:'Bilgi',aiNote:'Proprietary term entity → GEO brand mention'},
+     {title:'Fine Dining Tabak Seçimi: 7 Kriter',url:'/blog/rehber/fine-dining-tabak-secimi/',kw:'fine dining tabak seçimi',intent:'Bilgi',aiNote:'Listicle format → AI featured snippet'},
+     {title:'Otel Restoran İçin Toplu Tabak Alım Rehberi',url:'/blog/rehber/toplu-tabak-alim/',kw:'toptan tabak siparişi',intent:'Ticari',aiNote:'Purchase guide → commercial AI query'},
+     {title:'Kafe & Brunch Mekanı İçin Tabak Trendleri',url:'/blog/trend/kafe-tabak-trendleri/',kw:'kafe tabak seti',intent:'Bilgi/Ticari',aiNote:'Trend content → freshness signal'},
+     {title:'Catering Tabak Seçimi: Dayanıklılık mı Estetik mi?',url:'/blog/rehber/catering-tabak/',kw:'catering tabak seti',intent:'Ticari',aiNote:'Segment-specific → persona targeting'},
+     {title:'Franchise Restoran Tabak Standardizasyonu',url:'/blog/rehber/franchise-tabak/',kw:'franchise restoran ekipman',intent:'Bilgi/Ticari',aiNote:'Niche query → low competition, high conversion'}
+   ]},
+  {pillar:'Restoran Sunum & Tableware Trendleri 2026',url:'/blog/sunum-trendleri-2026/',persona:'P01, P03, P05',
+   aiTarget:'Ana sorgu: "restaurant tableware trends 2026" "tabak sunum trendleri"',
+   spokes:[
+     {title:'2026 Global Tableware Trendleri',url:'/blog/trend/global-trendler-2026/',kw:'tableware trends 2026',intent:'Bilgi',aiNote:'Annual content → high seasonality, freshness'},
+     {title:'Wabi-Sabi Estetik: Restoranda Doğal Çizgi',url:'/blog/trend/wabi-sabi-sunum/',kw:'wabi sabi restaurant design',intent:'Bilgi',aiNote:'Design trend → visual search + AI Overviews'},
+     {title:'Mix & Match Tabak Sanatı',url:'/blog/trend/mix-match-tabak/',kw:'mix match tableware',intent:'Bilgi',aiNote:'Styling guide → Pinterest + AI image search'},
+     {title:'Instagram-Worthy Sunum Teknikleri',url:'/blog/trend/instagram-sunum/',kw:'instagram worthy plating',intent:'Bilgi',aiNote:'Social proof → shareability signal'},
+     {title:'Renk Psikolojisi ve Tabak: Menüye Göre Renk Seçimi',url:'/blog/rehber/renk-psikolojisi-tabak/',kw:'tabak renk seçimi',intent:'Bilgi',aiNote:'Unique angle → low competition query'},
+     {title:'Reaktif Sır: Her Tabağın Benzersiz Olması',url:'/blog/rehber/reaktif-sir-nedir/',kw:'reaktif sır tabak',intent:'Bilgi',aiNote:'Proprietary tech → brand entity strengthening'}
+   ]},
+  {pillar:'Sürdürülebilir Gastronomi & Yeşil Tedarik',url:'/blog/surdurulebilir-gastronomi/',persona:'P08, P02',
+   aiTarget:'Ana sorgu: "sustainable HoReCa supplier" "sürdürülebilir restoran tedarik"',
+   spokes:[
+     {title:'EPD Sertifikalı Tabak Nedir?',url:'/blog/rehber/epd-sertifika/',kw:'EPD certified tableware',intent:'Bilgi',aiNote:'Certification entity → GEO authority signal'},
+     {title:'Restoran Karbon Ayak İzi Nasıl Azaltılır?',url:'/blog/rehber/karbon-ayak-izi/',kw:'restaurant carbon footprint',intent:'Bilgi',aiNote:'ESG trend → growing search volume'},
+     {title:'Tek Pişirim Teknolojisi ve Enerji Tasarrufu',url:'/blog/rehber/tek-pisirim/',kw:'single firing porcelain',intent:'Bilgi',aiNote:'Technical process → AI knowledge graph enrichment'},
+     {title:'Yeşil Otel Tedarik Zinciri Rehberi',url:'/blog/rehber/yesil-otel-tedarik/',kw:'sustainable hotel procurement',intent:'Bilgi/Ticari',aiNote:'B2B guide → procurement decision support'},
+     {title:'ESG Raporlamada Tableware Sayılır mı?',url:'/blog/rehber/esg-tableware/',kw:'ESG reporting hospitality',intent:'Bilgi',aiNote:'Emerging topic → first mover advantage'}
+   ]},
+  {pillar:'Restoran Açma & Donatım Rehberi',url:'/blog/restoran-acma-rehberi/',persona:'P03, P04',
+   aiTarget:'Ana sorgu: "restoran açarken gerekenler" "restaurant startup guide"',
+   spokes:[
+     {title:'Restoran Ekipman Listesi A-Z',url:'/blog/rehber/restoran-ekipman-listesi/',kw:'restoran ekipman listesi',intent:'Bilgi',aiNote:'Comprehensive list → AI "how to open restaurant" query'},
+     {title:'Restoran Tabak Bütçesi Nasıl Planlanır?',url:'/blog/rehber/tabak-butce-planlama/',kw:'restaurant tableware budget',intent:'Bilgi/Ticari',aiNote:'Financial planning → high intent query'},
+     {title:'Kafe Açmak İçin Gerekli Ekipmanlar',url:'/blog/rehber/kafe-acma-ekipman/',kw:'kafe açma rehberi',intent:'Bilgi',aiNote:'Segment variation → broader keyword net'},
+     {title:'Catering İşi Kurma Rehberi',url:'/blog/rehber/catering-kurma/',kw:'catering işi nasıl kurulur',intent:'Bilgi',aiNote:'How-to content → HowTo schema eligible'},
+     {title:'Franchise Restoran Donatım Standartları',url:'/blog/rehber/franchise-donatim/',kw:'franchise restoran standartları',intent:'Bilgi',aiNote:'Niche B2B → low competition, high value'}
+   ]},
+  {pillar:'Tableware Teknolojileri Ansiklopedisi',url:'/blog/tableware-teknolojileri/',persona:'P01, P02, P08',
+   aiTarget:'Ana sorgu: "porcelain manufacturing technology" "tabak üretim teknolojileri"',
+   spokes:[
+     {title:'FUSIONtech Nedir? Bonna\'nın Patentli Teknolojisi',url:'/blog/rehber/fusiontech-nedir/',kw:'FUSIONtech porcelain',intent:'Bilgi',aiNote:'Brand entity anchor → AI "what is FUSIONtech" definitive answer'},
+     {title:'Vitrified Porselen: Neden HoReCa Standardı?',url:'/blog/rehber/vitrified-nedir/',kw:'vitrified porcelain nedir',intent:'Bilgi',aiNote:'Industry term definition → knowledge graph entry'},
+     {title:'Sır Teknolojileri: Matt, Glossy, Reaktif',url:'/blog/karsilastirma/sir-teknolojileri/',kw:'porcelain glaze types',intent:'Bilgi',aiNote:'Comparison → AI multi-option queries'},
+     {title:'Endüstriyel vs Artisan Üretim Karşılaştırması',url:'/blog/karsilastirma/endustriyel-artisan/',kw:'industrial vs artisan porcelain',intent:'Bilgi',aiNote:'Debate format → AI "which is better" queries'}
+   ]},
+  {pillar:'Bonna Vaka Çalışmaları',url:'/blog/vaka-calismasi/',persona:'P01, P02, P03',
+   aiTarget:'Ana sorgu: "Bonna porcelain review" "Bonna case study"',
+   spokes:[
+     {title:'Michelin Restoranında Bonna: Şef Testimonial',url:'/blog/vaka-calismasi/michelin-restoran/',kw:'Bonna porcelain chef review',intent:'Bilgi/Ticari',aiNote:'Social proof → AI "is Bonna good" trust signal'},
+     {title:'500 Odalı Otel: Bonna ile 5 Yıl Sonra',url:'/blog/vaka-calismasi/otel-5-yil/',kw:'hotel tableware supplier case study',intent:'Bilgi/Ticari',aiNote:'Longevity proof → TCO credibility'},
+     {title:'Butik Kafe: Tasarımla Fark Yaratan Tabak',url:'/blog/vaka-calismasi/butik-kafe/',kw:'cafe design tableware',intent:'Bilgi',aiNote:'Visual storytelling → AI image + text cross-reference'},
+     {title:'Global Catering Firması: Standardizasyon Hikayesi',url:'/blog/vaka-calismasi/global-catering/',kw:'catering tableware standardization',intent:'Bilgi/Ticari',aiNote:'Enterprise proof → AI B2B recommendation'}
+   ]}
+];
+
+document.getElementById('clusters').innerHTML=clusters.map(c=>`<div class="card"><div class="card-head" onclick="tog(this)"><div style="flex:1"><div style="font-weight:600;font-size:14px">🎯 ${c.pillar}</div><div style="font-size:11px;color:var(--sand);margin-top:2px"><span class="url-path">${c.url}</span> · ${c.persona}</div></div><span class="cnt">${c.spokes.length}</span><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:12px"><div class="ai-box" style="margin-bottom:16px"><div class="ai-box-title">AI Hedef Sorgu</div><div class="ai-box-content">${c.aiTarget}</div></div><table class="tbl"><thead><tr><th>Spoke Yazı</th><th>Anahtar Kelime</th><th>Intent</th><th>AI Notu</th></tr></thead><tbody>${c.spokes.map(s=>`<tr><td><strong style="font-size:12px">${s.title}</strong><div style="font-size:10px;color:var(--sand)">${s.url}</div></td><td style="font-size:11px">${s.kw}</td><td><span class="chip${s.intent.includes('Ticari')?' chip-gold':''}">${s.intent}</span></td><td style="font-size:11px;color:var(--gray)">${s.aiNote}</td></tr>`).join('')}</tbody></table></div></div></div>`).join('');
+
+// Content Calendar
+const calendar=[
+  {week:'Hafta 1-2 (Nisan)',content:'Pillar: HoReCa Tabak Seçim Rehberi + 2 spoke',type:'Pillar+Spoke',aiGoal:'Core cluster başlangıç'},
+  {week:'Hafta 3-4 (Nisan)',content:'Pillar: Tableware Teknolojileri + FUSIONtech spoke',type:'Pillar+Spoke',aiGoal:'Brand entity anchor'},
+  {week:'Hafta 1-2 (Mayıs)',content:'3 spoke yazı (karşılaştırma + rehber)',type:'Spoke',aiGoal:'Comparison query coverage'},
+  {week:'Hafta 3-4 (Mayıs)',content:'Pillar: Sürdürülebilir Gastronomi + 2 spoke',type:'Pillar+Spoke',aiGoal:'ESG cluster başlangıç'},
+  {week:'Hafta 1-2 (Haziran)',content:'Pillar: Sunum Trendleri 2026 + 2 spoke',type:'Pillar+Spoke',aiGoal:'Seasonal freshness signal'},
+  {week:'Hafta 3-4 (Haziran)',content:'2 vaka çalışması + 2 spoke yazı',type:'Case Study+Spoke',aiGoal:'Social proof + cluster derinliği'},
+  {week:'Hafta 1-2 (Temmuz)',content:'Pillar: Restoran Açma Rehberi + 3 spoke',type:'Pillar+Spoke',aiGoal:'Startup/new business cluster'},
+  {week:'Hafta 3-4 (Temmuz)',content:'Pillar: Vaka Çalışmaları Hub + 2 case',type:'Pillar+Case Study',aiGoal:'Trust & testimonial cluster'}
+];
+document.getElementById('content-calendar').innerHTML=`<table class="tbl"><thead><tr><th>Dönem</th><th>İçerik</th><th>Tip</th><th>AI Hedefi</th></tr></thead><tbody>${calendar.map(c=>`<tr><td style="white-space:nowrap;font-weight:600;font-size:12px">${c.week}</td><td style="font-size:12px">${c.content}</td><td><span class="chip chip-gold">${c.type}</span></td><td style="font-size:11px;color:var(--gray)">${c.aiGoal}</td></tr>`).join('')}</tbody></table>`;
+
+// ===== PAGE 5: AI SIGNALS =====
+const signalScores=[
+  {page:'Ana Sayfa',citation:30,entity:40,snippet:20,crossRef:50,overall:35},
+  {page:'/cozumler/fine-dining/ (yeni)',citation:85,entity:90,snippet:80,crossRef:75,overall:83},
+  {page:'/cozumler/otel-restoran/ (yeni)',citation:80,entity:85,snippet:75,crossRef:70,overall:78},
+  {page:'/teknoloji/fusiontech/ (yeni)',citation:90,entity:95,snippet:85,crossRef:80,overall:88},
+  {page:'/koleksiyonlar/vago/ (zengin)',citation:70,entity:80,snippet:65,crossRef:60,overall:69},
+  {page:'/blog/horeca-tabak-rehberi/ (yeni)',citation:95,entity:85,snippet:90,crossRef:85,overall:89},
+  {page:'/surdurulebilirlik/ (yeni)',citation:85,entity:80,snippet:70,crossRef:75,overall:78},
+  {page:'/kaynaklar/roi-hesaplayici/ (yeni)',citation:60,entity:50,snippet:55,crossRef:65,overall:58}
+];
+
+document.getElementById('signal-scores').innerHTML=`<div class="ai-box" style="margin-bottom:20px"><div class="ai-box-title">Skor Kriterleri</div><div class="ai-box-content"><strong>Citation:</strong> AI'ın bu sayfayı kaynak gösterme olasılığı · <strong>Entity:</strong> Sayfa içeriğinin entity olarak tanınabilirliği · <strong>Snippet:</strong> Doğrudan cevap verme uygunluğu · <strong>Cross-Ref:</strong> Diğer sayfalarla çapraz referans gücü</div></div><table class="tbl"><thead><tr><th>Sayfa</th><th>Citation</th><th>Entity</th><th>Snippet</th><th>Cross-Ref</th><th>Toplam</th></tr></thead><tbody>${signalScores.map(s=>{const clr=v=>v>=80?'var(--green)':v>=60?'var(--sand)':'var(--red)';return `<tr><td><strong style="font-size:12px">${s.page}</strong></td>${[s.citation,s.entity,s.snippet,s.crossRef].map(v=>`<td style="color:${clr(v)};font-weight:700">${v}</td>`).join('')}<td><span class="pri ${s.overall>=80?'pri-h':s.overall>=60?'pri-m':'pri-l'}" style="font-size:12px">${s.overall}</span></td></tr>`}).join('')}</tbody></table>`;
+
+// Citation Flow
+document.getElementById('citation-flow').innerHTML=`<div class="flow" style="padding:16px 0">
+  <div class="flow-node">Kullanıcı sorar:<br><strong>"Best HoReCa tableware brand"</strong></div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-node">AI web crawl:<br>bonna.com.tr indexlenir</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-node highlight">Schema okur:<br>Organization + Product</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-node highlight">Content parse:<br>/cozumler/ sayfaları</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-node">Cross-check:<br>Wikipedia + 3rd party</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-node" style="background:var(--sand-pale);border-color:var(--sand)"><strong>Citation:</strong><br>"Bonna Premium Porcelain..."</div>
+</div>
+<div style="font-size:12px;color:var(--gray);margin-top:8px;line-height:1.7">
+  <strong>Kritik nokta:</strong> AI motoru her adımda bir "güven skoru" hesaplar. Schema zenginliği (+25%), FAQ coverage (+30%), istatistik varlığı (+40%), üçüncü parti doğrulama (+35%) toplam citation olasılığını belirler. Mevcut bonna.com.tr'de bu sinyallerin çoğu eksik — distribütörler bu boşluğu dolduruyor.
+</div>`;
+
+// Platform Signals
+const platformSignals=[
+  {platform:'Google AI Overviews',signals:[
+    {signal:'Sayfa başı Quick Answer (ilk 200 kelime)',importance:'Kritik',note:'AI Overviews snippet kaynağının %70\'i ilk 200 kelimeden gelir'},
+    {signal:'FAQ Schema Markup',importance:'Kritik',note:'FAQ schema olan sayfaların AI Overview\'da görünme oranı %30 daha yüksek'},
+    {signal:'Tablo / Karşılaştırma Formatı',importance:'Yüksek',note:'Structured list/table içeren sayfalar 2x daha fazla cite edilir'},
+    {signal:'İstatistik & Rakam',importance:'Yüksek',note:'Somut veri içeren içerik %40 daha fazla AI citation alır'},
+    {signal:'Site Authority (backlink)',importance:'Orta',note:'Domain authority genel ranking faktörü olarak devam ediyor'}
+  ]},
+  {platform:'ChatGPT (Search)',signals:[
+    {signal:'Kapsamlı, otoriter içerik (1500+ kelime)',importance:'Kritik',note:'ChatGPT uzun-form otorite sayfaları tercih eder'},
+    {signal:'Wikipedia / Wikidata varlığı',importance:'Kritik',note:'Wikipedia entity\'si olan markalar %3x daha fazla cite edilir'},
+    {signal:'Organization Schema',importance:'Yüksek',note:'Marka entity tanıma için temel sinyal'},
+    {signal:'Üçüncü parti referanslar',importance:'Yüksek',note:'Birden fazla kaynaktan doğrulama — cross-reference'},
+    {signal:'robots.txt GPTBot izni',importance:'Kritik',note:'GPTBot engellenirse ChatGPT siteyi hiç crawl edemez'}
+  ]},
+  {platform:'Perplexity',signals:[
+    {signal:'Kaynak gösterilebilir net cümleler',importance:'Kritik',note:'Perplexity her claim için kaynak gösterir — cümle düzeyinde netlik'},
+    {signal:'Başlık + Alt başlık hiyerarşisi',importance:'Yüksek',note:'H1-H2-H3 yapısı Perplexity\'nin bölüm seçmesini kolaylaştırır'},
+    {signal:'Blog/Article formatı',importance:'Yüksek',note:'Perplexity blog içeriğini e-ticaret sayfalarına tercih eder'},
+    {signal:'Tarih / Güncelleme bilgisi',importance:'Orta',note:'Son güncelleme tarihi freshness sinyali verir'},
+    {signal:'Açık yazar bilgisi (Person schema)',importance:'Orta',note:'Byline + author bio güvenilirlik artırır'}
+  ]},
+  {platform:'Google Gemini',signals:[
+    {signal:'Çoklu schema stacking',importance:'Yüksek',note:'Gemini birden fazla schema tipini aynı sayfada okuyabilir'},
+    {signal:'Entity ilişki ağı',importance:'Kritik',note:'Sayfalar arası internal linking = entity graph'},
+    {signal:'Multimodal content (görsel + metin)',importance:'Yüksek',note:'Gemini görselleri de analiz eder — alt text kritik'},
+    {signal:'Hreflang çoklu dil',importance:'Orta',note:'Çoklu dil varlığı global otorite sinyali'},
+    {signal:'Site hızı & Core Web Vitals',importance:'Orta',note:'Gemini mobile-first indexleme kullanır'}
+  ]}
+];
+document.getElementById('platform-signals').innerHTML=platformSignals.map(p=>`<div class="card"><div class="card-head" onclick="tog(this)"><div style="font-weight:600;font-size:14px">${p.platform}</div><span class="cnt">${p.signals.length}</span><span class="arrow">›</span></div><div class="card-body"><table class="tbl" style="margin-top:12px"><thead><tr><th>Sinyal</th><th>Önem</th><th>Detay</th></tr></thead><tbody>${p.signals.map(s=>`<tr><td><strong style="font-size:12px">${s.signal}</strong></td><td><span class="pri ${s.importance==='Kritik'?'pri-h':s.importance==='Yüksek'?'pri-m':'pri-l'}">${s.importance}</span></td><td style="font-size:11px;color:var(--gray)">${s.note}</td></tr>`).join('')}</tbody></table></div></div>`).join('');
+
+// ===== PAGE 6: PAGE DETAILS =====
+const pageDetails=[
+  {cat:'Çözüm Sayfaları',pages:[
+    {url:'/cozumler/fine-dining/',title:'Fine Dining Çözümleri',persona:'P01 Vizyoner Şef',kwTR:['fine dining tabak','premium restoran tabak','şef sunum tabağı'],kwEN:['fine dining dinnerware','premium restaurant plates','chef presentation plates'],schemas:['WebPage','FAQPage','BreadcrumbList'],wordCount:'1200-1500',
+     contentBlocks:['Hero: "Fine dining\'ın sessiz kahramanı: tabak" — ilk 200 kelimede Bonna\'nın fine dining için neden tercih edildiği','Segment Analizi: Fine dining restoranların tabak ihtiyaçları, karar kriterleri, bütçe yapısı','Koleksiyon Önerileri: Vago, Ore, Cosmos — her birinin fine dining uygunluğu ile','ROI Tablosu: 5 yıllık TCO karşılaştırma (Bonna vs generic vs bone china)','Case Study: Michelin yıldızlı restoran referansı','FAQ: 5+ fine dining spesifik soru'],
+     aiSignals:['Quick Answer ilk 200 kelime → AI Overviews snippet','FAQPage schema → soru-cevap eşleştirme','Comparison table → AI karşılaştırma sorgularında kullanım','Testimonial → trust/authority signal']},
+    {url:'/cozumler/otel-restoran/',title:'Otel & Restoran Çözümleri',persona:'P02 F&B Müdürü',kwTR:['otel tabak tedarikçi','restoran tabak toptan','HoReCa porselen'],kwEN:['hotel tableware supplier','restaurant dinnerware wholesale','HoReCa porcelain'],schemas:['WebPage','FAQPage','BreadcrumbList'],wordCount:'1200-1500',
+     contentBlocks:['Hero: Dayanıklılık × estetik denklemi — edge chip warranty vurgusu','Segment: Otel/restoran operasyon ihtiyaçları, hacim gereksinimleri','Koleksiyon: Gourmet, Lunar, Madera — operasyonel dayanıklılık odaklı','TCO Calculator linki','Case Study: 500 odalı otel referansı','FAQ: Toplu sipariş, teslimat, garanti soruları'],
+     aiSignals:['B2B commercial intent capture','Volume/bulk order keywords','Warranty data → AI "reliable supplier" queries']},
+    {url:'/cozumler/kafe-brunch/',title:'Kafe & Brunch Çözümleri',persona:'P05 Kafe Tutkunu',kwTR:['kafe tabak takımı','brunch servis seti','specialty coffee tabak'],kwEN:['cafe crockery supplier','brunch plate set','specialty coffee serveware'],schemas:['WebPage','FAQPage','BreadcrumbList'],wordCount:'1000-1200',
+     contentBlocks:['Hero: Instagram-worthy sunumun sırrı — trend koleksiyonlar','Segment: Kafe & brunch mekanlarının kimlik arayışı','Koleksiyon: Mood, Luca, Calif — renkli, cesur tasarımlar','Görsel Galeri: Sosyal medya paylaşıma uygun sunum örnekleri','FAQ: Kafe boyutu, fincan-tabak uyumu, trend takibi'],
+     aiSignals:['Visual search optimization (alt text)','Social media cross-reference signal','Trend/seasonal freshness content']},
+    {url:'/cozumler/catering-etkinlik/',title:'Catering & Etkinlik Çözümleri',persona:'P06 Etkinlik Sihirbazı',kwTR:['catering tabak seti','düğün tabak kiralama','etkinlik porselen'],kwEN:['catering dinnerware set','wedding banquet tableware','event porcelain'],schemas:['WebPage','FAQPage','BreadcrumbList'],wordCount:'1000-1200',
+     contentBlocks:['Hero: 500 kişilik etkinlikte zero kırılma — dayanıklılık vurgusu','Segment: Catering operasyonunun tabak gereksinimleri','Koleksiyon: Harena, Futura — stack-friendly, taşımaya uygun','Lojistik: Paketleme, taşıma, depolama önerileri','FAQ: Büyük adet, özel tasarım, kısa teslimat'],
+     aiSignals:['Event/occasion specific keywords','Logistics/practical content → AI operational queries','Scale/volume data points']},
+    {url:'/cozumler/kurumsal-tedarik/',title:'Kurumsal Tedarik & Satın Alma',persona:'P04 Satın Alma Uzmanı',kwTR:['toplu tabak siparişi','HoReCa tedarikçi','kurumsal porselen alım'],kwEN:['bulk tableware order','HoReCa supplier Turkey','corporate dinnerware procurement'],schemas:['WebPage','FAQPage','BreadcrumbList'],wordCount:'1000-1200',
+     contentBlocks:['Hero: Tek tedarikçi, sıfır risk — SLA ve garanti vurgusu','Segment: Satın alma karar süreci, tender kriterleri','Teklif Süreci: Nasıl çalışıyoruz (adım adım)','Sertifikalar: EPD, ISO, test raporları','Referanslar: Kurumsal müşteri logoları','FAQ: Minimum sipariş, teslimat SLA, fiyatlandırma'],
+     aiSignals:['Procurement decision support','Certification/credential signals','SLA data → AI supplier comparison queries']}
+  ]},
+  {cat:'Teknoloji Sayfaları',pages:[
+    {url:'/teknoloji/fusiontech/',title:'FUSIONtech Teknolojisi',persona:'P01, P02, P08',kwTR:['FUSIONtech nedir','Bonna teknoloji','tek pişirim porselen'],kwEN:['FUSIONtech porcelain technology','Bonna manufacturing process','single fire porcelain'],schemas:['TechArticle','HowTo','FAQPage','BreadcrumbList'],wordCount:'800-1000',
+     contentBlocks:['Tanım: FUSIONtech\'in Wikipedia-kalitesinde açık tanımı','Süreç: Üretim adımları (HowTo schema uygun)','Karşılaştırma: FUSIONtech vs geleneksel çift pişirim','Avantajlar: Dayanıklılık, enerji tasarrufu, garanti','Koleksiyonlar: FUSIONtech kullanan koleksiyon listesi','FAQ: Teknik sorular'],
+     aiSignals:['Entity definition → "FUSIONtech nedir" definitive answer','HowTo schema → process queries','Proprietary term ownership → brand GEO']},
+    {url:'/teknoloji/vitrified/',title:'Vitrified Porselen Teknolojisi',persona:'P02, P04',kwTR:['vitrified porselen nedir','vitrified tabak dayanıklılık'],kwEN:['vitrified porcelain definition','vitrified vs standard porcelain'],schemas:['TechArticle','FAQPage','BreadcrumbList'],wordCount:'800-1000',
+     contentBlocks:['Tanım: Vitrified porselenin bilimsel açıklaması','Farklar: Vitrified vs porselen vs bone china tablosu','Dayanıklılık Testleri: Bağımsız test sonuçları','HoReCa Standardı: Neden endüstri standardı olduğu','FAQ: Teknik ve pratik sorular'],
+     aiSignals:['Industry term definition → knowledge graph','Comparison table → AI "which is better" queries','Test data → credibility signal']},
+    {url:'/teknoloji/reaktif-sir/',title:'Reaktif Sır Teknolojisi',persona:'P01, P03',kwTR:['reaktif sır nedir','her parça benzersiz tabak'],kwEN:['reactive glaze porcelain','unique handmade look plates'],schemas:['TechArticle','FAQPage','BreadcrumbList'],wordCount:'600-800',
+     contentBlocks:['Tanım: Reaktif sır sürecinin açıklaması','Benzersizlik: Neden her parça farklı görünür','Koleksiyonlar: Reaktif sırlı koleksiyon vitrin','Bakım: Reaktif sırlı ürün bakım rehberi','FAQ: Renk farklılığı, dayanıklılık soruları'],
+     aiSignals:['Artisan/craft narrative → premium positioning','Visual uniqueness → image search optimization','Care guide → HowTo schema opportunity']}
+  ]},
+  {cat:'Hub Sayfaları',pages:[
+    {url:'/surdurulebilirlik/',title:'Sürdürülebilirlik',persona:'P08 Yeşil Yönetici',kwTR:['sürdürülebilir tabak üreticisi','EPD sertifikalı porselen'],kwEN:['sustainable porcelain manufacturer','EPD certified tableware','net zero ceramics'],schemas:['Organization','Article','FAQPage','BreadcrumbList'],wordCount:'1500-2000',
+     contentBlocks:['Misyon: Net zero hedefi ve yol haritası','Metrikler: CO2 azaltma, su tasarrufu, enerji verimliliği rakamları','Sertifikalar: EPD, ISO 14001, ödüller — her biri detaylı card','Solar Yatırım: $3M güneş enerjisi projesi detayları','Döngüsel Üretim: Geri dönüştürülmüş porselen, sıfır atık','FAQ: ESG soruları'],
+     aiSignals:['Credential stacking → authority signal','Specific metrics → AI data extraction','Timeline/goals → future-oriented queries','ESG emerging topic → first mover advantage']},
+    {url:'/koleksiyonlar/',title:'Koleksiyon Hub',persona:'Tüm personalar',kwTR:['Bonna koleksiyonlar','HoReCa tabak koleksiyonu'],kwEN:['Bonna collections','HoReCa tableware collection'],schemas:['ItemList','BreadcrumbList'],wordCount:'500 + per-collection pages',
+     contentBlocks:['Kategori Grid: Premium Vitrified / FUSIONtech / Reaktif Sır grupları','Filtre: Segmente göre (fine dining, casual, kafe)','Her koleksiyon card: thumbnail + 1 cümle + teknoloji badge','Quick Answer: "Bonna\'nın 60+ koleksiyonu, 3 teknoloji grubunda"'],
+     aiSignals:['ItemList schema → collection overview','Category taxonomy → AI navigation','Hub page authority → child pages benefit']},
+    {url:'/hakkimizda/',title:'Kurumsal',persona:'-',kwTR:['Bonna porselen','Bonna fabrika Gebze'],kwEN:['Bonna Premium Porcelain company','Bonna porcelain manufacturer Turkey'],schemas:['Organization','Person','BreadcrumbList'],wordCount:'800-1000',
+     contentBlocks:['Hikaye: 1981\'den bugüne yolculuk','Rakamlar: 2000+ çalışan, 80+ ülke, 60+ koleksiyon','Ödüller: Red Dot, German Design Award, İhracat Şampiyonu','Yönetim: Kilit isimler (Person schema)','Fabrika: Gebze tesisi bilgileri'],
+     aiSignals:['Organization entity → brand recognition','Award credentials → trust signal','Export data → AI "Turkish manufacturers" queries']}
+  ]}
+];
+
+let activePageCat=pageDetails[0].cat;
+document.getElementById('page-cat-tabs').innerHTML=pageDetails.map(c=>`<button class="tab-btn${c.cat===activePageCat?' active':''}" onclick="showPageCat('${c.cat}')">${c.cat} <span style="font-size:10px;opacity:.6">(${c.pages.length})</span></button>`).join('');
+
+function showPageCat(cat){
+  activePageCat=cat;
+  document.querySelectorAll('#page-cat-tabs .tab-btn').forEach(b=>b.classList.remove('active'));
+  event.target.closest('.tab-btn').classList.add('active');
+  renderPageDetails();
+}
+
+function renderPageDetails(){
+  const cat=pageDetails.find(c=>c.cat===activePageCat);
+  document.getElementById('page-details').innerHTML=cat.pages.map(p=>`<div class="card"><div class="card-head" onclick="tog(this)"><div style="flex:1"><div style="font-weight:600;font-size:14px">${p.title}</div><div style="margin-top:4px"><span class="url-path">${p.url}</span> <span class="chip chip-gold">${p.persona}</span> <span class="chip">${p.wordCount} kelime</span></div></div><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:16px">
+    <div class="g2" style="padding-top:0;margin-bottom:16px">
+      <div><div class="lbl">TR Anahtar Kelimeler</div>${p.kwTR.map(k=>`<span class="chip">${k}</span>`).join('')}</div>
+      <div><div class="lbl">EN Anahtar Kelimeler</div>${p.kwEN.map(k=>`<span class="chip chip-blue">${k}</span>`).join('')}</div>
+    </div>
+    <div style="margin-bottom:16px"><div class="lbl">Schema Markup</div><div style="margin-top:4px">${p.schemas.map(s=>`<span class="schema-tag">${s}</span>`).join(' ')}</div></div>
+    <div class="lbl" style="margin-bottom:8px">İçerik Blokları</div>
+    ${p.contentBlocks.map((b,i)=>`<div style="font-size:13px;padding:8px 0 8px 16px;border-left:2px solid var(--sand-light);margin-bottom:4px"><strong>${i+1}.</strong> ${b}</div>`).join('')}
+    <div class="ai-box" style="margin-top:16px"><div class="ai-box-title">AI Sinyalleri</div><div class="ai-box-content">${p.aiSignals.map(s=>`<div style="padding:2px 0">→ ${s}</div>`).join('')}</div></div>
+  </div></div></div>`).join('');
+}
+renderPageDetails();
+
+// ===== PAGE 7: TECHNICAL =====
+const crawlerStatus=[
+  {bot:'GPTBot (OpenAI/ChatGPT)',status:'Bilinmiyor',risk:'ChatGPT web search siteyi crawl edemeyebilir',action:'robots.txt\'de Allow: / ekle',importance:'Kritik'},
+  {bot:'Google-Extended (Gemini)',status:'Bilinmiyor',risk:'Gemini AI training ve arama için engellenmiş olabilir',action:'robots.txt\'de Allow: / ekle',importance:'Kritik'},
+  {bot:'PerplexityBot',status:'Bilinmiyor',risk:'Perplexity kaynak gösteremez',action:'robots.txt\'de Allow: / ekle',importance:'Yüksek'},
+  {bot:'ClaudeBot (Anthropic)',status:'Bilinmiyor',risk:'Claude ile yapılan aramalarda görünmez',action:'robots.txt\'de Allow: / ekle',importance:'Orta'},
+  {bot:'Applebot-Extended',status:'Bilinmiyor',risk:'Apple Intelligence ve Siri entegrasyonu kaçırılır',action:'robots.txt\'de Allow: / ekle',importance:'Orta'},
+  {bot:'Googlebot (Search)',status:'Aktif',risk:'-',action:'Mevcut durumu koru',importance:'-'}
+];
+document.getElementById('crawler-status').innerHTML=`<table class="tbl"><thead><tr><th>AI Crawler</th><th>Mevcut Durum</th><th>Risk</th><th>Aksiyon</th><th>Önem</th></tr></thead><tbody>${crawlerStatus.map(c=>`<tr><td><strong>${c.bot}</strong></td><td><span class="chip ${c.status==='Aktif'?'chip-green':c.status==='Engelli'?'chip-red':'chip-gold'}">${c.status}</span></td><td style="font-size:12px;color:var(--gray)">${c.risk}</td><td style="font-size:12px">${c.action}</td><td>${c.importance!=='-'?`<span class="pri ${c.importance==='Kritik'?'pri-h':c.importance==='Yüksek'?'pri-m':'pri-l'}">${c.importance}</span>`:'-'}</td></tr>`).join('')}</tbody></table>`;
+
+const techChecklist=[
+  {cat:'Crawl & Erişim',items:[
+    {task:'robots.txt güncelle: tüm AI botlarına Allow',status:'todo',impact:'Kritik'},
+    {task:'XML sitemap oluştur (koleksiyon + çözüm + blog ayrı)',status:'todo',impact:'Kritik'},
+    {task:'Server-side rendering (SSR) aktif mi kontrol et',status:'todo',impact:'Yüksek'},
+    {task:'AI bot user-agent\'larını server log\'da izleme başlat',status:'todo',impact:'Orta'}
+  ]},
+  {cat:'Schema & Structured Data',items:[
+    {task:'Organization JSON-LD ana sayfaya ekle',status:'todo',impact:'Kritik'},
+    {task:'Product JSON-LD her koleksiyon sayfasına ekle',status:'todo',impact:'Kritik'},
+    {task:'FAQPage JSON-LD tüm ana sayfalara ekle',status:'todo',impact:'Kritik'},
+    {task:'BreadcrumbList JSON-LD site-wide ekle',status:'todo',impact:'Yüksek'},
+    {task:'HowTo JSON-LD teknoloji ve rehber sayfalarına ekle',status:'todo',impact:'Yüksek'},
+    {task:'Article JSON-LD blog yazılarına ekle',status:'todo',impact:'Yüksek'},
+    {task:'Schema Validator ile tüm sayfaları test et',status:'todo',impact:'Orta'}
+  ]},
+  {cat:'Hreflang & i18n',items:[
+    {task:'Her sayfa için TR ↔ EN hreflang etiketleri ekle',status:'todo',impact:'Yüksek'},
+    {task:'x-default hreflang belirle',status:'todo',impact:'Orta'},
+    {task:'Canonical URL\'leri düzelt (www vs non-www)',status:'todo',impact:'Orta'}
+  ]},
+  {cat:'Performans',items:[
+    {task:'Core Web Vitals optimize et (LCP < 2.5s)',status:'todo',impact:'Yüksek'},
+    {task:'Görsel optimizasyon: WebP format, lazy loading',status:'todo',impact:'Orta'},
+    {task:'Alt text: her görsele keyword-rich açıklama',status:'todo',impact:'Yüksek'},
+    {task:'Mobile-first layout doğrula',status:'todo',impact:'Orta'}
+  ]},
+  {cat:'İçerik Yapısı',items:[
+    {task:'Her sayfada H1 → H2 → H3 hiyerarşisi kur',status:'todo',impact:'Kritik'},
+    {task:'İlk 200 kelime: doğrudan cevap (Quick Answer block)',status:'todo',impact:'Kritik'},
+    {task:'Internal linking stratejisi uygula (her sayfa min 5 link)',status:'todo',impact:'Yüksek'},
+    {task:'Sayfa başına en az 1 tablo veya karşılaştırma ekle',status:'todo',impact:'Yüksek'},
+    {task:'Her sayfada FAQ bölümü (min 5 soru)',status:'todo',impact:'Yüksek'},
+    {task:'İçerik güncelleme tarihi göster (freshness signal)',status:'todo',impact:'Orta'}
+  ]},
+  {cat:'Dış Sinyaller',items:[
+    {task:'Google Business Profile güncelle ve zenginleştir',status:'todo',impact:'Yüksek'},
+    {task:'Wikipedia sayfası taslağı hazırla (TR + EN)',status:'todo',impact:'Kritik'},
+    {task:'Wikidata entity oluştur',status:'todo',impact:'Yüksek'},
+    {task:'GA4\'te AI referral tracking kur',status:'todo',impact:'Orta'},
+    {task:'Bing Webmaster Tools\'a siteyi ekle (ChatGPT web search)',status:'todo',impact:'Yüksek'}
+  ]}
+];
+document.getElementById('tech-checklist').innerHTML=techChecklist.map(c=>`<div class="card"><div class="card-head" onclick="tog(this)"><div style="font-weight:600;font-size:14px">${c.cat}</div><span class="cnt">${c.items.length}</span><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:12px">${c.items.map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="width:18px;height:18px;border:2px solid var(--border);border-radius:4px;flex-shrink:0"></span><div style="flex:1;font-size:13px">${i.task}</div><span class="pri ${i.impact==='Kritik'?'pri-h':i.impact==='Yüksek'?'pri-m':'pri-l'}">${i.impact}</span></div>`).join('')}</div></div></div>`).join('');
+
+// Roadmap
+const roadmap=[
+  {q:'Hafta 1-2',title:'Teknik Altyapı',items:['robots.txt güncelle (AI bot Allow)','XML sitemap oluştur','Organization + BreadcrumbList schema ekle','GA4 AI referral tracking kur','Bing Webmaster Tools kurulumu']},
+  {q:'Hafta 3-4',title:'Çözüm Sayfaları',items:['5 çözüm sayfası (/cozumler/) oluştur','Her sayfaya FAQPage schema','Quick Answer blokları yaz','Internal linking başlat','Hreflang etiketleri ekle']},
+  {q:'Hafta 5-6',title:'Teknoloji & Koleksiyon',items:['3 teknoloji sayfası oluştur','Koleksiyon sayfalarını zenginleştir (800+ kelime)','Product schema ekle','HowTo schema ekle','Karşılaştırma tabloları oluştur']},
+  {q:'Hafta 7-8',title:'Blog Altyapısı',items:['Blog hub sayfası kur','İlk 2 pillar yazı yayınla','4 spoke yazı yayınla','Article + Person schema ekle','Topic cluster internal linking']},
+  {q:'Hafta 9-10',title:'Sürdürülebilirlik & Kaynaklar',items:['Sürdürülebilirlik hub sayfası','ROI hesaplayıcı aracı','Katalog indirme sayfası','Numune talep formu','Wikipedia taslağı hazırla']},
+  {q:'Hafta 11-12',title:'GEO Lansmanı',items:['Tüm schema\'ları validate et','AI crawler log analizi','Wikipedia sayfası yayınla','Wikidata entity oluştur','İlk GEO performans ölçümü']}
+];
+document.getElementById('roadmap').innerHTML=roadmap.map(r=>`<div class="tl-item"><div class="tl-q">${r.q}</div><div class="tl-title">${r.title}</div><div class="tl-desc">${r.items.map(i=>`<div style="padding:3px 0">→ ${i}</div>`).join('')}</div></div>`).join('');
+</script>
+</body>
+</html>

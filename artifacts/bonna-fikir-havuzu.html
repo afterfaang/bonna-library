@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonna — Fikir Havuzu</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap');
+
+  :root {
+    --navy: #0f1629;
+    --navy-mid: #1a2140;
+    --gold: #c9a962;
+    --gold-dark: #a08338;
+    --cream: #faf8f4;
+    --white: #fff;
+    --g100: #f0f0ee;
+    --g200: #e2e0dc;
+    --g300: #c8c5be;
+    --g400: #9e9a91;
+    --g500: #76726a;
+    --g600: #555249;
+    --g700: #3a3832;
+    --text: #1e1d1a;
+    --green: #2d6a4f;
+    --green-bg: #d4edda;
+    --red: #8e2e2e;
+    --red-bg: #f8d7da;
+    --yellow: #7a6200;
+    --yellow-bg: #fff3cd;
+    --blue: #2e5e8e;
+    --purple: #5e3a8e;
+    --teal: #1a7a7a;
+    --orange: #b8722d;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',-apple-system,sans-serif; background:var(--cream); color:var(--text); line-height:1.75; -webkit-font-smoothing:antialiased; }
+
+  .header {
+    background: var(--navy); color:white; padding:48px 56px;
+    position:relative; overflow:hidden;
+  }
+  .header::before { content:''; position:absolute; top:-30%; right:-10%; width:500px; height:500px; background:radial-gradient(circle,rgba(201,169,98,0.1),transparent 65%); border-radius:50%; }
+  .header h1 { font-family:'Playfair Display',serif; font-size:42px; font-weight:800; margin-bottom:8px; }
+  .header h1 em { color:var(--gold); font-style:italic; }
+  .header p { font-size:16px; color:rgba(255,255,255,0.5); max-width:650px; line-height:1.7; }
+  .header .tag { display:inline-block; font-size:10px; text-transform:uppercase; letter-spacing:3px; color:var(--gold); border:1px solid rgba(201,169,98,0.3); padding:4px 14px; border-radius:20px; margin-bottom:20px; font-weight:600; }
+
+  .legend {
+    display:flex; gap:24px; padding:20px 56px; background:white; border-bottom:1px solid var(--g200);
+    flex-wrap:wrap; align-items:center;
+  }
+  .legend span { font-size:12px; color:var(--g500); font-weight:600; }
+  .legend .dot { display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--g600); }
+  .legend .dot::before { content:''; width:10px; height:10px; border-radius:50%; }
+  .legend .dot.guerrilla::before { background:#e74c3c; }
+  .legend .dot.tech::before { background:#3498db; }
+  .legend .dot.cultural::before { background:#9b59b6; }
+  .legend .dot.b2b::before { background:#27ae60; }
+  .legend .dot.product::before { background:#f39c12; }
+  .legend .dot.collab::before { background:#1abc9c; }
+
+  .counter {
+    padding:16px 56px; background:var(--g100); border-bottom:1px solid var(--g200);
+    font-size:13px; color:var(--g500); font-weight:500;
+  }
+  .counter strong { color:var(--navy); font-weight:700; }
+
+  .grid {
+    display:grid; grid-template-columns:1fr; gap:0;
+    max-width:100%;
+  }
+
+  .idea {
+    padding:40px 56px; border-bottom:1px solid var(--g200);
+    transition: background 0.3s;
+    position:relative;
+  }
+  .idea:hover { background: rgba(201,169,98,0.03); }
+  .idea.selected { background: rgba(45,106,79,0.04); border-left:4px solid var(--green); }
+  .idea.rejected { background: rgba(142,46,46,0.03); border-left:4px solid var(--g300); opacity:0.5; }
+
+  .idea-top { display:flex; justify-content:space-between; align-items:flex-start; gap:24px; margin-bottom:16px; }
+  .idea-num { font-family:'Playfair Display',serif; font-size:48px; font-weight:800; color:var(--g200); line-height:1; min-width:60px; }
+
+  .idea-meta { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+  .cat { display:inline-block; font-size:10px; text-transform:uppercase; letter-spacing:1.5px; padding:3px 10px; border-radius:20px; font-weight:700; }
+  .cat-guerrilla { background:rgba(231,76,60,0.1); color:#c0392b; }
+  .cat-tech { background:rgba(52,152,219,0.1); color:#2980b9; }
+  .cat-cultural { background:rgba(155,89,182,0.1); color:#8e44ad; }
+  .cat-b2b { background:rgba(39,174,96,0.1); color:#1e8449; }
+  .cat-product { background:rgba(243,156,18,0.1); color:#d68910; }
+  .cat-collab { background:rgba(26,188,156,0.1); color:#148f77; }
+  .cat-content { background:rgba(46,94,142,0.1); color:var(--blue); }
+
+  .idea h2 { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; color:var(--navy); margin-bottom:6px; line-height:1.25; }
+  .idea .tagline { font-size:15px; color:var(--gold-dark); font-style:italic; margin-bottom:16px; font-weight:500; }
+
+  .idea-body { display:grid; grid-template-columns:2fr 1fr; gap:40px; }
+  .idea-desc p { font-size:14.5px; color:var(--g600); line-height:1.85; margin-bottom:12px; }
+  .idea-desc strong { color:var(--navy); }
+  .idea-desc h4 { font-size:12px; text-transform:uppercase; letter-spacing:1.5px; color:var(--g400); font-weight:700; margin:20px 0 8px; }
+  .idea-desc ul { list-style:none; padding:0; }
+  .idea-desc li { font-size:14px; color:var(--g600); padding:3px 0 3px 18px; position:relative; line-height:1.7; }
+  .idea-desc li::before { content:'→'; position:absolute; left:0; color:var(--gold); font-weight:700; }
+
+  .idea-side { background:white; border-radius:12px; padding:24px; border:1px solid var(--g200); height:fit-content; }
+  .idea-side h5 { font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--g400); font-weight:700; margin-bottom:12px; }
+  .idea-side .row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--g100); font-size:13px; }
+  .idea-side .row:last-child { border-bottom:none; }
+  .idea-side .row span:first-child { color:var(--g500); }
+  .idea-side .row span:last-child { font-weight:600; color:var(--navy); }
+
+  .meter { display:flex; gap:3px; }
+  .meter i { width:16px; height:6px; border-radius:3px; background:var(--g200); }
+  .meter i.filled { background:var(--gold); }
+
+  .vote-btns { display:flex; gap:8px; margin-top:16px; }
+  .vote-btn {
+    flex:1; padding:10px; border:1px solid var(--g200); border-radius:8px;
+    background:white; cursor:pointer; font-size:12px; font-weight:600;
+    text-transform:uppercase; letter-spacing:1px; transition:all 0.2s;
+    text-align:center; color:var(--g500);
+  }
+  .vote-btn:hover { border-color:var(--g300); }
+  .vote-btn.yes:hover, .vote-btn.yes.active { background:var(--green-bg); border-color:var(--green); color:var(--green); }
+  .vote-btn.maybe:hover, .vote-btn.maybe.active { background:var(--yellow-bg); border-color:var(--yellow); color:var(--yellow); }
+  .vote-btn.no:hover, .vote-btn.no.active { background:var(--red-bg); border-color:var(--red); color:var(--red); }
+
+  .summary {
+    padding:48px 56px; background:var(--navy); color:white;
+    position:sticky; bottom:0; z-index:10;
+    display:none;
+  }
+  .summary.visible { display:block; }
+  .summary h3 { font-family:'Playfair Display',serif; font-size:22px; color:var(--gold); margin-bottom:12px; }
+  .summary-counts { display:flex; gap:32px; }
+  .summary-counts div { font-size:14px; }
+  .summary-counts strong { font-size:20px; display:block; }
+
+  @media (max-width:900px) {
+    .header, .idea, .legend, .counter { padding-left:24px; padding-right:24px; }
+    .idea-body { grid-template-columns:1fr; }
+    .idea-num { font-size:32px; min-width:40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="tag">Fikir Havuzu — Onay Bekleyen</div>
+  <h1>Notların <em>Ötesinde.</em></h1>
+  <p>Toplantı notlarından çıkan fikirlerin dışında, Bonna'nın "çıtlamazlık" platformunu farklılaştıracak 15 kreatif öneri. Her fikrin yanında etki/maliyet/zorluk değerlendirmesi var. Beğendiklerine "Evet" de — ana stratejiye entegre edelim.</p>
+</div>
+
+<div class="legend">
+  <span>KATEGORİLER:</span>
+  <div class="dot guerrilla">Guerrilla / Stunt</div>
+  <div class="dot tech">Teknoloji / Dijital</div>
+  <div class="dot cultural">Kültürel / Sosyal</div>
+  <div class="dot b2b">B2B İnovasyon</div>
+  <div class="dot product">Ürün Deneyimi</div>
+  <div class="dot collab">Beklenmedik İşbirliği</div>
+</div>
+
+<div class="counter">Toplam <strong>15 fikir</strong> — her birini incele, karar ver.</div>
+
+<div class="grid">
+
+  <!-- ═══ FİKİR 1 ═══ -->
+  <div class="idea" id="idea-1">
+    <div class="idea-top">
+      <div class="idea-num">01</div>
+      <div class="idea-meta">
+        <span class="cat cat-guerrilla">Guerrilla</span>
+        <span class="cat cat-content">İçerik</span>
+      </div>
+    </div>
+    <h2>"Kır Beni" Stüdyosu — Halk Açık Dayanıklılık Testi</h2>
+    <div class="tagline">"İnsanlara bir tabak verdik ve kırmalarını istedik. Kimse başaramadı."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>İstanbul'un en işlek noktasına (Taksim, Kadıköy, Eminönü) şeffaf bir küp yerleştiriyoruz. İçinde tek bir Bonna tabak. Üzerinde yazı: <strong>"Kır beni. Kırabilirsen senin."</strong> İnsanlar çeşitli aletlerle (çekiç hariç — güvenlik) tabağı kırmaya çalışıyor. Tabak kırılmıyor ama çıtlamıyor, çizilmiyor.</p>
+        <p><strong>Neden farklı:</strong> Porselen markası "kır beni" diye meydan okuyor — sektörde duyulmamış bir cesaret. Viral potansiyeli çok yüksek çünkü insanlar "başarısız olma" videolarını paylaşmayı seviyor. Gerçek bir ürün demo'su ama eğlenceli formatta.</p>
+        <h4>Uygulama Detayı</h4>
+        <ul>
+          <li>3 şehirde (İstanbul, Ankara, İzmir) 1'er gün kurulum</li>
+          <li>Profesyonel kamera ekibi — hem belgesel hem sosyal medya formatında çekim</li>
+          <li>Katılımcılardan imza + video kullanım izni</li>
+          <li>YouTube ana video (3-5 dk) + 10-15 kısa kesit (Reels/Shorts/TikTok)</li>
+          <li>En çok paylaşılan kesit "hero teaser" olarak kullanılabilir</li>
+        </ul>
+        <h4>Risk</h4>
+        <ul>
+          <li>Tabak gerçekten kırılırsa? → Kırılması sorun değil, çıtlamaması önemli. Kenar çıtlaması olmazsa mesaj korunur. Kırılma = aşırı güç, günlük kullanım değil.</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Etki</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i></i><i></i><i></i></div></span></div>
+        <div class="row"><span>Zorluk</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i></i><i></i><i></i></div></span></div>
+        <div class="row"><span>Viral Potansiyel</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>B2B Etkisi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i><i></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(1,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(1,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(1,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 2 ═══ -->
+  <div class="idea" id="idea-2">
+    <div class="idea-top">
+      <div class="idea-num">02</div>
+      <div class="idea-meta">
+        <span class="cat cat-tech">Teknoloji</span>
+        <span class="cat cat-b2b">B2B</span>
+      </div>
+    </div>
+    <h2>TCO Hesaplayıcı — "Gerçek Maliyet" İnteraktif Aracı</h2>
+    <div class="tagline">"Ucuz tabak pahalıya patlar. Hesabını gör."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>Web sitesinde ve tablette (fuarlarda) çalışan interaktif bir hesaplayıcı. Restoran/otel bilgilerini giriyor: kaç kişilik, günde kaç servis, mevcut tabak markası, yıllık yenileme oranı. Algoritma, <strong>5 yıllık toplam sahip olma maliyetini</strong> hesaplıyor — Bonna vs. mevcut marka karşılaştırması.</p>
+        <p><strong>Neden farklı:</strong> HoReCa'da hiçbir porselen markası bu kadar transparan bir maliyet karşılaştırması sunmuyor. Çünkü çoğunun "ömür boyu garanti" gibi bir silahı yok. Bonna'nın ürün avantajını <strong>finansal dile çeviren</strong> ilk araç. Satış ekibi için de müthiş bir silah — her toplantıda iPad'den göster.</p>
+        <h4>Nasıl Çalışır</h4>
+        <ul>
+          <li>Girdi: Restoran büyüklüğü, günlük servis sayısı, mevcut tabak markası/fiyatı, yıllık yenileme %'si</li>
+          <li>Çıktı: 5 yıllık maliyet grafiği, Bonna ile tasarruf miktarı, "break-even" noktası (Bonna'nın kendini amorti ettiği ay)</li>
+          <li>Sonunda: "Teklif al" butonu → CRM'e direkt lead</li>
+        </ul>
+        <h4>Bonus</h4>
+        <ul>
+          <li>LinkedIn'de "senin restoranın gerçek tabak maliyeti ne?" paylaşımlarıyla organik trafik çekme</li>
+          <li>Fuarlarda tablet kiosklarda demo — lead toplama makinesi</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Etki</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i></i><i></i><i></i></div></span></div>
+        <div class="row"><span>Zorluk</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i><i></i></div></span></div>
+        <div class="row"><span>B2B Etkisi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Lead Gen</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(2,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(2,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(2,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 3 ═══ -->
+  <div class="idea" id="idea-3">
+    <div class="idea-top">
+      <div class="idea-num">03</div>
+      <div class="idea-meta">
+        <span class="cat cat-collab">Beklenmedik İşbirliği</span>
+        <span class="cat cat-cultural">Kültürel</span>
+      </div>
+    </div>
+    <h2>Bonna × Seramik Sanatçısı — Limitli "Sanat Serisi"</h2>
+    <div class="tagline">"Endüstriyel porselen galeriye girer mi?"</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>Türkiye'nin veya dünyanın tanınmış bir seramik/çağdaş sanat sanatçısıyla işbirliği. Sanatçı, Bonna'nın endüstriyel üretim hattını kullanarak <strong>limitli sayıda sanat eseri-tabak</strong> üretiyor. 100-200 adet, numaralı, sertifikalı. Bir galeri sergisiyle lansmanı yapılıyor.</p>
+        <p><strong>Neden farklı:</strong> Hiçbir HoReCa markası bunu yapmadı. "Endüstriyel porselen" ile "sanat" arasındaki duvarı yıkıyor. PR değeri muazzam — sanat medyası + gastronomi medyası + lifestyle medyası üçlü kesişim. Limitli seri, koleksiyon değeri taşıyor — otel lobby'lerinde sergilenebilir.</p>
+        <h4>Uygulama</h4>
+        <ul>
+          <li>Sanatçı seçimi: İşlevsel sanat (functional art) alanında çalışan biri ideal — Türkiye'den veya uluslararası</li>
+          <li>Sergi: İstanbul'da bağımsız galeri veya otel lobby'sinde (Soho House, The Peninsula vb.)</li>
+          <li>Satış: Seri, online ve etkinlikte satışa sunulur. Gelirin bir kısmı genç seramik sanatçılarına burs olarak aktarılır</li>
+          <li>İçerik: Making-of belgesel (YouTube), sergi turu (Instagram), sanatçı röportajı (podcast)</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Etki</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i><i></i></div></span></div>
+        <div class="row"><span>PR Değeri</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Premium Algı</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>B2B Etkisi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i><i></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(3,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(3,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(3,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 4 ═══ -->
+  <div class="idea" id="idea-4">
+    <div class="idea-top">
+      <div class="idea-num">04</div>
+      <div class="idea-meta">
+        <span class="cat cat-b2b">B2B İnovasyon</span>
+      </div>
+    </div>
+    <h2>"365 Gün Dene" — Risk-Free Trial Programı</h2>
+    <div class="tagline">"Beğenmezsen geri al. Ama kimse geri vermedi."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>Yeni B2B müşterilere 1 yıl deneme teklifi: Bonna seti kur, 365 gün kullan, memnun kalmazsan geri al — tam iade. Koşul: minimum sipariş miktarı + geri bildirim formu doldurma.</p>
+        <p><strong>Neden farklı:</strong> Porselen sektöründe "deneme süresi" kavramı yok. Bu teklif, Bonna'nın ürün güvenini aksiyona dönüştürüyor. "Ömür boyu garanti veriyoruz ama güvenmiyor musun? 1 yıl dene" — karar bariyerini tamamen kaldırıyor. Ürünün kalitesine gerçekten güveniyorsan, iade oranı %1'in altında kalır.</p>
+        <h4>Neden İşe Yarar</h4>
+        <ul>
+          <li>B2B satışta en büyük engel: "mevcut tedarikçiyi değiştirme riski." Bu programla risk sıfırlanıyor</li>
+          <li>PR ve içerik değeri: "Hiçbir porselen markası bunu teklif edemez" — basın bülteni, LinkedIn kampanyası</li>
+          <li>Veri toplama: 365 gün boyunca kullanım verisi, geri bildirim, NPS skoru — altın değerinde insight</li>
+          <li>Elde tutma: Bir kere Bonna'ya geçen restoran, iade etmez. Alışkanlık + memnuniyet kilidi</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Etki</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Maliyet/Risk</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i><i></i></div></span></div>
+        <div class="row"><span>Satışa Etkisi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>PR Değeri</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="row"><span>Farklılaşma</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(4,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(4,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(4,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 5 ═══ -->
+  <div class="idea" id="idea-5">
+    <div class="idea-top">
+      <div class="idea-num">05</div>
+      <div class="idea-meta">
+        <span class="cat cat-guerrilla">Guerrilla</span>
+        <span class="cat cat-cultural">Kültürel</span>
+      </div>
+    </div>
+    <h2>"Kırık Tabak Müzesi" — Pop-up Sergi</h2>
+    <div class="tagline">"Her kırık tabağın bir hikayesi var. Bonna'nınki yok."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>İstanbul'da 2 haftalık pop-up sergi: Şeflerden, otel yöneticilerinden, restoran sahiplerinden toplanan <strong>kırık, çıtlamış, çizilmiş rakip tabaklar</strong> — her birinin yanında "hikaye kartı": ne zaman kırıldı, ne kadar maliyete yol açtı, hangi önemli serviste bozuldu. Serginin sonunda tek bir vitrin: sapasağlam bir Bonna tabak. "Hikayesi yok. Çünkü kırılmadı."</p>
+        <p><strong>Neden farklı:</strong> Dramatik, duygusal, paylaşılabilir. Kırık tabak her şefin ortak acısı — bunu sanat formuna dönüştürmek hem dikkat çekici hem empatik. "Museum of Broken Relationships" konseptinden ilham alıyor ama tamamen B2B odaklı.</p>
+        <h4>Detaylar</h4>
+        <ul>
+          <li>Lokasyon: Karaköy'de bağımsız galeri veya boş mekan (endüstriyel estetik)</li>
+          <li>Küratörlük: Kırık tabakların hikayeleri gerçek ve duygusal olmalı — "Michelin denetçisinin geldiği gece garsonun düşürdüğü tabak" gibi</li>
+          <li>Açılış: Davetli gastronomi basını + şefler + HoReCa yöneticileri</li>
+          <li>İçerik: Video belgesel (YouTube, 10 dk), fotoğraf serisi (Instagram), basın bülteni</li>
+          <li>Interaktif: Ziyaretçiler kendi kırık tabak hikayelerini dijital ekrana yazabiliyor</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Etki</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i><i></i></div></span></div>
+        <div class="row"><span>PR / Medya</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Viral</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="row"><span>B2B Etkisi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(5,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(5,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(5,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 6 ═══ -->
+  <div class="idea" id="idea-6">
+    <div class="idea-top">
+      <div class="idea-num">06</div>
+      <div class="idea-meta">
+        <span class="cat cat-content">İçerik</span>
+        <span class="cat cat-b2b">B2B</span>
+      </div>
+    </div>
+    <h2>"Şefin Gizli Maliyeti" — LinkedIn Veri Serisi</h2>
+    <div class="tagline">"HoReCa sektörünün konuşmadığı rakamları konuşuyoruz."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>LinkedIn'de haftalık yayınlanan, <strong>sektörel veri ve analiz</strong> içeren infografik serisi. Bonna markasını doğrudan öne çıkarmıyor — ama Bonna'nın güçlü olduğu alanlardaki sorunları veriyle gösteriyor. "Thought leadership through data."</p>
+        <h4>Bölüm Fikirleri</h4>
+        <ul>
+          <li>"Bir restoranın yıllık tabak yenileme maliyeti: Beklentiniz vs. Gerçek" — sektörel anket verisi</li>
+          <li>"Şeflerin %72'si tabak seçiminde karar verici — ama satın alma toplantısına çağrılmıyor" — karar süreçleri analizi</li>
+          <li>"Çıtlamış tabak, misafir deneyimini nasıl etkiliyor?" — tüketici algısı araştırması</li>
+          <li>"5 yıllık TCO karşılaştırması: Premium vs. ekonomik porselen" — somut hesaplama</li>
+          <li>"Sürdürülebilir porselen: Karbon ayak izi karşılaştırması" — çevresel etki</li>
+        </ul>
+        <p><strong>Neden farklı:</strong> Porselen sektöründe data-driven content üreten marka yok. Bonna, sektörün "bilgi kaynağı" konumuna geçiyor. Her infografik paylaşılabilir, alıntılanabilir — organik erişim ve otorite inşası. Alt satırda her zaman: "Bonna — Sınırları Zorla."</p>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Etki</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i></i><i></i><i></i><i></i></div></span></div>
+        <div class="row"><span>Sürdürülebilirlik</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>B2B Etkisi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Otorite</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(6,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(6,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(6,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 7 ═══ -->
+  <div class="idea" id="idea-7">
+    <div class="idea-top">
+      <div class="idea-num">07</div>
+      <div class="idea-meta">
+        <span class="cat cat-product">Ürün Deneyimi</span>
+        <span class="cat cat-b2b">B2B</span>
+      </div>
+    </div>
+    <h2>"Bonna Showroom Kitchen" — Deneyim Mutfağı</h2>
+    <div class="tagline">"Tabağı satın almadan önce, tabakla pişir."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>İstanbul'da (tercihen Çayırova fabrikasına yakın veya Levent/Maslak bölgesinde) daimi bir <strong>showroom + profesyonel mutfak</strong>. HoReCa müşterileri randevu ile geliyor, Bonna koleksiyonlarını gerçek mutfak ortamında test ediyor, tabakları bulaşık makinesine koyup tekrar çıkarıyor, farklı koleksiyonları kendi menüsüyle eşleştiriyor.</p>
+        <p><strong>Neden farklı:</strong> Hiçbir porselen markasının Türkiye'de "deneyim mutfağı" yok. Satış sürecini show-room'dan "experience center"a dönüştürüyor. Şefler mutfağı severler — onlara bir mutfak verirsen, markaya bağlanırlar.</p>
+        <h4>Fonksiyonlar</h4>
+        <ul>
+          <li><strong>B2B satış aracı:</strong> Potansiyel müşteriler deneyimleyerek karar veriyor</li>
+          <li><strong>İçerik stüdyosu:</strong> Podcast, video, fotoğraf çekimleri burada yapılıyor — sabit maliyet</li>
+          <li><strong>Chef's Table mekanı:</strong> Aylık etkinlikler burada düzenleniyor</li>
+          <li><strong>Eğitim merkezi:</strong> Genç şeflere workshop, food styling atölyesi</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Etki</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="row"><span>Uzun Vadeli ROI</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>B2B Etkisi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>İçerik Değeri</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(7,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(7,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(7,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 8 ═══ -->
+  <div class="idea" id="idea-8">
+    <div class="idea-top">
+      <div class="idea-num">08</div>
+      <div class="idea-meta">
+        <span class="cat cat-tech">Teknoloji</span>
+        <span class="cat cat-content">İçerik</span>
+      </div>
+    </div>
+    <h2>"Tabağın Hayatı" — QR Code Storytelling</h2>
+    <div class="tagline">"Her Bonna tabağın bir doğum sertifikası var."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>Her Bonna tabağın altına <strong>benzersiz bir QR kod</strong> basılıyor. Tarayan kişi, o tabağın üretim hikayesine ulaşıyor: hangi fabrikada, hangi tarihte, hangi ustanın elinden geçtiği, kaç derece fırında piştiği, hangi kalite testlerinden geçtiği. Artırılmış gerçeklik (AR) ile fabrika turuna çıkıyor.</p>
+        <p><strong>Neden farklı:</strong> "Farm to table" trendi gıdada devrim yaptı. "Factory to table" konsepti porselende aynı şeyi yapabilir. Şeffaflık, güven, hikaye — üç güçlü B2B argüman tek bir QR'da birleşiyor.</p>
+        <h4>Teknik Detay</h4>
+        <ul>
+          <li>QR, tabak altına lazer ile basılıyor — ek maliyet minimal</li>
+          <li>Landing page: Üretim hikayesi + AR fabrika turu + koleksiyon bilgisi + "daha fazla ürün keşfet"</li>
+          <li>Veri toplama: Hangi ülke/şehirden taranıyor? Hangi koleksiyon ilgi görüyor? → Marketing insight</li>
+          <li>Sosyal: "Tabağımı taradım, Bilecik'te doğmuş!" paylaşım teşviki</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Yenilikçilik</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i></i><i></i><i></i></div></span></div>
+        <div class="row"><span>PR Değeri</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="row"><span>Veri Toplama</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Uzun Vadeli</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(8,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(8,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(8,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 9 ═══ -->
+  <div class="idea" id="idea-9">
+    <div class="idea-top">
+      <div class="idea-num">09</div>
+      <div class="idea-meta">
+        <span class="cat cat-cultural">Kültürel</span>
+        <span class="cat cat-collab">İşbirliği</span>
+      </div>
+    </div>
+    <h2>"Çıtlamazlık Ödülleri" — Sektörel Ödül Programı</h2>
+    <div class="tagline">"Bonna, sektörü ödüllendiren marka olsun."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>Yıllık <strong>"Bonna Çıtlamazlık Ödülleri"</strong> — HoReCa sektöründe sınırları zorlayan profesyonelleri ödüllendiren bir program. Kategoriler: Yılın Genç Şefi, Yılın Sürdürülebilir Restoranı, Yılın Sunum Sanatı, Yılın HoReCa Yenilikçisi.</p>
+        <p><strong>Neden farklı:</strong> Bonna, ödül alan değil <strong>ödül veren</strong> konumuna geçiyor. Sektörde "Bonna Ödülleri" bir referans noktasına dönüştüğünde, marka otoritesi tartışılmaz olur. Her yıl tekrarlanan, büyüyen, sektörün takviminde yer alan bir event.</p>
+        <h4>Yapı</h4>
+        <ul>
+          <li>Jüri: Gastronomi editörleri, deneyimli şefler, F&B yöneticileri — Bonna temsili azınlıkta</li>
+          <li>Başvuru: Online form + porfolyo. Ön eleme jüri, final halk oylaması + jüri puanı</li>
+          <li>Gala: Yılda bir, premium lokasyon. Tüm Bonna tabakları üzerinde servis. Medya davetli</li>
+          <li>Ödül: Kupa + Bonna set + sektörel görünürlük (Bonna kanallarında tanıtım, podcast bölümü)</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Marka Otoritesi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i><i></i></div></span></div>
+        <div class="row"><span>Uzun Vadeli</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>PR Değeri</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Sektörel Bağ</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(9,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(9,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(9,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 10 ═══ -->
+  <div class="idea" id="idea-10">
+    <div class="idea-top">
+      <div class="idea-num">10</div>
+      <div class="idea-meta">
+        <span class="cat cat-content">İçerik</span>
+        <span class="cat cat-guerrilla">Guerrilla</span>
+      </div>
+    </div>
+    <h2>"24 Saat Bir Tabak" — Belgesel Mikro-Seri</h2>
+    <div class="tagline">"Bir Bonna tabağın 24 saatini takip ettik."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>Yoğun bir İstanbul restoranında tek bir Bonna tabağa kamera takıyoruz. 24 saat boyunca o tabağın hayatını belgeliyoruz: sabah depodan çıkışı, mutfakta hazırlık, ilk serviste şefin elinden masaya, misafirin dokunuşu, bulaşık makinesine giriş, tekrar rafa çıkış — ve ertesi gün aynı döngü.</p>
+        <p><strong>Neden farklı:</strong> Porselen hiçbir zaman "protagonist" olmadı. "A day in the life" formatı insanların en çok izlediği içerik türlerinden biri — ama nesne perspektifinden anlatmak tamamen yeni. Sessiz, meditativ, sinematik — ASMR niteliğinde. Foley sesleri (porselen sesleri) ön planda.</p>
+        <h4>Format Seçenekleri</h4>
+        <ul>
+          <li><strong>YouTube:</strong> 15-20 dk belgesel versiyon. Minimal voiceover, atmosfer ağırlıklı</li>
+          <li><strong>Instagram:</strong> 60 sn hızlandırılmış (timelapse) versiyon. "Bir tabağın 24 saati 60 saniyede"</li>
+          <li><strong>TikTok:</strong> 30 sn POV "tabak kamera" versiyonu — eğlenceli, deneysel</li>
+          <li><strong>Seri potansiyeli:</strong> Farklı restoran türleri (fine dining, street food, otel breakfast) = farklı bölümler</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Yaratıcılık</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i></i><i></i><i></i></div></span></div>
+        <div class="row"><span>Viral</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="row"><span>Marka Hikayesi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Tekrarlanabilir</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(10,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(10,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(10,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 11 ═══ -->
+  <div class="idea" id="idea-11">
+    <div class="idea-top">
+      <div class="idea-num">11</div>
+      <div class="idea-meta">
+        <span class="cat cat-collab">Beklenmedik İşbirliği</span>
+      </div>
+    </div>
+    <h2>Bonna × Otomobil Markası — "Dayanıklılık İttifakı"</h2>
+    <div class="tagline">"İki sektör, bir felsefe: bozulmaz."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>Dayanıklılığıyla bilinen bir otomobil markasıyla (Toyota, Volvo, Land Rover gibi) cross-promotion. Ortak içerik: "Farklı sektörler, aynı takıntı — dayanıklılık." Test pistinde araba, test mutfağında tabak — paralel montaj.</p>
+        <p><strong>Neden farklı:</strong> Porselen × otomotiv hiç kimsenin beklemediği bir çaprazlama. Dikkat çekiciliği bu beklenmediklikten geliyor. Her iki marka da "sınırları zorlama" ve "uzun ömür" üzerinden konuşuyor. B2B karar vericiler aynı zamanda otomobil tüketicisi — mecra çaprazlaması doğal.</p>
+        <h4>Olası Formatlar</h4>
+        <ul>
+          <li>Co-branded video: Test pisti + test mutfağı paralel montajı (marka filmi serisine entegre edilebilir)</li>
+          <li>Otomobil showroom'unda Bonna showcase — "iki dayanıklı marka" temalı display</li>
+          <li>LinkedIn co-authored makale: "Dayanıklılık mühendisliğinde iki farklı yaklaşım"</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Sürpriz Etkisi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Zorluk</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="row"><span>PR Değeri</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>B2B Etkisi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i><i></i></div></span></div>
+        <div class="row"><span>Gerçekleşme Şansı</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i></i><i></i><i></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(11,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(11,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(11,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 12 ═══ -->
+  <div class="idea" id="idea-12">
+    <div class="idea-top">
+      <div class="idea-num">12</div>
+      <div class="idea-meta">
+        <span class="cat cat-b2b">B2B İnovasyon</span>
+        <span class="cat cat-tech">Teknoloji</span>
+      </div>
+    </div>
+    <h2>"Bonna Academy" — Dijital Eğitim Platformu</h2>
+    <div class="tagline">"Tabak sattığımız insanları eğitiyoruz."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>Online eğitim platformu: <strong>Food styling</strong> (tabakta sunum sanatı), <strong>porselen bakımı</strong> (endüstriyel ortamda ömrü uzatma), <strong>HoReCa operasyon verimliliği</strong> (tabak lojistiği, breakage azaltma). Tamamı ücretsiz, kayıt ile erişim.</p>
+        <p><strong>Neden farklı:</strong> "Müşterine değer kat" prensibi — Bonna sadece ürün satmıyor, bilgi de veriyor. Kayıt = lead. İçerik = SEO. Sertifika = LinkedIn paylaşımı. "Bonna Academy sertifikalı" genç şefler gelecekte Bonna'nın doğal savunucuları.</p>
+        <h4>Kurs Fikirleri</h4>
+        <ul>
+          <li>"Sunum Sanatı 101" — 5 modül, her Bonna koleksiyonuyla farklı sunum teknikleri</li>
+          <li>"Porselen Bakım Rehberi" — Doğru yıkama, saklama, endüstriyel kullanım optimizasyonu</li>
+          <li>"Restoran F&B Yönetimi: Tabak Maliyeti" — TCO analizi, tedarikçi değerlendirme</li>
+          <li>"Trendler: 2026 Gastronomi Sunumları" — Yıllık güncellenen trend raporu</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Otorite</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Lead Gen</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i><i></i></div></span></div>
+        <div class="row"><span>Uzun Vadeli</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>SEO Etkisi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(12,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(12,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(12,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 13 ═══ -->
+  <div class="idea" id="idea-13">
+    <div class="idea-top">
+      <div class="idea-num">13</div>
+      <div class="idea-meta">
+        <span class="cat cat-guerrilla">Guerrilla</span>
+        <span class="cat cat-tech">Teknoloji</span>
+      </div>
+    </div>
+    <h2>"Çıtlama Sayacı" — Canlı Dayanıklılık Skoru</h2>
+    <div class="tagline">"327.441 servis. 0 çıtlama."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>Web sitesinde ve sosyal medyada canlı güncellenen bir sayaç: Bonna tabakların dünya genelinde kaç servis geçirdiği (tahmini hesaplama: aktif tabak sayısı × günlük servis ortalaması) ve toplam çıtlama sayısı: <strong>0</strong>. Sayaç her saniye artıyor — tıkır tıkır, hipnotik.</p>
+        <p><strong>Neden farklı:</strong> Bir iddiayı gerçek zamanlı kanıtlamak. "Ömür boyu garanti" soyut — ama "şu an 4.2 milyar servisi geride bıraktık, sıfır çıtlama" somut. Landing page'in hero elementi, fuarlarda büyük ekranda, Instagram story'de paylaşılabilir format.</p>
+        <h4>Teknik</h4>
+        <ul>
+          <li>Algoritma: Küresel aktif Bonna tabak tahmini × ortalama günlük servis = kümülatif servis sayısı</li>
+          <li>Doğrulama: "Bu rakam nasıl hesaplanıyor?" şeffaflık pop-up'ı — güvenilirlik</li>
+          <li>Milestone'lar: "5 milyar servis" gibi rakamlar PR kampanyasına dönüştürülür</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Yaratıcılık</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i></i><i></i><i></i><i></i></div></span></div>
+        <div class="row"><span>Güvenilirlik</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Paylaşılabilirlik</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="row"><span>Web Entegrasyon</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(13,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(13,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(13,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 14 ═══ -->
+  <div class="idea" id="idea-14">
+    <div class="idea-top">
+      <div class="idea-num">14</div>
+      <div class="idea-meta">
+        <span class="cat cat-collab">İşbirliği</span>
+        <span class="cat cat-cultural">Kültürel</span>
+      </div>
+    </div>
+    <h2>Bonna × Mutfak Okulları — "Gelecek Nesil" Programı</h2>
+    <div class="tagline">"Henüz şef olmadan Bonna'yı tanı."</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>Türkiye'nin önde gelen gastronomi okullarıyla (MSA, Le Cordon Bleu İstanbul, Okan Üniversitesi, Yeditepe Gastronomi) <strong>kurumsal ortaklık</strong>: Mutfak laboratuvarlarına Bonna tabak seti, öğrencilere "sunum sanatı" workshop'u, mezuniyet projelerinde Bonna jüri üyeliği, en başarılı öğrenciye "Bonna Bursu."</p>
+        <p><strong>Neden farklı:</strong> Mevcut şefleri ikna etmek zor — alışkanlıklarını değiştirmeleri gerekiyor. Ama okuldan Bonna ile tanışan genç şef, kariyer boyunca Bonna'yı "doğal" hissedecek. Uzun vadeli, düşük maliyetli, yüksek sadakatli strateji. Bonus: Öğrenciler sosyal medyada en aktif grup — organik UGC garantili.</p>
+        <h4>Uygulama</h4>
+        <ul>
+          <li>5-8 okulla pilot anlaşma (ürün + workshop + jüri + burs)</li>
+          <li>Yılda 2 "Bonna Genç Şef Yarışması" — okullararası, sosyal medyada yayınlanan</li>
+          <li>Mezunlara "Bonna Alumni" programı — ilk restoranlarında özel indirim</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Uzun Vadeli Etki</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i></i><i></i><i></i></div></span></div>
+        <div class="row"><span>Sadakat</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>UGC İçerik</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="row"><span>Marka İmajı</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(14,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(14,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(14,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FİKİR 15 ═══ -->
+  <div class="idea" id="idea-15">
+    <div class="idea-top">
+      <div class="idea-num">15</div>
+      <div class="idea-meta">
+        <span class="cat cat-product">Ürün Deneyimi</span>
+        <span class="cat cat-guerrilla">Guerrilla</span>
+      </div>
+    </div>
+    <h2>"Garanti Kutusu" — Unboxing Deneyimi</h2>
+    <div class="tagline">"Bir tabak kutusunu açmayı unutulmaz yapabilir misin?"</div>
+    <div class="idea-body">
+      <div class="idea-desc">
+        <p>Bonna'nın B2B paketleme deneyimini baştan tasarla. Mevcut koli/strafor yerine, <strong>premium "garanti kutusu"</strong>: Kutunun içinde tabakla birlikte ömür boyu garanti sertifikası (numaralı, fiziksel), şeften kısa bir "hoş geldin" kartı, QR ile erişilen kullanım rehberi ve "Sınırları Zorla" manifesto kartı.</p>
+        <p><strong>Neden farklı:</strong> Unboxing deneyimi lüks tüketicide standart, B2B'de sıfır. Bir otel satın almacısı yüzlerce koli açıyor — hiçbiri "vay be" dedirtmiyor. Bonna'nınki dedirtecek. Ve her "vay be" anı = potansiyel Instagram paylaşımı.</p>
+        <h4>Detaylar</h4>
+        <ul>
+          <li>Premium paketleme sadece "first order" (ilk sipariş) için — sonraki siparişler standart (maliyet kontrolü)</li>
+          <li>Kutu tasarımı: Koyu navy, gold baskı, mat laminasyon — marka filmiyle aynı estetik dili</li>
+          <li>İçindeki garanti sertifikası → fotoğraflanan, paylaşılan bir nesne olmalı</li>
+          <li>Kutu, şefin mutfakta saklayacağı kalitede olmalı — çöpe atılan kutu = başarısız tasarım</li>
+        </ul>
+      </div>
+      <div class="idea-side">
+        <h5>Değerlendirme</h5>
+        <div class="row"><span>Farklılaşma</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>Maliyet</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i></i><i></i><i></i></div></span></div>
+        <div class="row"><span>Müşteri Deneyimi</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="row"><span>UGC / Paylaşım</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i></div></span></div>
+        <div class="row"><span>Uygulanabilirlik</span><span><div class="meter"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div></span></div>
+        <div class="vote-btns">
+          <button class="vote-btn yes" onclick="vote(15,'yes')">Evet</button>
+          <button class="vote-btn maybe" onclick="vote(15,'maybe')">Belki</button>
+          <button class="vote-btn no" onclick="vote(15,'no')">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ SUMMARY BAR ═══ -->
+<div class="summary" id="summary">
+  <h3>Seçim Özeti</h3>
+  <div class="summary-counts">
+    <div style="color:#2d6a4f;"><strong id="yes-count">0</strong> Evet</div>
+    <div style="color:#7a6200;"><strong id="maybe-count">0</strong> Belki</div>
+    <div style="color:#8e2e2e;"><strong id="no-count">0</strong> Hayır</div>
+    <div style="color:rgba(255,255,255,0.4);"><strong id="remaining-count">15</strong> Kalan</div>
+  </div>
+</div>
+
+<script>
+const votes = {};
+
+function vote(id, choice) {
+  const idea = document.getElementById(`idea-${id}`);
+  const btns = idea.querySelectorAll('.vote-btn');
+
+  // Toggle: if already selected, deselect
+  if (votes[id] === choice) {
+    delete votes[id];
+    btns.forEach(b => b.classList.remove('active'));
+    idea.classList.remove('selected', 'rejected');
+  } else {
+    votes[id] = choice;
+    btns.forEach(b => b.classList.remove('active'));
+    btns.forEach(b => { if (b.classList.contains(choice)) b.classList.add('active'); });
+    idea.classList.remove('selected', 'rejected');
+    if (choice === 'yes') idea.classList.add('selected');
+    if (choice === 'no') idea.classList.add('rejected');
+  }
+
+  updateSummary();
+}
+
+function updateSummary() {
+  const yes = Object.values(votes).filter(v => v === 'yes').length;
+  const maybe = Object.values(votes).filter(v => v === 'maybe').length;
+  const no = Object.values(votes).filter(v => v === 'no').length;
+  const remaining = 15 - Object.keys(votes).length;
+
+  document.getElementById('yes-count').textContent = yes;
+  document.getElementById('maybe-count').textContent = maybe;
+  document.getElementById('no-count').textContent = no;
+  document.getElementById('remaining-count').textContent = remaining;
+
+  const summary = document.getElementById('summary');
+  summary.classList.toggle('visible', Object.keys(votes).length > 0);
+}
+</script>
+
+</body>
+</html>

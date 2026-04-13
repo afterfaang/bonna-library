@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonna · Mikro Hedefleme 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a1a;--sand:#C9A96E;--sand-light:#f4eed9;--sand-pale:#faf7f0;--bg:#fefdfb;--gray:#94918a;--light:#f5f3ef;--border:#e8e4dc;--sidebar:#faf8f5}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);display:flex;height:100vh;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:280px;min-width:280px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.sb-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border)}
+.sb-logo .brand{font-family:'DM Serif Display',serif;font-size:28px;color:var(--ink);letter-spacing:4px}
+.sb-logo .sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--sand);margin-top:4px}
+.sb-nav{flex:1;overflow-y:auto;padding:12px 0}
+.sb-section{padding:0 16px;margin-bottom:4px}
+.sb-section-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);padding:12px 8px 6px;font-weight:600}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .15s;font-size:13px;font-weight:500;color:var(--ink);border:none;background:none;width:100%;text-align:left;font-family:inherit}
+.sb-item:hover{background:var(--sand-light)}
+.sb-item.active{background:var(--ink);color:#fff}
+.sb-item.active .sb-emoji{background:var(--sand)}
+.sb-item .sb-emoji{width:32px;height:32px;border-radius:8px;background:var(--light);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:background .15s}
+.sb-item.active .sb-cnt{background:var(--sand);color:#fff}
+.sb-item .sb-cnt{font-size:10px;font-weight:700;background:var(--light);color:var(--gray);padding:2px 8px;border-radius:10px;margin-left:auto;flex-shrink:0}
+.sb-footer{padding:16px 24px;border-top:1px solid var(--border);font-size:10px;color:var(--gray);letter-spacing:.5px;line-height:1.6}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;height:100vh}
+.main-inner{padding:40px 48px;max-width:900px}
+.page{display:none}
+.page.visible{display:block}
+
+/* TYPOGRAPHY */
+.page-title{font-family:'DM Serif Display',serif;font-size:32px;color:var(--ink);margin-bottom:6px}
+.page-desc{font-size:14px;color:var(--gray);margin-bottom:32px;line-height:1.7}
+.section-title{font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:16px;margin-top:40px}
+.section-title:first-child{margin-top:0}
+.divider{width:32px;height:2px;background:var(--sand);margin-bottom:24px}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px}
+.kpi{text-align:center;padding:24px 16px;border:1px solid var(--border);border-radius:12px}
+.kpi-num{font-family:'DM Serif Display',serif;font-size:40px}
+.kpi-lab{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-top:2px}
+
+/* HEATMAP */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:11px}
+thead th{padding:12px 8px;text-align:center;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--gray);background:var(--light);font-weight:500;border-bottom:1px solid var(--border)}
+thead th:first-child{text-align:left;padding-left:14px}
+tbody td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--border);font-weight:600}
+tbody td:first-child{text-align:left;padding-left:14px;font-weight:600;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+.hm5{background:var(--ink);color:#fff;border-radius:4px}
+.hm4{background:var(--sand);color:#fff;border-radius:4px}
+.hmL{background:var(--sand-light);color:var(--sand);border-radius:4px}
+.hm0{color:#ddd}
+.legend{display:flex;gap:20px;font-size:11px;color:var(--gray)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:middle;margin-right:5px}
+
+/* BARS */
+.bar{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.bar-n{width:84px;font-size:12px;font-weight:600;text-align:right;flex-shrink:0}
+.bar-t{flex:1;height:4px;background:var(--light);border-radius:2px;overflow:hidden}
+.bar-f{height:100%;border-radius:2px}
+.bar-p{width:36px;font-size:12px;font-weight:700;flex-shrink:0}
+.bar-r{font-size:11px;color:var(--gray);width:120px;flex-shrink:0}
+
+/* DETAIL CARD */
+.detail{border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden;transition:box-shadow .2s}
+.detail:hover{box-shadow:0 2px 16px rgba(0,0,0,.04)}
+.detail-head{padding:20px 24px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:background .15s}
+.detail-head:hover{background:var(--sand-pale)}
+.detail-head.open{background:var(--sand-pale)}
+.detail-emoji{width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.detail-head.open .detail-emoji{background:var(--sand)}
+.detail-id{font-size:10px;letter-spacing:2px;color:var(--sand);text-transform:uppercase}
+.detail-name{font-family:'DM Serif Display',serif;font-size:17px}
+.detail-sub{font-size:12px;color:var(--gray)}
+.detail-arrow{margin-left:auto;color:var(--border);font-size:18px;transition:transform .2s}
+.detail-head.open .detail-arrow{transform:rotate(90deg);color:var(--sand)}
+.detail-body{display:none;padding:0 24px 24px;border-top:1px solid var(--border)}
+.detail-head.open+.detail-body{display:block}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:20px}
+.dl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:2px}
+.dv{font-size:13px;font-weight:500;line-height:1.5}
+.chip{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;margin:2px;border:1px solid var(--border);background:var(--bg)}
+.chip-dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* OCCASION GRID */
+.o-list .detail-head{gap:14px}
+.badge{display:inline-block;padding:3px 12px;border-radius:16px;font-size:10px;font-weight:700;letter-spacing:.5px}
+.badge-h{background:var(--ink);color:#fff}
+.badge-m{background:var(--sand);color:#fff}
+.badge-l{background:var(--light);color:var(--gray)}
+
+/* MATRIX */
+.f-row{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+.fb{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-family:inherit;font-weight:600;font-size:11px;color:var(--gray);transition:all .2s}
+.fb.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.mc{border:1px solid var(--border);border-radius:12px;margin-bottom:14px;padding:24px;transition:box-shadow .2s}
+.mc:hover{box-shadow:0 2px 16px rgba(0,0,0,.04)}
+.mc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.mc-tags{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mc-tag{font-size:11px;font-weight:600;padding:3px 12px;border-radius:14px}
+.mc-h{font-family:'DM Serif Display',serif;font-size:22px;margin-top:8px}
+.mc-d{font-size:13px;color:var(--gray);margin-top:3px;line-height:1.6}
+.mc-meta{display:flex;gap:28px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--gray);flex-wrap:wrap}
+.mc-meta strong{color:var(--ink)}
+.stars{color:var(--sand);letter-spacing:2px;font-size:13px}
+
+/* CALENDAR */
+.cal-list .detail{margin-bottom:0;border-radius:0;border-left:none;border-right:none;border-top:none}
+.cal-list .detail:first-child{border-radius:12px 12px 0 0;border-top:1px solid var(--border)}
+.cal-list .detail:last-child{border-radius:0 0 12px 12px}
+.cal-list{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:40px}
+.cal-dots{display:flex;gap:3px;margin-left:auto;margin-right:12px}
+.cal-dot{width:7px;height:7px;border-radius:50%}
+
+/* CHANNEL GRID */
+.ch-list{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.ch-item{display:flex;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid var(--border);transition:background .15s}
+.ch-item:last-child{border-bottom:none}
+.ch-item:hover{background:var(--sand-pale)}
+.ch-pct{font-family:'DM Serif Display',serif;font-size:22px;color:var(--sand);width:50px;text-align:right;flex-shrink:0}
+.ch-bar-w{width:80px;flex-shrink:0}
+.ch-bar-t{height:3px;background:var(--light);border-radius:2px;overflow:hidden}
+.ch-bar-f{height:100%;background:var(--ink);border-radius:2px}
+.ch-info{flex:1}
+.ch-name{font-weight:700;font-size:13px}
+.ch-role{font-size:11px;color:var(--gray)}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-logo">
+    <div class="brand">bonna</div>
+    <div class="sub">Mikro Hedefleme 2026</div>
+  </div>
+  <div class="sb-nav" id="sbnav"></div>
+  <div class="sb-footer">B2B HoReCa<br>Persona × Okazyon × Kanal</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+  <div class="main-inner">
+
+    <!-- PAGE: DASHBOARD -->
+    <div class="page visible" id="pg-dashboard">
+      <div class="page-title">Genel Bakış</div>
+      <div class="page-desc">Tüm stratejinin kuşbakışı görünümü.</div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num">8</div><div class="kpi-lab">Profil</div></div>
+        <div class="kpi"><div class="kpi-num">12</div><div class="kpi-lab">Fırsat Anı</div></div>
+        <div class="kpi"><div class="kpi-num">14</div><div class="kpi-lab">Reklam</div></div>
+        <div class="kpi"><div class="kpi-num">9</div><div class="kpi-lab">Kanal</div></div>
+      </div>
+      <div class="section-title">Isı Haritası</div>
+      <div class="divider"></div>
+      <div class="tbl-wrap"><table id="heatmap"></table></div>
+      <div class="legend">
+        <span><i style="background:var(--ink)"></i>Yüksek Öncelik</span>
+        <span><i style="background:var(--sand)"></i>Orta Öncelik</span>
+        <span><i style="background:var(--sand-light)"></i>Potansiyel</span>
+      </div>
+      <div class="section-title">Bütçe Dağılımı</div>
+      <div class="divider"></div>
+      <div id="bars"></div>
+    </div>
+
+    <!-- PAGE: PERSONAS -->
+    <div class="page" id="pg-personas">
+      <div class="page-title">Müşteri Profilleri</div>
+      <div class="page-desc">8 farklı karar verici. Tıklayarak detayları açın.</div>
+      <div id="plist"></div>
+    </div>
+
+    <!-- PAGE: OCCASIONS -->
+    <div class="page" id="pg-occasions">
+      <div class="page-title">Fırsat Anları</div>
+      <div class="page-desc">"Şimdi almalıyım" dedirten 12 an.</div>
+      <div class="o-list" id="olist"></div>
+    </div>
+
+    <!-- PAGE: MATRIX -->
+    <div class="page" id="pg-matrix">
+      <div class="page-title">Reklam Fikirleri</div>
+      <div class="page-desc">Profil × Fırsat = Nokta atışı mesaj.</div>
+      <div class="f-row" id="fbar"></div>
+      <div id="mlist"></div>
+    </div>
+
+    <!-- PAGE: CALENDAR -->
+    <div class="page" id="pg-calendar">
+      <div class="page-title">Yıllık Takvim</div>
+      <div class="page-desc">Her ay ne yapıyoruz?</div>
+      <div class="cal-list" id="clist"></div>
+      <div class="section-title">Kanallar</div>
+      <div class="divider"></div>
+      <div class="ch-list" id="chlist"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// DATA
+const P=[
+{id:"P01",n:"Vizyoner Şef",r:"Baş Aşçı · Fine Dining",ic:"👨‍🍳",mot:"Yemek sunumunu sanata dönüştürmek",pain:"Sıradan tabaklar vizyonunu yansıtmıyor",bud:"Estetik her şeyin önünde",des:"Çok Yüksek",col:["Tone Bazalith","Fuji Elisa","Fuji Ocean","Cresta Bazalith"],tri:"Yeni menü veya ödül hazırlığı"},
+{id:"P02",n:"F&B Müdürü",r:"Otel F&B Direktörü · Otel Zinciri",ic:"🏨",mot:"Az kırılsın, çok dayansın, bütçeye sığsın",pain:"Tabaklar sürekli kırılıyor, maliyet artıyor",bud:"Her kuruş hesapta",des:"Orta",col:["Ripple Liora","Banquet","Arctic","Linea"],tri:"Yıllık bütçe veya stok krizi"},
+{id:"P03",n:"Girişimci Patron",r:"Restoran Sahibi · Butik Restoran",ic:"🚀",mot:"Fark yaratmak, Instagram'da öne çıkmak",pain:"Premium istiyorum ama bütçem kısıtlı",bud:"Akıllı harcama",des:"Yüksek",col:["Aquelis","Kymen","Retro Floral","Granix"],tri:"Yeni açılış veya konsept değişimi"},
+{id:"P04",n:"Satın Alma Uzmanı",r:"Tedarik Müdürü · Otel Grubu",ic:"📋",mot:"Aynı kaliteyi her seferinde almak",pain:"Geç teslimat ve tutarsız kalite",bud:"En düşük birim fiyat",des:"Düşük",col:["Gourmet","Esnaf","Grain","Stage"],tri:"Sözleşme yenileme veya yeni şube"},
+{id:"P05",n:"Kafe Tutkunu",r:"Kafe İşletmecisi · Specialty Coffee",ic:"☕",mot:"Her fincan fotoğraf çekmeye değsin",pain:"Güzel tabak bulmak zor ve pahalı",bud:"Güzel olsun, abartmasın",des:"Çok Yüksek",col:["Nicole","Mood","Iris","Retro Floral"],tri:"Sezon değişimi veya yeni trend"},
+{id:"P06",n:"Etkinlik Sihirbazı",r:"Catering Müdürü · Düğün Org.",ic:"🎪",mot:"500 kişiye aynı kalitede sunum",pain:"Taşırken kırılıyor, adet bulmak zor",bud:"Toptan + dayanıklılık",des:"Orta-Yüksek",col:["Banquet","Gourmet","Halo","Knidos"],tri:"Düğün sezonu veya büyük etkinlik"},
+{id:"P07",n:"Distribütör",r:"Toptancı · HoReCa Dağıtım",ic:"🤝",mot:"Satılacak ürünü portföyüne eklemek",pain:"Rakipler fiyat kırıyor",bud:"Kâr marjı her şeydir",des:"Düşük",col:["Tüm koleksiyonlar"],tri:"Fuar veya yeni sezon"},
+{id:"P08",n:"Yeşil Yönetici",r:"Sürdürülebilirlik · Kurumsal Otel",ic:"🌿",mot:"ESG hedeflerine uygun tedarik kurmak",pain:"Sertifikalı yeşil tedarikçi çok az",bud:"Bütçe var ama kanıt ister",des:"Orta",col:["Vitrified koleksiyonlar"],tri:"ESG raporu veya sertifika yenileme"}
+];
+
+const O=[
+{id:"O01",n:"Yeni Mekan Açılışı",cat:"Dönüm Noktası",se:"Yıl boyunca",ur:"Yüksek",sp:"2-4 hafta",ps:["P03","P05"],em:"🎉"},
+{id:"O02",n:"Menü Yenileme",cat:"Her Sezon",se:"Mart-Nisan / Eylül",ur:"Orta",sp:"1-2 hafta",ps:["P01","P03","P05"],em:"🍂"},
+{id:"O03",n:"Ödül Hazırlığı",cat:"Prestij",se:"Yıl boyunca",ur:"Çok Yüksek",sp:"1-2 ay",ps:["P01"],em:"⭐"},
+{id:"O04",n:"Bütçe Sezonu",cat:"Kurumsal",se:"Kasım-Ocak",ur:"Orta",sp:"1-3 ay",ps:["P02","P04","P07"],em:"📊"},
+{id:"O05",n:"Düğün & Etkinlik",cat:"Sezonsal",se:"Mayıs-Eylül",ur:"Yüksek",sp:"1-3 hafta",ps:["P06"],em:"💒"},
+{id:"O06",n:"Acil Stok",cat:"Kriz",se:"Yıl boyunca",ur:"Çok Yüksek",sp:"Aynı gün!",ps:["P02","P04","P06"],em:"🚨"},
+{id:"O07",n:"Fuar Dönemi",cat:"Sektörel",se:"Ocak / Mart",ur:"Düşük",sp:"Araştırma",ps:["P01","P03","P04","P07"],em:"🏛️"},
+{id:"O08",n:"Konsept Değişikliği",cat:"Dönüşüm",se:"Kış ayları",ur:"Orta-Yüksek",sp:"2-6 hafta",ps:["P01","P03","P05"],em:"🔄"},
+{id:"O09",n:"Yeşil Hedef",cat:"ESG",se:"Q1",ur:"Orta",sp:"1-3 ay",ps:["P08","P02","P04"],em:"🌍"},
+{id:"O10",n:"Yeni Şube",cat:"Büyüme",se:"Yıl boyunca",ur:"Yüksek",sp:"2-4 hafta",ps:["P02","P04","P07"],em:"📍"},
+{id:"O11",n:"Viral An!",cat:"Fırsat",se:"Öngörülemez",ur:"Yüksek",sp:"1-3 gün",ps:["P03","P05"],em:"📱"},
+{id:"O12",n:"Bayram & Özel Gün",cat:"Kutlama",se:"Aralık / Ramazan",ur:"Orta-Yüksek",sp:"1-2 hafta",ps:["P01","P03","P05","P06"],em:"🎄"}
+];
+
+const MX=[
+{p:"P01",o:"O02",pr:5,h:"Yeni sezon, yeni sunum dili.",d:"Şefinizin vizyonunu tabağa yansıtın.",v:"Dramatik ışıkta fine dining",c1:"Instagram",c2:"YouTube",ctr:"2.5-3.5%"},
+{p:"P01",o:"O03",pr:5,h:"Her tabak bir sahne.",d:"Ödüllü tasarımlar, ödüllü şefler için.",v:"Michelin ambiyansı close-up",c1:"Instagram",c2:"LinkedIn",ctr:"2.0-3.0%"},
+{p:"P02",o:"O04",pr:5,h:"Tabak maliyetini %40 düşürün.",d:"Ömür boyu kenar çıtlamazlık garantisi.",v:"Maliyet karşılaştırma infografik",c1:"LinkedIn",c2:"Google",ctr:"1.5-2.5%"},
+{p:"P02",o:"O06",pr:5,h:"Acil stok? 48 saatte kapınızda.",d:"100+ ülkeye lojistik ağı, aynı seri garantisi.",v:"Hızlı teslimat görseli",c1:"Google",c2:"Meta",ctr:"3.0-4.5%"},
+{p:"P03",o:"O01",pr:5,h:"İlk izlenim tabaklarla başlar.",d:"Bütçenize uygun premium koleksiyonlar.",v:"Yeni restoran masa düzeni",c1:"Instagram",c2:"TikTok",ctr:"2.5-3.5%"},
+{p:"P03",o:"O08",pr:4,h:"Aynı mekan, bambaşka deneyim.",d:"Mix & Match ile kendi tarzınızı yaratın.",v:"Önce/sonra restoran dönüşümü",c1:"Instagram",c2:"Pinterest",ctr:"2.0-3.0%"},
+{p:"P04",o:"O10",pr:4,h:"50 şube, 1 standart, 0 sürpriz.",d:"Tutarlı kalite, zamanında teslimat.",v:"Çoklu şube profesyonel görsel",c1:"LinkedIn",c2:"Google",ctr:"1.0-2.0%"},
+{p:"P04",o:"O04",pr:5,h:"2026 bütçeniz için erken kuş fırsatı.",d:"Yıllık anlaşmayla %15 tasarruf edin.",v:"Tasarruf hesaplama görseli",c1:"LinkedIn",c2:"Google",ctr:"1.5-2.0%"},
+{p:"P05",o:"O02",pr:4,h:"Bu sezon kahveniz Iris'te servis edilsin.",d:"Instagram'ın en çok beğenilen kafeleri Bonna kullanıyor.",v:"Latte art üst açı çekim",c1:"Instagram",c2:"TikTok",ctr:"3.0-4.5%"},
+{p:"P05",o:"O11",pr:5,h:"Herkes bu tabağı soruyor!",d:"Trend koleksiyonu hemen keşfedin. Stoklar sınırlı.",v:"Viral paylaşım + ürün görseli",c1:"Instagram",c2:"TikTok",ctr:"3.5-5.0%"},
+{p:"P06",o:"O05",pr:5,h:"500 kişilik düğünde kusursuz sunum.",d:"Yüksek dayanıklılık + şık tasarım.",v:"Büyük düğün masası panoramik",c1:"Google",c2:"Instagram",ctr:"2.0-3.0%"},
+{p:"P06",o:"O12",pr:4,h:"Bayram sofralarına zarafet katın.",d:"500+ parçalık catering setleri, 48 saat teslimat.",v:"Şenlikli sofra düzeni",c1:"Instagram",c2:"YouTube",ctr:"1.5-2.5%"},
+{p:"P07",o:"O07",pr:5,h:"2026 koleksiyonu burada.",d:"Yeni sezon özel distribütör koşulları.",v:"Fuar standı ve yeni ürünler",c1:"LinkedIn",c2:"Google",ctr:"0.8-1.5%"},
+{p:"P08",o:"O09",pr:5,h:"Net sıfır hedefinize Bonna ile ulaşın.",d:"EPD sertifikalı. %99.9 geri dönüşüm oranı.",v:"Yeşil fabrika + sertifika görseli",c1:"LinkedIn",c2:"Google",ctr:"1.5-2.5%"}
+];
+
+const CH=[
+{n:"Instagram",pct:30,ro:"İlham + Estetik + Satış",ps:"P01, P03, P05"},
+{n:"LinkedIn",pct:20,ro:"B2B Müşteri Bulma",ps:"P02, P04, P07, P08"},
+{n:"Google Arama",pct:15,ro:"Arayanlara Görünme",ps:"P02, P04, P06"},
+{n:"Facebook",pct:10,ro:"Tekrar Hedefleme",ps:"P02, P04, P06"},
+{n:"YouTube",pct:8,ro:"Hikaye Anlatma",ps:"P01, P03, P05"},
+{n:"TikTok",pct:7,ro:"Trend Yakalama",ps:"P03, P05"},
+{n:"Google Görsel",pct:5,ro:"Tanıtım Ağı",ps:"P03, P05, P07"},
+{n:"Pinterest",pct:3,ro:"İlham Panosu",ps:"P03, P05, P06"},
+{n:"E-posta",pct:2,ro:"İlişki Sürdürme",ps:"Herkes"}
+];
+
+const CAL=[
+{m:"Ocak",th:"Yılbaşı Enerjisi",oc:"Bütçe + Fuar hazırlık",fo:"Planlama dönemi",i:3},
+{m:"Şubat",th:"Fuar Heyecanı",oc:"Ambiente Frankfurt",fo:"Yeni ürün lansmanı",i:4},
+{m:"Mart",th:"Bahar Uyanışı",oc:"Menü yenileme + Açılışlar",fo:"Sezon başlangıcı",i:5},
+{m:"Nisan",th:"Çiçek Açıyor",oc:"Menü + Düğün hazırlık",fo:"Hız kazanma",i:4},
+{m:"Mayıs",th:"Düğün Zili",oc:"Etkinlik sezonu başlıyor",fo:"Düğün + açılış",i:5},
+{m:"Haziran",th:"Yaz Rüzgarı",oc:"Viral anlar + Düğün",fo:"Sosyal medya",i:3},
+{m:"Temmuz",th:"Tam Gaz",oc:"Stok yenileme + Düğün",fo:"Yoğun sipariş",i:3},
+{m:"Ağustos",th:"Mola & Plan",oc:"Stok + Sonbahar planı",fo:"Hazırlık",i:2},
+{m:"Eylül",th:"Sonbahar Dönüşümü",oc:"Menü + Konsept yenileme",fo:"Yoğun kampanya",i:5},
+{m:"Ekim",th:"Prestij Ayı",oc:"Michelin + Menü değişimi",fo:"Ödül sezonu",i:4},
+{m:"Kasım",th:"2027 Yol Haritası",oc:"Bütçe + ESG planlama",fo:"Kurumsal satış",i:4},
+{m:"Aralık",th:"Kutlama Zamanı",oc:"Bayram + Yılsonu fırsatları",fo:"Yılsonu sprint",i:5}
+];
+
+// SIDEBAR NAV
+const pages=[
+  {id:'dashboard',label:'Genel Bakış',em:'📊'},
+  {id:'personas',label:'Müşteri Profilleri',em:'👤',cnt:'8'},
+  {id:'occasions',label:'Fırsat Anları',em:'⚡',cnt:'12'},
+  {id:'matrix',label:'Reklam Fikirleri',em:'💡',cnt:'14'},
+  {id:'calendar',label:'Kanal & Takvim',em:'📅',cnt:'9'}
+];
+
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('visible'));
+  document.getElementById('pg-'+id).classList.add('visible');
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.sb-item[data-pg="${id}"]`).classList.add('active');
+  document.querySelector('.main').scrollTop=0;
+}
+
+(function(){
+  const nav=document.getElementById('sbnav');
+  nav.innerHTML='<div class="sb-section"><div class="sb-section-label">Menü</div>'+
+    pages.map(p=>`<button class="sb-item${p.id==='dashboard'?' active':''}" data-pg="${p.id}" onclick="goPage('${p.id}')"><span class="sb-emoji">${p.em}</span>${p.label}${p.cnt?`<span class="sb-cnt">${p.cnt}</span>`:''}</button>`).join('')+
+    '</div>';
+})();
+
+// TOGGLE
+function tog(el){
+  const h=el;
+  const wasOpen=h.classList.contains('open');
+  // close siblings
+  h.parentElement.parentElement.querySelectorAll('.detail-head.open').forEach(x=>{if(x!==h)x.classList.remove('open')});
+  h.classList.toggle('open',!wasOpen);
+}
+
+// HEATMAP
+(function(){
+  let h='<thead><tr><th></th>';
+  O.forEach(o=>{h+=`<th>${o.em} ${o.n}</th>`});
+  h+='</tr></thead><tbody>';
+  P.forEach(p=>{
+    h+=`<tr><td>${p.ic} ${p.id}</td>`;
+    O.forEach(o=>{
+      const m=MX.find(x=>x.p===p.id&&x.o===o.id);
+      const lnk=o.ps.includes(p.id);
+      if(m)h+=`<td class="hm${m.pr}">★${m.pr}</td>`;
+      else if(lnk)h+=`<td class="hmL">·</td>`;
+      else h+=`<td class="hm0">—</td>`;
+    });h+='</tr>';
+  });
+  document.getElementById('heatmap').innerHTML=h+'</tbody>';
+})();
+
+// BARS
+(function(){
+  document.getElementById('bars').innerHTML=CH.map(c=>`<div class="bar"><div class="bar-n">${c.n}</div><div class="bar-t"><div class="bar-f" style="width:${c.pct*3.3}%;background:${c.pct>=10?'var(--ink)':'var(--sand)'}"></div></div><div class="bar-p">${c.pct}%</div><div class="bar-r">${c.ro}</div></div>`).join('');
+})();
+
+// PERSONAS
+(function(){
+  document.getElementById('plist').innerHTML=P.map(p=>{
+    const ocs=O.filter(o=>o.ps.includes(p.id));
+    return `<div class="detail"><div class="detail-head" onclick="tog(this)"><div class="detail-emoji">${p.ic}</div><div><div class="detail-id">${p.id}</div><div class="detail-name">${p.n}</div><div class="detail-sub">${p.r}</div></div><div class="detail-arrow">›</div></div>
+    <div class="detail-body"><div class="dg">
+      <div><div class="dl">Ne İstiyor?</div><div class="dv">${p.mot}</div></div>
+      <div><div class="dl">Neyi Dert Ediyor?</div><div class="dv" style="color:#b04040">${p.pain}</div></div>
+      <div><div class="dl">Bütçe Tavrı</div><div class="dv">${p.bud}</div></div>
+      <div><div class="dl">Tasarım Merakı</div><div class="dv">${p.des}</div></div>
+    </div>
+    <div style="margin-top:20px"><div class="dl" style="margin-bottom:8px">Koleksiyonlar</div>${p.col.map(c=>`<span class="chip">${c}</span>`).join('')}</div>
+    <div style="margin-top:16px"><div class="dl" style="margin-bottom:4px">Ne Zaman Satın Alır?</div><div class="dv" style="color:var(--sand);font-weight:600">${p.tri}</div></div>
+    <div style="margin-top:16px"><div class="dl" style="margin-bottom:8px">Eşleşen Fırsat Anları</div>${ocs.map(o=>`<span class="chip chip-dark">${o.em} ${o.n}</span>`).join('')}</div>
+    </div></div>`;
+  }).join('');
+})();
+
+// OCCASIONS
+(function(){
+  const ub=u=>({"Çok Yüksek":"badge-h","Yüksek":"badge-h","Orta-Yüksek":"badge-m","Orta":"badge-m","Düşük":"badge-l"}[u]||"badge-l");
+  document.getElementById('olist').innerHTML=O.map(o=>{
+    const pm=o.ps.map(pid=>P.find(p=>p.id===pid)).filter(Boolean);
+    return `<div class="detail"><div class="detail-head" onclick="tog(this)"><div class="detail-emoji">${o.em}</div><div><div class="detail-id">${o.id} · ${o.cat}</div><div class="detail-name">${o.n}</div><div class="detail-sub">${o.se} · Karar: ${o.sp}</div></div><span class="badge ${ub(o.ur)}" style="margin-left:auto;margin-right:12px">${o.ur}</span><div class="detail-arrow">›</div></div>
+    <div class="detail-body"><div style="padding-top:16px"><div class="dl" style="margin-bottom:8px">Kimlere Gösterelim?</div>${pm.map(p=>`<span class="chip chip-dark">${p.ic} ${p.n}</span>`).join('')}</div>
+    <div style="margin-top:16px"><div class="dl" style="margin-bottom:8px">Eşleşen Reklamlar</div>${MX.filter(m=>m.o===o.id).map(m=>{const pp=P.find(x=>x.id===m.p);return `<span class="chip">${pp.ic} "${m.h}"</span>`}).join('')||'<span style="font-size:12px;color:var(--gray)">—</span>'}</div>
+    </div></div>`;
+  }).join('');
+})();
+
+// MATRIX
+function buildM(f){
+  const items=f==='all'?MX:MX.filter(m=>m.p===f);
+  document.getElementById('mlist').innerHTML=items.map(m=>{
+    const p=P.find(x=>x.id===m.p),o=O.find(x=>x.id===m.o);
+    const s='★'.repeat(m.pr)+'☆'.repeat(5-m.pr);
+    return `<div class="mc"><div class="mc-top"><div class="mc-tags"><span class="mc-tag" style="background:var(--ink);color:#fff">${p.ic} ${p.n}</span><span style="color:var(--border);margin:0 4px">×</span><span class="mc-tag" style="color:var(--sand)">${o.em} ${o.n}</span></div><div class="stars">${s}</div></div>
+    <div class="mc-h">"${m.h}"</div><div class="mc-d">${m.d}</div>
+    <div class="mc-meta"><div>🎨 <strong>${m.v}</strong></div><div>📺 <strong>${m.c1}</strong> + ${m.c2}</div><div>📈 <strong style="color:var(--sand)">${m.ctr}</strong></div></div></div>`;
+  }).join('');
+  document.querySelectorAll('.fb').forEach(b=>b.classList.toggle('on',b.dataset.f===f));
+}
+(function(){
+  let h=`<button class="fb on" data-f="all" onclick="buildM('all')">Hepsi (${MX.length})</button>`;
+  P.forEach(p=>{const c=MX.filter(m=>m.p===p.id).length;if(c)h+=`<button class="fb" data-f="${p.id}" onclick="buildM('${p.id}')">${p.ic} ${p.n} (${c})</button>`});
+  document.getElementById('fbar').innerHTML=h;buildM('all');
+})();
+
+// CALENDAR
+(function(){
+  document.getElementById('clist').innerHTML=CAL.map(c=>{
+    const dots=Array.from({length:5}).map((_,j)=>`<div class="cal-dot" style="background:${j<c.i?'var(--ink)':'var(--border)'}"></div>`).join('');
+    return `<div class="detail"><div class="detail-head" onclick="tog(this)" style="padding:16px 24px"><div style="width:70px;flex-shrink:0"><div style="font-family:'DM Serif Display',serif;font-size:18px">${c.m}</div></div><div style="flex:1"><div style="font-weight:600;font-size:13px;color:var(--sand)">${c.th}</div><div style="font-size:11px;color:var(--gray);margin-top:2px">${c.oc}</div></div><div class="cal-dots">${dots}</div><div class="detail-arrow">›</div></div>
+    <div class="detail-body"><div style="padding-top:16px"><div class="dg"><div><div class="dl">Odak</div><div class="dv">${c.fo}</div></div><div><div class="dl">Yoğunluk</div><div class="dv">${'●'.repeat(c.i)}${'○'.repeat(5-c.i)}</div></div></div></div></div></div>`;
+  }).join('');
+})();
+
+// CHANNELS
+(function(){
+  document.getElementById('chlist').innerHTML=CH.map(c=>`<div class="ch-item"><div class="ch-pct">${c.pct}%</div><div class="ch-bar-w"><div class="ch-bar-t"><div class="ch-bar-f" style="width:${c.pct*3.3}%"></div></div></div><div class="ch-info"><div class="ch-name">${c.n}</div><div class="ch-role">${c.ro} · ${c.ps}</div></div></div>`).join('');
+})();
+</script>
+</body>
+</html>

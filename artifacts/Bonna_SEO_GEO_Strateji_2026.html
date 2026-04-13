@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonna · SEO & GEO Stratejisi 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a1a;--sand:#C9A96E;--sand-light:#f4eed9;--sand-pale:#faf7f0;--bg:#fefdfb;--gray:#94918a;--light:#f5f3ef;--border:#e8e4dc;--sidebar:#faf8f5;--red:#b04040;--green:#3a7d44}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);display:flex;height:100vh;overflow:hidden}
+.sidebar{width:280px;min-width:280px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh}
+.sb-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border)}
+.sb-logo .brand{font-family:'DM Serif Display',serif;font-size:28px;letter-spacing:4px}
+.sb-logo .sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--sand);margin-top:4px}
+.sb-nav{flex:1;overflow-y:auto;padding:12px 0}
+.sb-section-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);padding:12px 24px 6px;font-weight:600}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 8px;border-radius:8px;cursor:pointer;transition:all .15s;font-size:13px;font-weight:500;border:none;background:none;width:calc(100% - 16px);text-align:left;font-family:inherit;color:var(--ink)}
+.sb-item:hover{background:var(--sand-light)}
+.sb-item.active{background:var(--ink);color:#fff}
+.sb-item .em{width:28px;height:28px;border-radius:6px;background:var(--light);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.sb-item.active .em{background:var(--sand)}
+.sb-item .cnt{font-size:10px;font-weight:700;background:var(--light);color:var(--gray);padding:2px 8px;border-radius:10px;margin-left:auto}
+.sb-item.active .cnt{background:var(--sand);color:#fff}
+.sb-footer{padding:16px 24px;border-top:1px solid var(--border);font-size:10px;color:var(--gray);line-height:1.6}
+.main{flex:1;overflow-y:auto;height:100vh}
+.main-inner{padding:40px 48px;max-width:960px}
+.page{display:none}.page.visible{display:block}
+.pt{font-family:'DM Serif Display',serif;font-size:32px;margin-bottom:6px}
+.pd{font-size:14px;color:var(--gray);margin-bottom:32px;line-height:1.7}
+.st{font-family:'DM Serif Display',serif;font-size:20px;margin:40px 0 8px}
+.st:first-child{margin-top:0}
+.dv{width:32px;height:2px;background:var(--sand);margin-bottom:20px}
+
+/* CARDS */
+.card{border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.card-head{padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background .15s}
+.card-head:hover{background:var(--sand-pale)}
+.card-head.open{background:var(--sand-pale)}
+.card-head .arrow{margin-left:auto;color:var(--border);transition:transform .2s;font-size:18px}
+.card-head.open .arrow{transform:rotate(90deg);color:var(--sand)}
+.card-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border)}
+.card-head.open+.card-body{display:block}
+
+/* GRID ITEMS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding-top:16px}
+.lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:2px}
+.val{font-size:13px;font-weight:500;line-height:1.5}
+
+/* CHIPS & BADGES */
+.chip{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;margin:2px;border:1px solid var(--border)}
+.chip-dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip-gold{background:var(--sand-light);color:var(--sand);border-color:var(--sand-light)}
+.chip-red{background:#fde8e8;color:var(--red);border-color:#fde8e8}
+.chip-green{background:#e8f5e9;color:var(--green);border-color:#e8f5e9}
+
+/* STATUS */
+.status{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.s-red{background:var(--red)}.s-yellow{background:var(--sand)}.s-green{background:var(--green)}
+
+/* SCORE BAR */
+.score-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.score-label{width:140px;font-size:12px;font-weight:500;flex-shrink:0}
+.score-track{flex:1;height:6px;background:var(--light);border-radius:3px;overflow:hidden}
+.score-fill{height:100%;border-radius:3px}
+.score-val{width:36px;font-size:12px;font-weight:700;text-align:right;flex-shrink:0}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.kpi{text-align:center;padding:24px 16px;border:1px solid var(--border);border-radius:12px}
+.kpi-num{font-family:'DM Serif Display',serif;font-size:36px}
+.kpi-lab{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-top:2px}
+
+/* KEYWORD TABLE */
+.kw-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:16px}
+.kw-table th{text-align:left;padding:10px 12px;background:var(--light);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gray);font-weight:600;border-bottom:1px solid var(--border)}
+.kw-table td{padding:10px 12px;border-bottom:1px solid var(--border);font-weight:500}
+.kw-table tr:last-child td{border-bottom:none}
+.kw-table tr:hover{background:var(--sand-pale)}
+
+/* PRIORITY */
+.pri{display:inline-block;padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700}
+.pri-h{background:var(--ink);color:#fff}
+.pri-m{background:var(--sand);color:#fff}
+.pri-l{background:var(--light);color:var(--gray)}
+
+/* TIMELINE */
+.timeline{border-left:2px solid var(--border);margin-left:16px;padding-left:24px}
+.tl-item{position:relative;margin-bottom:24px}
+.tl-item::before{content:'';position:absolute;left:-30px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--sand);border:2px solid var(--bg)}
+.tl-item.done::before{background:var(--green)}
+.tl-q{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--sand);font-weight:700;margin-bottom:2px}
+.tl-title{font-weight:600;font-size:14px;margin-bottom:4px}
+.tl-desc{font-size:12px;color:var(--gray);line-height:1.6}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sb-logo">
+    <div class="brand">bonna</div>
+    <div class="sub">SEO & GEO Stratejisi 2026</div>
+  </div>
+  <div class="sb-nav" id="sbnav"></div>
+  <div class="sb-footer">bonna.com.tr<br>TR + Global · Tam Ekosistem</div>
+</div>
+
+<div class="main"><div class="main-inner">
+
+<!-- ========== PAGE: MEVCUT DURUM ========== -->
+<div class="page visible" id="pg-audit">
+  <div class="pt">Site Analizi & Mevcut Durum</div>
+  <div class="pd">bonna.com.tr'nin şu anki SEO/GEO performansı ve kritik bulguları.</div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-num" style="color:var(--sand)">~50</div><div class="kpi-lab">İndexli Sayfa</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--red)">0</div><div class="kpi-lab">Blog İçerik</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--green)">2</div><div class="kpi-lab">Dil (TR/EN)</div></div>
+  </div>
+
+  <div class="st">Teknik SEO Durumu</div><div class="dv"></div>
+  <div id="audit-scores"></div>
+
+  <div class="st">Kritik Bulgular</div><div class="dv"></div>
+  <div id="audit-findings"></div>
+
+  <div class="st">Rakip Görünürlük</div><div class="dv"></div>
+  <div class="pd" style="margin-bottom:12px">Bonna ürünleri kendi sitesinden çok distribütör sitelerinde görünüyor:</div>
+  <div id="competitor-list"></div>
+</div>
+
+<!-- ========== PAGE: SEO STRATEJİ ========== -->
+<div class="page" id="pg-seo">
+  <div class="pt">SEO İçerik Stratejisi</div>
+  <div class="pd">Persona ve okazyon bazlı site yapısı, içerik hub kurgusu ve sayfa planı.</div>
+
+  <div class="st">Mevcut Site Yapısı vs. Olması Gereken</div><div class="dv"></div>
+  <div class="g2" style="padding-top:0">
+    <div class="card" style="margin:0"><div style="padding:16px 20px"><div class="lbl" style="margin-bottom:8px">Şu Anki Yapı</div>
+      <div class="val">/ (Ana Sayfa)<br>├── /all-collections<br>│ ├── /collections/vago<br>│ ├── /collections/cras<br>│ └── ... (düz liste)<br>├── /page/aboutus<br>├── /contact<br>└── /blog (1 yazı, terk edilmiş)</div>
+    </div></div>
+    <div class="card" style="margin:0;border-color:var(--sand)"><div style="padding:16px 20px"><div class="lbl" style="margin-bottom:8px;color:var(--sand)">Önerilen Yapı</div>
+      <div class="val">/ (Ana Sayfa)<br>├── /koleksiyonlar/<br>│ ├── /premium-vitrified/<br>│ ├── /fusiontech/<br>│ └── /premium-porselen/<br>├── /cozumler/<br>│ ├── /fine-dining/<br>│ ├── /otel-restoran/<br>│ ├── /kafe-brunch/<br>│ └── /catering-etkinlik/<br>├── /blog/ (İçerik Hub)<br>│ ├── /trend/ │ /rehber/ │ /vaka/<br>├── /surdurulebilirlik/<br>├── /hakkimizda/<br>└── /iletisim/</div>
+    </div></div>
+  </div>
+
+  <div class="st">Yeni Sayfa Önerileri</div><div class="dv"></div>
+  <div id="new-pages"></div>
+
+  <div class="st">İçerik Hub: Topic Cluster Yapısı</div><div class="dv"></div>
+  <div id="topic-clusters"></div>
+</div>
+
+<!-- ========== PAGE: GEO STRATEJİ ========== -->
+<div class="page" id="pg-geo">
+  <div class="pt">GEO Stratejisi</div>
+  <div class="pd">ChatGPT, Perplexity, Gemini ve AI Overviews'da Bonna'nın görünürlüğünü artırma planı.</div>
+
+  <div class="st">GEO Nedir ve Neden Önemli?</div><div class="dv"></div>
+  <div class="card"><div style="padding:20px">
+    <div class="g2" style="padding-top:0">
+      <div><div class="lbl">Geleneksel SEO</div><div class="val">Seni bulsunlar<br><span style="color:var(--gray)">Google'da sıralama → tıklama → site ziyareti</span></div></div>
+      <div><div class="lbl" style="color:var(--sand)">GEO (Yeni)</div><div class="val">Sana güvensinler<br><span style="color:var(--gray)">AI cevabında marka olarak anılma → güvenilirlik → tercih</span></div></div>
+    </div>
+    <div style="margin-top:16px;padding:14px;background:var(--sand-pale);border-radius:8px;font-size:13px;line-height:1.6">
+      <strong>Gartner tahmini:</strong> 2026 sonuna kadar B2B alıcılarının çoğunluğu tedarikçi araştırmalarında AI araçlarını kullanacak. Bonna bu cevaplarda yer almazsa, değerlendirme listesine bile giremeyebilir.
+    </div>
+  </div></div>
+
+  <div class="st">AI Motorlarında Mevcut Durum</div><div class="dv"></div>
+  <div id="geo-status"></div>
+
+  <div class="st">GEO Aksiyon Planı</div><div class="dv"></div>
+  <div id="geo-actions"></div>
+
+  <div class="st">Platform Bazlı Strateji</div><div class="dv"></div>
+  <div id="geo-platforms"></div>
+</div>
+
+<!-- ========== PAGE: KEYWORD MAP ========== -->
+<div class="page" id="pg-keywords">
+  <div class="pt">Keyword Mapping</div>
+  <div class="pd">Persona × Okazyon × Anahtar Kelime eşleştirmesi. TR + EN.</div>
+
+  <div class="st">Persona Bazlı Keyword Grupları</div><div class="dv"></div>
+  <div id="kw-personas"></div>
+
+  <div class="st">Okazyon Bazlı Arama Niyetleri</div><div class="dv"></div>
+  <div id="kw-occasions"></div>
+</div>
+
+<!-- ========== PAGE: YOUTUBE & SOCIAL ========== -->
+<div class="page" id="pg-youtube">
+  <div class="pt">YouTube & Sosyal SEO</div>
+  <div class="pd">Video içerik stratejisi, YouTube SEO ve sosyal medya arama optimizasyonu.</div>
+
+  <div class="st">YouTube İçerik Planı</div><div class="dv"></div>
+  <div id="yt-plan"></div>
+
+  <div class="st">Sosyal Medya SEO</div><div class="dv"></div>
+  <div id="social-seo"></div>
+</div>
+
+<!-- ========== PAGE: ROADMAP ========== -->
+<div class="page" id="pg-roadmap">
+  <div class="pt">Uygulama Yol Haritası</div>
+  <div class="pd">Çeyreklik implementasyon planı.</div>
+
+  <div class="timeline" id="roadmap"></div>
+</div>
+
+</div></div>
+
+<script>
+const pages=[
+  {id:'audit',label:'Mevcut Durum Analizi',em:'🔍'},
+  {id:'seo',label:'SEO İçerik Stratejisi',em:'📄'},
+  {id:'geo',label:'GEO Stratejisi',em:'🤖'},
+  {id:'keywords',label:'Keyword Mapping',em:'🔑'},
+  {id:'youtube',label:'YouTube & Sosyal',em:'🎬'},
+  {id:'roadmap',label:'Yol Haritası',em:'🗺️'}
+];
+
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('visible'));
+  document.getElementById('pg-'+id).classList.add('visible');
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.sb-item[data-pg="${id}"]`).classList.add('active');
+  document.querySelector('.main').scrollTop=0;
+}
+
+document.getElementById('sbnav').innerHTML='<div class="sb-section-label">Strateji</div>'+pages.map(p=>`<button class="sb-item${p.id==='audit'?' active':''}" data-pg="${p.id}" onclick="goPage('${p.id}')"><span class="em">${p.em}</span>${p.label}</button>`).join('');
+
+function tog(el){const w=el.classList.contains('open');el.parentElement.parentElement.querySelectorAll('.card-head.open').forEach(x=>{if(x!==el)x.classList.remove('open')});el.classList.toggle('open',!w)}
+
+// ===== AUDIT SCORES =====
+const scores=[
+  {n:"Sayfa Hızı (Mobile)",v:45,c:"var(--red)"},
+  {n:"Sayfa Hızı (Desktop)",v:65,c:"var(--sand)"},
+  {n:"İçerik Derinliği",v:15,c:"var(--red)"},
+  {n:"Internal Linking",v:25,c:"var(--red)"},
+  {n:"Schema / Structured Data",v:10,c:"var(--red)"},
+  {n:"Çoklu Dil (hreflang)",v:40,c:"var(--sand)"},
+  {n:"Blog / İçerik Merkezi",v:5,c:"var(--red)"},
+  {n:"Backlink Profili",v:55,c:"var(--sand)"},
+  {n:"GEO Hazırlık",v:10,c:"var(--red)"}
+];
+document.getElementById('audit-scores').innerHTML=scores.map(s=>`<div class="score-row"><div class="score-label">${s.n}</div><div class="score-track"><div class="score-fill" style="width:${s.v}%;background:${s.c}"></div></div><div class="score-val" style="color:${s.c}">${s.v}%</div></div>`).join('');
+
+// ===== AUDIT FINDINGS =====
+const findings=[
+  {t:"Blog Neredeyse Yok",d:"Sadece 1 blog yazısı mevcut ve güncellenmemiş. İçerik pazarlaması sıfır noktasında. Google'da bilgi amaçlı aramalarda hiç görünmüyorsunuz.",s:"s-red",tags:["Kritik","İçerik"]},
+  {t:"Koleksiyon Sayfaları Sığ",d:"Koleksiyon sayfalarında sadece ürün görselleri ve SKU kodları var. Koleksiyonun hikayesi, kullanım alanları, hangi restoran tipi için uygun olduğu gibi SEO-zengin içerik yok.",s:"s-red",tags:["Kritik","SEO"]},
+  {t:"Persona Bazlı Sayfa Yok",d:"Fine dining şefi ile catering müdürünün aynı sayfaya girmesi bekleniyor. Çözüm sayfaları (fine-dining, otel, kafe) oluşturulmalı.",s:"s-red",tags:["Kritik","UX"]},
+  {t:"Schema Markup Eksik",d:"Product, Organization, FAQ, HowTo gibi yapılandırılmış veri yok. Google zengin sonuçlarda görünemiyor.",s:"s-red",tags:["Teknik","SEO"]},
+  {t:"Distribütörler Sizi Geçiyor",d:"'Bonna tableware' aramasında LUSINI, Intergastro, Horecano gibi distribütörler bonna.com.tr'nin önünde. Kendi markanız üzerinde kontrol kaybı.",s:"s-yellow",tags:["Önemli","SEO"]},
+  {t:"GEO İçin Hiç Hazırlık Yok",d:"AI motorları (ChatGPT, Perplexity) Bonna'yı tanıyor ancak bilgileri distribütör sitelerinden çekiyor. Kendi siteniz otorite kaynağı olmalı.",s:"s-red",tags:["Kritik","GEO"]},
+  {t:"İngilizce Site Zayıf",d:"/en/ altdizini mevcut ama hreflang etiketleri tam değil. Global arama trafiği kaçırılıyor.",s:"s-yellow",tags:["Önemli","Global"]}
+];
+document.getElementById('audit-findings').innerHTML=findings.map(f=>`<div class="card"><div class="card-head" onclick="tog(this)"><span class="status ${f.s}"></span><div><div style="font-weight:600;font-size:14px">${f.t}</div><div style="margin-top:4px">${f.tags.map(t=>`<span class="chip${t==='Kritik'?' chip-red':t==='Önemli'?' chip-gold':''}">${t}</span>`).join('')}</div></div><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:16px;font-size:13px;color:var(--gray);line-height:1.7">${f.d}</div></div></div>`).join('');
+
+// ===== COMPETITORS =====
+const comps=[
+  {n:"LUSINI (lusini.com)",d:"Bonna koleksiyonlarını kendi SEO içerikleriyle satıyor. 'Bonna tableware' aramasında 1. sırada.",tag:"En Tehlikeli"},
+  {n:"Intergastro",d:"Bonna ürün sayfaları zengin açıklamalı ve çok dilli.",tag:"Yüksek"},
+  {n:"Horecano",d:"Bonna koleksiyonlarını ayrı sayfalarla listeleyen distribütör.",tag:"Yüksek"},
+  {n:"MBS Wholesale",d:"UK pazarında Bonna temsilcisi, SEO odaklı içerik üretiyor.",tag:"Orta"},
+  {n:"Amazon",d:"Bonna Mesopotamia seti satılıyor. Marka kontrolü dışında.",tag:"Orta"}
+];
+document.getElementById('competitor-list').innerHTML=comps.map(c=>`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="flex:1"><strong style="font-size:13px">${c.n}</strong><div style="font-size:12px;color:var(--gray);margin-top:2px">${c.d}</div></div><span class="pri ${c.tag==='En Tehlikeli'?'pri-h':c.tag==='Yüksek'?'pri-m':'pri-l'}">${c.tag}</span></div>`).join('');
+
+// ===== NEW PAGES =====
+const newPages=[
+  {t:"Çözüm Sayfaları (Persona Bazlı)",pages:["<strong>/cozumler/fine-dining/</strong> — Vizyoner Şef için: Premium koleksiyonlar, reaktif sır, sunum sanatı","<strong>/cozumler/otel-restoran/</strong> — F&B Müdürü için: Dayanıklılık, TCO, kenar çıtlamazlık garantisi","<strong>/cozumler/kafe-brunch/</strong> — Kafe Tutkunu için: Instagram-worthy, trend koleksiyonlar","<strong>/cozumler/catering-etkinlik/</strong> — Etkinlik Sihirbazı için: Büyük adet, dayanıklılık, taşıma","<strong>/cozumler/kurumsal-tedarik/</strong> — Satın Alma için: Toplu fiyat, franchise paket, SLA garantisi"]},
+  {t:"Teknoloji Sayfaları",pages:["<strong>/teknoloji/fusiontech/</strong> — FUSIONtech'in detaylı açıklaması, karşılaştırma","<strong>/teknoloji/vitrified/</strong> — Vitrified nedir, neden önemli, dayanıklılık testleri","<strong>/teknoloji/reaktif-sir/</strong> — Reaktif sır teknolojisi, benzersiz parça garantisi"]},
+  {t:"Sürdürülebilirlik Hub",pages:["<strong>/surdurulebilirlik/</strong> — EPD sertifikaları, net sıfır yolculuğu, tek pişirim","<strong>/surdurulebilirlik/sertifikalar/</strong> — Tüm sertifikaların detaylı listesi","<strong>/surdurulebilirlik/karbon-ayak-izi/</strong> — Yıllık karbon raporu özeti"]},
+  {t:"Kaynak Merkezi",pages:["<strong>/kaynaklar/roi-hesaplayici/</strong> — İnteraktif TCO/ROI hesaplama aracı","<strong>/kaynaklar/katalog/</strong> — Dijital katalog indirme sayfası","<strong>/kaynaklar/numune-talebi/</strong> — Ücretsiz numune talep formu"]}
+];
+document.getElementById('new-pages').innerHTML=newPages.map(g=>`<div class="card"><div class="card-head" onclick="tog(this)"><div style="font-weight:600;font-size:14px">${g.t}</div><span class="cnt" style="background:var(--light);color:var(--gray);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:auto;margin-right:8px">${g.pages.length}</span><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:16px">${g.pages.map(p=>`<div style="font-size:13px;line-height:1.7;margin-bottom:8px;padding-left:12px;border-left:2px solid var(--sand-light)">${p}</div>`).join('')}</div></div></div>`).join('');
+
+// ===== TOPIC CLUSTERS =====
+const clusters=[
+  {pillar:"HoReCa Tabak Rehberi",url:"/blog/horeca-tabak-rehberi/",spokes:["Restoran için en dayanıklı tabaklar","Fine dining tabak seçimi kriterleri","Otel tabak kırılma maliyeti nasıl düşürülür","Vitrified vs porselen farkı nedir","Tabak kenar çıtlamazlık garantisi nedir"]},
+  {pillar:"Restoran Sunum Trendleri",url:"/blog/sunum-trendleri-2026/",spokes:["2026 restoran tableware trendleri","Wabi-sabi sunum estetiği","Mix & Match tabak kombinasyonları","Instagram-worthy sunum teknikleri","Renk psikolojisi ve tabak seçimi"]},
+  {pillar:"Sürdürülebilir Gastronomi",url:"/blog/surdurulebilir-gastronomi/",spokes:["EPD sertifikalı tabak nedir","Restoran karbon ayak izi nasıl azaltılır","Tek pişirim teknolojisi neden önemli","Yeşil otel tedarik zinciri rehberi","ESG raporlama için sürdürülebilir tabak"]},
+  {pillar:"Restoran Açma Rehberi",url:"/blog/restoran-acma-rehberi/",spokes:["Restoran ekipman listesi A-Z","Restoran tabak maliyet hesaplama","Kafe açmak için gerekli ekipmanlar","Catering işi kurma rehberi","Franchise restoran donatım standartları"]}
+];
+document.getElementById('topic-clusters').innerHTML=clusters.map(c=>`<div class="card"><div class="card-head" onclick="tog(this)"><div><div style="font-weight:600;font-size:14px">🎯 ${c.pillar}</div><div style="font-size:11px;color:var(--sand);margin-top:2px">${c.url}</div></div><span class="cnt" style="background:var(--light);color:var(--gray);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:auto;margin-right:8px">${c.spokes.length} yazı</span><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:16px">${c.spokes.map((s,i)=>`<div style="font-size:13px;padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:var(--gray);width:20px">${i+1}.</span>${s}</div>`).join('')}</div></div></div>`).join('');
+
+// ===== GEO STATUS =====
+const geoStatus=[
+  {platform:"ChatGPT",status:"Kısmi",desc:"Bonna'yı tanıyor ama bilgileri distribütör sitelerinden çekiyor. Koleksiyon detayları eksik.",s:"s-yellow"},
+  {platform:"Google AI Overviews",status:"Zayıf",desc:"'HoReCa tableware' aramalarında Bonna nadiren görünüyor. Rakip distribütörler baskın.",s:"s-red"},
+  {platform:"Perplexity",status:"Kısmi",desc:"'Bonna porcelain' sorguladığında sonuç veriyor ancak yine distribütör kaynaklı.",s:"s-yellow"},
+  {platform:"Google Gemini",status:"Zayıf",desc:"Bonna markasını tanıyor ancak ürün detayları ve koleksiyon bilgileri sığ.",s:"s-red"}
+];
+document.getElementById('geo-status').innerHTML=geoStatus.map(g=>`<div style="display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)"><span class="status ${g.s}" style="margin-top:6px"></span><div><strong style="font-size:14px">${g.platform}</strong> <span class="chip${g.status==='Zayıf'?' chip-red':' chip-gold'}">${g.status}</span><div style="font-size:12px;color:var(--gray);margin-top:4px;line-height:1.6">${g.desc}</div></div></div>`).join('');
+
+// ===== GEO ACTIONS =====
+const geoActions=[
+  {t:"Otoritatif İçerik Üret",d:"AI motorları net, olgusal, kaynak gösterilebilir içerik sever. Her koleksiyon sayfasında: tarihçe, teknoloji açıklaması, kullanım senaryoları, teknik özellikler, sertifikalar olmalı. Belirsiz pazarlama dili yerine somut bilgi.",items:["Her koleksiyon sayfasına 800+ kelime açıklama","Teknik spec tablosu (malzeme, boyut, garanti, sertifika)","FAQ bölümü (en az 5 soru-cevap)","Schema.org Product + FAQ markup"]},
+  {t:"Wikipedia & Wikidata Varlığı",d:"AI motorlarının en güvendiği kaynak. Bonna'nın Türkçe ve İngilizce Wikipedia sayfası oluşturulmalı.",items:["Türkçe Wikipedia sayfası (Bonna Porselen)","İngilizce Wikipedia sayfası (Bonna Premium Porcelain)","Wikidata entity oluşturma","Kaynaklar: basın bültenleri, ödül haberleri, sektör raporları"]},
+  {t:"Üçüncü Parti Yayınlar",d:"AI motorları çoklu kaynaktan doğrulama yapar. Sektörel medya ve bloglardan Bonna hakkında referans içerikler üretilmeli.",items:["Gastronomi dergilerinde PR makaleleri","HoReCa sektör bloglarında guest post","Ödül ve sertifika haberleri (Red Dot, German Design Award)","Chef testimonial & case study yayınları"]},
+  {t:"Structured Data Zenginleştirme",d:"AI crawlerları yapılandırılmış veriyi düz metinden daha iyi anlar.",items:["Organization schema (kuruluş, konum, ödüller)","Product schema (her ürün için)","FAQ schema (her sayfada)","HowTo schema (rehber içerikler)","BreadcrumbList schema"]}
+];
+document.getElementById('geo-actions').innerHTML=geoActions.map(a=>`<div class="card"><div class="card-head" onclick="tog(this)"><div style="font-weight:600;font-size:14px">${a.t}</div><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:16px;font-size:13px;color:var(--gray);line-height:1.7;margin-bottom:12px">${a.d}</div>${a.items.map(i=>`<div style="font-size:12px;padding:6px 0 6px 16px;border-left:2px solid var(--sand)">✓ ${i}</div>`).join('')}</div></div>`).join('');
+
+// ===== GEO PLATFORMS =====
+const geoPlatforms=[
+  {p:"Google AI Overviews",strategy:"Featured snippet optimizasyonu. Sorulara doğrudan cevap veren kısa paragraflar + tablo formatı. 'Nedir', 'nasıl', 'fark' sorularını hedefle.",kw:["vitrified tabak nedir","HoReCa tabak nasıl seçilir","porselen vs vitrified farkı"]},
+  {p:"ChatGPT / OpenAI",strategy:"Uzun, detaylı, otorite sayfalar. ChatGPT web search ile bonna.com.tr'yi kaynak olarak çekmeli. Wikipedia varlığı kritik.",kw:["best HoReCa tableware brand","sustainable porcelain manufacturer","premium restaurant dinnerware"]},
+  {p:"Perplexity",strategy:"Perplexity kaynak gösterir. Blog yazıları ve teknik sayfalar Perplexity'nin favori kaynak formatı. Başlık + alt başlık + somut veri yapısı.",kw:["Bonna porcelain review","edge chip warranty tableware","FUSIONtech porcelain technology"]},
+  {p:"YouTube (AI destekli arama)",strategy:"Video açıklamalarında keyword-rich metin. Chapters/timestamp kullan. Her videonun altında blog yazısına link.",kw:["tabak seçim rehberi","restoran sunum trendleri 2026","Bonna koleksiyon tanıtım"]}
+];
+document.getElementById('geo-platforms').innerHTML=geoPlatforms.map(g=>`<div class="card"><div class="card-head" onclick="tog(this)"><div style="font-weight:600;font-size:14px">${g.p}</div><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:16px;font-size:13px;line-height:1.7;margin-bottom:12px">${g.strategy}</div><div class="lbl" style="margin-bottom:6px">Hedef Sorgular</div>${g.kw.map(k=>`<span class="chip chip-gold">${k}</span>`).join('')}</div></div>`).join('');
+
+// ===== KEYWORD MAPPING =====
+const kwPersonas=[
+  {persona:"P01 Vizyoner Şef",kws:[
+    {kw:"fine dining tabak",lang:"TR",intent:"Bilgi/Ticari",vol:"Orta",page:"/cozumler/fine-dining/"},
+    {kw:"premium restaurant dinnerware",lang:"EN",intent:"Ticari",vol:"Yüksek",page:"/en/solutions/fine-dining/"},
+    {kw:"chef presentation plates",lang:"EN",intent:"Ticari",vol:"Orta",page:"/en/blog/presentation-plates/"},
+    {kw:"reaktif sır tabak",lang:"TR",intent:"Bilgi",vol:"Düşük",page:"/teknoloji/reaktif-sir/"},
+    {kw:"Michelin restaurant tableware",lang:"EN",intent:"Bilgi/Ticari",vol:"Orta",page:"/en/solutions/fine-dining/"}
+  ]},
+  {persona:"P02 F&B Müdürü",kws:[
+    {kw:"otel tabak tedarikçi",lang:"TR",intent:"Ticari",vol:"Orta",page:"/cozumler/otel-restoran/"},
+    {kw:"HoReCa tableware supplier",lang:"EN",intent:"Ticari",vol:"Yüksek",page:"/en/solutions/hotel-restaurant/"},
+    {kw:"tabak kırılma maliyeti",lang:"TR",intent:"Bilgi",vol:"Düşük",page:"/blog/kirilma-maliyeti-rehberi/"},
+    {kw:"edge chip resistant plates",lang:"EN",intent:"Bilgi/Ticari",vol:"Orta",page:"/en/technology/vitrified/"},
+    {kw:"vitrified dinnerware wholesale",lang:"EN",intent:"Ticari",vol:"Orta",page:"/en/solutions/hotel-restaurant/"}
+  ]},
+  {persona:"P03 Girişimci Patron",kws:[
+    {kw:"restoran açarken tabak seçimi",lang:"TR",intent:"Bilgi",vol:"Orta",page:"/blog/restoran-acma-rehberi/"},
+    {kw:"butik restoran ekipman",lang:"TR",intent:"Bilgi/Ticari",vol:"Orta",page:"/cozumler/fine-dining/"},
+    {kw:"restaurant tableware set",lang:"EN",intent:"Ticari",vol:"Yüksek",page:"/en/collections/"},
+    {kw:"Instagram worthy plates",lang:"EN",intent:"Bilgi",vol:"Orta",page:"/en/blog/instagram-plating/"},
+    {kw:"mix match tableware",lang:"EN",intent:"Bilgi/Ticari",vol:"Orta",page:"/en/blog/mix-and-match/"}
+  ]},
+  {persona:"P05 Kafe Tutkunu",kws:[
+    {kw:"kafe tabak takımı",lang:"TR",intent:"Ticari",vol:"Orta",page:"/cozumler/kafe-brunch/"},
+    {kw:"specialty coffee servis",lang:"TR",intent:"Bilgi",vol:"Düşük",page:"/blog/kahve-sunum-rehberi/"},
+    {kw:"cafe crockery supplier",lang:"EN",intent:"Ticari",vol:"Orta",page:"/en/solutions/cafe-brunch/"},
+    {kw:"brunch plate set",lang:"EN",intent:"Ticari",vol:"Orta",page:"/en/collections/mood/"}
+  ]},
+  {persona:"P08 Yeşil Yönetici",kws:[
+    {kw:"sürdürülebilir tabak üreticisi",lang:"TR",intent:"Ticari",vol:"Düşük",page:"/surdurulebilirlik/"},
+    {kw:"EPD certified tableware",lang:"EN",intent:"Bilgi/Ticari",vol:"Düşük",page:"/en/sustainability/certifications/"},
+    {kw:"sustainable HoReCa supplier",lang:"EN",intent:"Ticari",vol:"Orta",page:"/en/sustainability/"},
+    {kw:"net zero porcelain manufacturer",lang:"EN",intent:"Bilgi",vol:"Düşük",page:"/en/sustainability/carbon-footprint/"}
+  ]}
+];
+document.getElementById('kw-personas').innerHTML=kwPersonas.map(g=>`<div class="card"><div class="card-head" onclick="tog(this)"><div style="font-weight:600;font-size:14px">${g.persona}</div><span class="cnt" style="background:var(--light);color:var(--gray);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:auto;margin-right:8px">${g.kws.length}</span><span class="arrow">›</span></div><div class="card-body"><table class="kw-table"><thead><tr><th>Anahtar Kelime</th><th>Dil</th><th>Niyet</th><th>Hacim</th><th>Hedef Sayfa</th></tr></thead><tbody>${g.kws.map(k=>`<tr><td><strong>${k.kw}</strong></td><td>${k.lang}</td><td>${k.intent}</td><td><span class="pri ${k.vol==='Yüksek'?'pri-h':k.vol==='Orta'?'pri-m':'pri-l'}">${k.vol}</span></td><td style="font-size:11px;color:var(--sand)">${k.page}</td></tr>`).join('')}</tbody></table></div></div>`).join('');
+
+// ===== OCCASION KEYWORDS =====
+const kwOcc=[
+  {occ:"Yeni Açılış",kws:["restoran açma ekipman listesi","restaurant startup equipment list","restoran tabak seti fiyat","opening restaurant tableware budget"]},
+  {occ:"Menü Yenileme",kws:["2026 sunum trendleri","tableware trends 2026","seasonal menu plating ideas","mevsimsel menü sunum fikirleri"]},
+  {occ:"Stok Yenileme",kws:["toptan tabak siparişi","wholesale porcelain urgent delivery","HoReCa tabak hızlı teslimat","bulk dinnerware order"]},
+  {occ:"Düğün & Etkinlik",kws:["düğün catering tabak seti","wedding catering crockery","etkinlik tabak kiralama","banquet dinnerware set"]},
+  {occ:"Bütçe Planlama",kws:["HoReCa tabak TCO hesaplama","tableware total cost of ownership","yıllık tabak tedarik anlaşması","annual dinnerware contract"]},
+  {occ:"Sürdürülebilirlik",kws:["EPD sertifikalı tabak","sustainable hospitality supplier","yeşil otel tedarikçi","eco-friendly restaurant tableware"]}
+];
+document.getElementById('kw-occasions').innerHTML=kwOcc.map(o=>`<div style="margin-bottom:16px"><div style="font-weight:600;font-size:13px;margin-bottom:8px">⚡ ${o.occ}</div><div>${o.kws.map(k=>`<span class="chip">${k}</span>`).join('')}</div></div>`).join('');
+
+// ===== YOUTUBE =====
+const ytPlan=[
+  {series:"Koleksiyon Tanıtım",freq:"2/ay",format:"2-3 dk product showcase",videos:["Tone Bazalith: Ateşle Şekillenen Sanat","Fuji Elisa: Uzak Doğu Mutfağına Yolculuk","FUSIONtech: Dünyada İlk Masaüstü Teknoloji"]},
+  {series:"Şef Hikayeleri",freq:"1/ay",format:"5-8 dk mini belgesel",videos:["Michelin Şefinin Tabak Seçimi","Butik Kafe: İlk Günden İnstagram Fenomeni","500 Kişilik Düğünün Perde Arkası"]},
+  {series:"Nasıl Yapılır?",freq:"2/ay",format:"3-5 dk eğitim",videos:["Restoran Tabak Seti Nasıl Seçilir?","Mix & Match Tabak Kombinasyonu Rehberi","Tabak Bakım ve Uzun Ömür İpuçları"]},
+  {series:"Fabrika & Teknoloji",freq:"1/çeyrek",format:"5-10 dk fabrika turu",videos:["Bonna Fabrikası: Topraktan Tabağa Yolculuk","Tek Pişirim Teknolojisi: Neden Önemli?","Sürdürülebilirlik Yolculuğumuz"]}
+];
+document.getElementById('yt-plan').innerHTML=ytPlan.map(y=>`<div class="card"><div class="card-head" onclick="tog(this)"><div><div style="font-weight:600;font-size:14px">🎬 ${y.series}</div><div style="font-size:11px;color:var(--gray);margin-top:2px">${y.freq} · ${y.format}</div></div><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:16px">${y.videos.map((v,i)=>`<div style="font-size:13px;padding:8px 0;border-bottom:1px solid var(--border)">${i+1}. ${v}</div>`).join('')}</div></div></div>`).join('');
+
+// ===== SOCIAL SEO =====
+const socialSeo=[
+  {p:"Instagram",actions:["Alt text'lere keyword ekle (her görsele)","Caption'larda aranabilir terimler: #HoReCa #restaurantdesign #finedining","Rehber (Guide) formatında koleksiyon showcase","Konum etiketleri: showroom şehirleri"]},
+  {p:"Pinterest",actions:["Her pin'e SEO başlık + açıklama","Board isimleri keyword odaklı: 'Fine Dining Tableware Ideas'","Rich pin aktifleştirme (Product pin)","Blog yazılarını pin olarak paylaş"]},
+  {p:"LinkedIn",actions:["Şirket sayfasında keyword-rich 'About' bölümü","Haftalık article: sektör trend + Bonna insight","Employee advocacy: şef/tasarımcı paylaşımları","Showcase page: Bonna Sustainability"]}
+];
+document.getElementById('social-seo').innerHTML=socialSeo.map(s=>`<div class="card"><div class="card-head" onclick="tog(this)"><div style="font-weight:600;font-size:14px">${s.p}</div><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:16px">${s.actions.map(a=>`<div style="font-size:13px;padding:6px 0 6px 16px;border-left:2px solid var(--sand);margin-bottom:4px">${a}</div>`).join('')}</div></div></div>`).join('');
+
+// ===== ROADMAP =====
+const roadmap=[
+  {q:"Q2 2026 (Nisan-Haziran)",title:"Temel Altyapı",items:["Teknik SEO düzeltmeleri (hız, schema, hreflang)","5 çözüm sayfası oluştur (persona bazlı)","3 teknoloji sayfası oluştur","Blog altyapısı kur, ilk 8 blog yazısı","Google Business Profile güncelle","Wikipedia sayfası taslağı hazırla"],done:false},
+  {q:"Q3 2026 (Temmuz-Eylül)",title:"İçerik Motor",items:["Aylık 4 blog yazısı üretim döngüsü başlat","YouTube kanalı aç, ilk 6 video","4 topic cluster'ı tamamla (20 yazı)","Sürdürülebilirlik hub'ı canlıya al","İlk backlink kampanyası (sektör medya)","Wikipedia sayfası yayınla (TR + EN)"],done:false},
+  {q:"Q4 2026 (Ekim-Aralık)",title:"GEO Atağı",items:["AI motorlarında marka görünürlük ölçümü başlat","Guest post kampanyası (5 sektör sitesi)","ROI hesaplayıcı interaktif araç","Case study sayfaları (3 müşteri hikayesi)","Pinterest ve LinkedIn SEO optimize","İlk GEO performans raporu"],done:false},
+  {q:"Q1 2027 (Ocak-Mart)",title:"Ölçeklendirme",items:["Aylık 8 blog + 4 video üretim hızı","Uluslararası SEO genişleme (DE, FR, ES)","AI citation tracking dashboard","Competitor share of voice analizi","İkinci backlink kampanyası","Yıllık SEO/GEO performans karşılaştırması"],done:false}
+];
+document.getElementById('roadmap').innerHTML=roadmap.map(r=>`<div class="tl-item${r.done?' done':''}"><div class="tl-q">${r.q}</div><div class="tl-title">${r.title}</div><div class="tl-desc">${r.items.map(i=>`<div style="padding:3px 0">→ ${i}</div>`).join('')}</div></div>`).join('');
+</script>
+</body>
+</html>

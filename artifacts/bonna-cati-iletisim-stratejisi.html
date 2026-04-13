@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonna — Çatı İletişim Stratejisi v2.0</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&display=swap');
+
+  :root {
+    --navy: #0f1629;
+    --navy-mid: #1a2140;
+    --navy-light: #252d50;
+    --gold: #c9a962;
+    --gold-dark: #a08338;
+    --gold-light: #e8d5a0;
+    --cream: #faf8f4;
+    --white: #ffffff;
+    --g50: #fafafa;
+    --g100: #f0f0ee;
+    --g200: #e2e0dc;
+    --g300: #c8c5be;
+    --g400: #9e9a91;
+    --g500: #76726a;
+    --g600: #555249;
+    --g700: #3a3832;
+    --g800: #252420;
+    --text: #1e1d1a;
+    --blue: #2e5e8e;
+    --green: #3a6b45;
+    --red: #8e2e2e;
+    --purple: #5e3a8e;
+    --teal: #2e7e7e;
+    --orange: #b8722d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.75;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed; left: 0; top: 0;
+    width: 300px; height: 100vh;
+    background: var(--navy);
+    color: white;
+    padding: 32px 0;
+    overflow-y: auto; z-index: 100;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+  .sb-logo { padding: 0 28px 28px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px; }
+  .sb-logo h1 { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 800; letter-spacing: 4px; color: var(--gold); }
+  .sb-logo p { font-size: 10.5px; text-transform: uppercase; letter-spacing: 2.5px; color: rgba(255,255,255,0.35); margin-top: 4px; }
+
+  .sb-group { font-size: 9.5px; text-transform: uppercase; letter-spacing: 2.5px; color: rgba(255,255,255,0.25); padding: 18px 28px 8px; font-weight: 700; }
+
+  .sb-nav a {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 28px; color: rgba(255,255,255,0.5);
+    text-decoration: none; font-size: 13px; font-weight: 400;
+    transition: all 0.2s; border-left: 3px solid transparent;
+  }
+  .sb-nav a:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.03); }
+  .sb-nav a.active { color: var(--gold); background: rgba(201,169,98,0.06); border-left-color: var(--gold); font-weight: 500; }
+  .sb-nav a .n { font-size: 9px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); flex-shrink: 0; }
+  .sb-nav a.active .n { background: var(--gold); color: var(--navy); }
+
+  /* ── MAIN ── */
+  .main { margin-left: 300px; min-height: 100vh; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    color: white; padding: 72px 72px 64px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before { content: ''; position: absolute; top: -40%; right: -15%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(201,169,98,0.12) 0%, transparent 65%); border-radius: 50%; }
+  .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,169,98,0.3), transparent); }
+
+  .h-badge { display: inline-block; font-size: 10px; text-transform: uppercase; letter-spacing: 3px; color: var(--gold); border: 1px solid rgba(201,169,98,0.25); padding: 5px 14px; border-radius: 20px; margin-bottom: 28px; font-weight: 600; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+  .hero h1 em { color: var(--gold); font-style: italic; }
+  .hero .sub { font-size: 17px; color: rgba(255,255,255,0.55); max-width: 620px; line-height: 1.75; font-weight: 300; }
+
+  .h-meta { display: flex; gap: 48px; margin-top: 44px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .h-meta-i span { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.3); margin-bottom: 4px; font-weight: 600; }
+  .h-meta-i strong { font-size: 13.5px; font-weight: 500; }
+
+  /* ── VISUAL FRAMEWORKS ── */
+  .flow { display:flex; align-items:stretch; gap:0; margin:28px 0; }
+  .flow-node { flex:1; padding:24px 20px; text-align:center; position:relative; }
+  .flow-node::after { content:'→'; position:absolute; right:-12px; top:50%; transform:translateY(-50%); font-size:20px; color:var(--gold); font-weight:700; z-index:2; }
+  .flow-node:last-child::after { display:none; }
+  .flow-node .fn-icon { font-size:28px; margin-bottom:10px; }
+  .flow-node .fn-label { font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--g400); font-weight:700; margin-bottom:6px; }
+  .flow-node h4 { font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px; line-height:1.3; }
+  .flow-node p { font-size:12.5px; color:var(--g500); line-height:1.55; }
+
+  .vmap { display:grid; grid-template-columns:1fr 1fr; gap:0; margin:28px 0; border-radius:16px; overflow:hidden; border:1px solid var(--g200); }
+  .vmap-cell { padding:32px 28px; background:white; border-bottom:1px solid var(--g100); border-right:1px solid var(--g100); }
+  .vmap-cell:nth-child(even) { border-right:none; }
+  .vmap-cell .vm-label { font-size:10px; text-transform:uppercase; letter-spacing:2px; font-weight:700; margin-bottom:8px; }
+  .vmap-cell h4 { font-size:17px; font-weight:700; color:var(--navy); margin-bottom:6px; }
+  .vmap-cell p { font-size:13.5px; color:var(--g500); line-height:1.65; }
+
+  .cause-effect { display:grid; grid-template-columns:1fr auto 1fr; gap:0; align-items:center; margin:20px 0; }
+  .ce-box { padding:24px; border-radius:12px; }
+  .ce-cause { background:rgba(142,46,46,0.06); border:1px solid rgba(142,46,46,0.12); }
+  .ce-effect { background:rgba(46,94,142,0.06); border:1px solid rgba(46,94,142,0.12); }
+  .ce-arrow { font-size:28px; color:var(--gold); font-weight:700; padding:0 16px; text-align:center; }
+  .ce-arrow span { display:block; font-size:9px; text-transform:uppercase; letter-spacing:1.5px; color:var(--g400); font-weight:600; margin-top:2px; }
+  .ce-box .ce-label { font-size:10px; text-transform:uppercase; letter-spacing:1.5px; font-weight:700; margin-bottom:6px; }
+  .ce-cause .ce-label { color:var(--red); }
+  .ce-effect .ce-label { color:var(--blue); }
+  .ce-box h4 { font-size:15px; font-weight:700; color:var(--navy); margin-bottom:4px; }
+  .ce-box p { font-size:13px; color:var(--g500); line-height:1.6; }
+
+  .position-map { position:relative; width:100%; aspect-ratio:2/1; background:white; border-radius:16px; border:1px solid var(--g200); margin:28px 0; overflow:hidden; }
+  .pm-axis-x { position:absolute; bottom:40px; left:80px; right:40px; height:1px; background:var(--g300); }
+  .pm-axis-y { position:absolute; top:40px; bottom:40px; left:80px; width:1px; background:var(--g300); }
+  .pm-label-x { position:absolute; bottom:16px; font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--g400); font-weight:600; }
+  .pm-label-y { position:absolute; left:16px; font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--g400); font-weight:600; writing-mode:vertical-rl; transform:rotate(180deg); }
+  .pm-dot { position:absolute; width:auto; padding:6px 14px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; transform:translate(-50%,-50%); }
+
+  .chain { display:flex; flex-direction:column; gap:0; margin:28px 0; }
+  .chain-row { display:grid; grid-template-columns:200px 1fr; border-bottom:1px solid var(--g100); }
+  .chain-left { padding:20px 24px; background:var(--navy); color:white; display:flex; align-items:center; font-size:13px; font-weight:600; }
+  .chain-left:first-child { border-radius:12px 0 0 0; }
+  .chain-right { padding:20px 24px; background:white; font-size:13.5px; color:var(--g600); line-height:1.65; display:flex; align-items:center; }
+  .chain-row:first-child .chain-left { border-radius:12px 0 0 0; }
+  .chain-row:first-child .chain-right { border-radius:0 12px 0 0; }
+  .chain-row:last-child .chain-left { border-radius:0 0 0 12px; }
+  .chain-row:last-child .chain-right { border-radius:0 0 12px 0; }
+
+  .big-num { display:flex; gap:24px; margin:28px 0; flex-wrap:wrap; }
+  .big-num-i { flex:1; min-width:160px; padding:28px; background:white; border-radius:14px; border:1px solid var(--g200); text-align:center; }
+  .big-num-i .bn-v { font-family:'Playfair Display',serif; font-size:48px; font-weight:800; line-height:1; margin-bottom:4px; }
+  .big-num-i .bn-l { font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--g400); font-weight:600; }
+
+  .gap-bar { display:flex; align-items:center; gap:0; margin:16px 0; border-radius:8px; overflow:hidden; height:48px; }
+  .gap-fill { height:100%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:white; letter-spacing:0.5px; }
+
+  /* ── SECTION ── */
+  .sec { padding: 72px; border-bottom: 1px solid var(--g200); }
+  .sec[id] { scroll-margin-top: 20px; }
+  .sec-h { margin-bottom: 40px; }
+  .sec-num { font-size: 11px; text-transform: uppercase; letter-spacing: 3.5px; color: var(--gold-dark); font-weight: 700; margin-bottom: 6px; }
+  .sec h2 { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 800; color: var(--navy); margin-bottom: 10px; line-height: 1.2; }
+  .sec-lead { font-size: 15.5px; color: var(--g500); max-width: 660px; line-height: 1.75; }
+
+  /* ── PROSE ── */
+  .prose { max-width: 740px; }
+  .prose p { margin-bottom: 18px; font-size: 15px; line-height: 1.85; color: var(--g600); }
+  .prose strong { color: var(--navy); font-weight: 600; }
+  .prose em { color: var(--g700); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    color: white; padding: 44px 48px; border-radius: 16px;
+    margin: 32px 0; position: relative; overflow: hidden;
+  }
+  .callout::after { content: ''; position: absolute; top: 0; right: 0; width: 200px; height: 100%; background: linear-gradient(135deg, transparent, rgba(201,169,98,0.06)); }
+  .callout-label { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; color: var(--gold); font-weight: 700; margin-bottom: 12px; display: block; }
+  .callout h3 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 16px; color: var(--gold-light); line-height: 1.35; }
+  .callout p { font-size: 15px; line-height: 1.85; opacity: 0.82; max-width: 700px; }
+  .callout p + p { margin-top: 14px; }
+
+  /* ── CARDS ── */
+  .cg { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 28px; }
+  .card { background: white; border-radius: 14px; padding: 32px; border: 1px solid var(--g200); transition: all 0.25s; }
+  .card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.06); transform: translateY(-3px); }
+  .card h3 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .card h3 .ci { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .card p { font-size: 14px; color: var(--g600); line-height: 1.75; }
+  .card p + p { margin-top: 10px; }
+  .card h4 { font-size: 13px; font-weight: 700; color: var(--g700); margin: 16px 0 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ── BADGE ── */
+  .b { display: inline-block; font-size: 10.5px; padding: 3px 11px; border-radius: 20px; font-weight: 600; margin: 2px 3px 2px 0; }
+  .b-gold { background: rgba(201,169,98,0.14); color: var(--gold-dark); }
+  .b-blue { background: rgba(46,94,142,0.1); color: var(--blue); }
+  .b-green { background: rgba(58,107,69,0.1); color: var(--green); }
+  .b-purple { background: rgba(94,58,142,0.1); color: var(--purple); }
+  .b-red { background: rgba(142,46,46,0.1); color: var(--red); }
+  .b-teal { background: rgba(46,126,126,0.1); color: var(--teal); }
+  .b-orange { background: rgba(184,114,45,0.1); color: var(--orange); }
+
+  /* ── TABLE ── */
+  .tbl { width: 100%; border-collapse: collapse; margin-top: 24px; background: white; border-radius: 14px; overflow: hidden; border: 1px solid var(--g200); }
+  .tbl th { background: var(--navy); color: white; padding: 13px 20px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; }
+  .tbl td { padding: 14px 20px; font-size: 13.5px; border-bottom: 1px solid var(--g100); color: var(--g600); line-height: 1.6; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: rgba(201,169,98,0.03); }
+
+  /* ── STATS ── */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 28px 0; }
+  .stat { background: white; border-radius: 14px; padding: 28px; text-align: center; border: 1px solid var(--g200); }
+  .stat .sv { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 800; color: var(--navy); margin-bottom: 2px; }
+  .stat .sl { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--g400); font-weight: 600; }
+
+  /* ── HIERARCHY ── */
+  .hier { display: flex; gap: 0; margin: 32px 0; border-radius: 16px; overflow: hidden; }
+  .hier-i { flex: 1; padding: 36px 28px; text-align: center; color: white; position: relative; }
+  .hier-i .hn { font-size: 60px; font-weight: 900; opacity: 0.08; position: absolute; top: 8px; left: 16px; }
+  .hier-i .hl { font-size: 10px; text-transform: uppercase; letter-spacing: 2.5px; color: var(--gold-light); margin-bottom: 10px; font-weight: 700; }
+  .hier-i h3 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 10px; }
+  .hier-i p { font-size: 13px; opacity: 0.75; line-height: 1.65; }
+
+  /* ── PHASE BLOCK ── */
+  .pb { background: white; border-radius: 14px; padding: 36px; border: 1px solid var(--g200); margin-top: 24px; border-left: 4px solid var(--gold); }
+  .pb h3 { font-size: 19px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+  .pb h4 { font-size: 13px; font-weight: 700; color: var(--g700); margin: 18px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .pb p, .pb li { font-size: 14px; color: var(--g600); line-height: 1.8; }
+  .pb ul { list-style: none; padding: 0; }
+  .pb ul li { padding: 5px 0 5px 22px; position: relative; }
+  .pb ul li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
+
+  /* ── TIMELINE ── */
+  .tl { position: relative; margin-top: 32px; padding-left: 44px; }
+  .tl::before { content: ''; position: absolute; left: 16px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--g200)); }
+  .tl-i { position: relative; margin-bottom: 28px; padding: 28px 32px; background: white; border-radius: 14px; border: 1px solid var(--g200); }
+  .tl-i::before { content: ''; position: absolute; left: -36px; top: 34px; width: 14px; height: 14px; border-radius: 50%; background: var(--gold); border: 3px solid var(--cream); }
+  .tl-i .tl-d { font-size: 11px; color: var(--gold-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+  .tl-i h4 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .tl-i p { font-size: 14px; color: var(--g600); line-height: 1.75; }
+
+  /* ── INFO ── */
+  .info { background: rgba(201,169,98,0.07); border: 1px solid rgba(201,169,98,0.18); border-radius: 12px; padding: 22px 28px; margin-top: 24px; font-size: 14px; color: var(--g600); line-height: 1.75; }
+  .info strong { color: var(--navy); }
+
+  /* ── TWO COL ── */
+  .col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 28px; }
+
+  /* ── KPI ── */
+  .kpig { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 24px 0; }
+  .kpi { background: white; border-radius: 14px; padding: 28px; border: 1px solid var(--g200); }
+  .kpi h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--g400); margin-bottom: 8px; font-weight: 700; }
+  .kpi .kv { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+  .kpi p { font-size: 12.5px; color: var(--g500); line-height: 1.5; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--g200), transparent); margin: 40px 0; }
+
+  /* ── FOOTER ── */
+  .footer { padding: 48px 72px; text-align: center; color: var(--g400); font-size: 12.5px; line-height: 1.8; }
+  .footer strong { color: var(--g600); }
+
+  /* ── STATUS ── */
+  .st { display: inline-block; font-size: 9.5px; text-transform: uppercase; letter-spacing: 1.2px; padding: 3px 10px; border-radius: 4px; font-weight: 700; }
+  .st-draft { background: #fff3cd; color: #7a5e00; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1200px) {
+    .sidebar { transform: translateX(-100%); } .main { margin-left: 0; }
+    .sec, .hero { padding: 48px 28px; } .stats { grid-template-columns: repeat(2, 1fr); }
+    .col2 { grid-template-columns: 1fr; } .kpig { grid-template-columns: 1fr 1fr; }
+    .hier { flex-direction: column; gap: 8px; } .hier-i { border-radius: 12px !important; }
+  }
+
+  /* ── LADDER / EVOLUTION DIAGRAM ── */
+  .ladder { display: flex; flex-direction: column; gap: 0; margin: 28px 0; position: relative; }
+  .ladder::before { content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--g200)); }
+  .ladder-rung { display: grid; grid-template-columns: 60px 1fr; gap: 24px; align-items: center; padding: 24px 0; padding-left: 60px; border-bottom: 1px solid var(--g100); position: relative; }
+  .ladder-rung:last-child { border-bottom: none; }
+  .ladder-rung::before { content: ''; position: absolute; left: 12px; width: 24px; height: 24px; border-radius: 50%; background: var(--gold); border: 4px solid var(--cream); top: 50%; transform: translateY(-50%); z-index: 2; }
+  .ladder-rung .lr-num { font-size: 12px; font-weight: 700; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 1px; }
+  .ladder-rung .lr-content h4 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .ladder-rung .lr-content p { font-size: 13.5px; color: var(--g600); line-height: 1.65; }
+
+  /* ── CHANNEL CARDS / MESSAGE PREVIEW ── */
+  .msg-card { background: white; border-radius: 12px; border: 1px solid var(--g200); padding: 24px; margin-bottom: 16px; }
+  .msg-card .mc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--g100); }
+  .msg-card .mc-channel { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--gold-dark); }
+  .msg-card .mc-style { display: inline-block; font-size: 9px; padding: 2px 8px; border-radius: 12px; background: var(--g100); color: var(--g600); }
+  .msg-card .mc-examples { display: flex; flex-direction: column; gap: 12px; }
+  .msg-card .msg-item { padding: 12px; background: var(--g50); border-radius: 8px; font-size: 13px; color: var(--g700); line-height: 1.6; border-left: 3px solid var(--gold); font-style: italic; }
+
+  /* ── TONE GRID (3-column) ── */
+  .tone-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 28px 0; }
+  .tone-item { background: white; border-radius: 14px; border: 1px solid var(--g200); padding: 28px; text-align: center; }
+  .tone-item .ti-icon { font-size: 36px; margin-bottom: 12px; }
+  .tone-item h4 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+  .tone-item .ti-desc { font-size: 13px; color: var(--g600); line-height: 1.7; }
+  .tone-item .ti-example { font-size: 12px; color: var(--gold-dark); margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--g100); font-style: italic; }
+
+  /* ── INFLUENCE FLOW ── */
+  .influence-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin: 28px 0; border-radius: 14px; overflow: hidden; }
+  .if-node { background: white; padding: 32px 24px; text-align: center; border-right: 1px solid var(--g200); position: relative; }
+  .if-node:last-child { border-right: none; }
+  .if-node::after { content: '→'; position: absolute; right: -18px; top: 50%; transform: translateY(-50%); font-size: 24px; color: var(--gold); font-weight: 700; z-index: 2; }
+  .if-node:last-child::after { display: none; }
+  .if-node .ifn-role { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--gold-dark); margin-bottom: 8px; }
+  .if-node h4 { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+  .if-node p { font-size: 13px; color: var(--g600); line-height: 1.65; }
+
+  /* ── JOURNEY FUNNEL ── */
+  .journey { display: flex; flex-direction: column; gap: 16px; margin: 28px 0; }
+  .journey-step { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: stretch; }
+  .journey-step .js-header { background: white; border-radius: 12px; padding: 20px; border-left: 4px solid var(--gold); display: flex; align-items: center; gap: 12px; }
+  .journey-step .js-icon { font-size: 32px; flex-shrink: 0; }
+  .journey-step .js-title { font-size: 16px; font-weight: 700; color: var(--navy); }
+  .journey-step .js-details { display: flex; flex-direction: column; gap: 12px; }
+  .journey-step .js-detail-box { background: var(--g50); border-radius: 10px; padding: 14px; font-size: 12.5px; color: var(--g700); }
+  .journey-step .js-detail-box .jdb-label { font-weight: 700; color: var(--navy); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+
+  /* ── FILM STORYBOARD ── */
+  .storyboard { display: flex; gap: 12px; margin: 28px 0; overflow-x: auto; padding: 8px 0; }
+  .sb-panel { flex-shrink: 0; width: 200px; background: white; border-radius: 12px; border: 1px solid var(--g200); overflow: hidden; }
+  .sb-visual { width: 100%; height: 120px; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); display: flex; align-items: center; justify-content: center; font-size: 48px; }
+  .sb-time { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: var(--gold-dark); padding: 8px 12px; border-bottom: 1px solid var(--g100); }
+  .sb-desc { font-size: 12px; color: var(--g700); padding: 12px; line-height: 1.5; }
+  .sb-mood { font-size: 10px; color: var(--g500); font-style: italic; padding: 0 12px 8px; }
+
+  /* ── TIMELINE WAVE ── */
+  .wave-timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 28px 0; }
+  .wave-node { background: white; border-radius: 14px; border: 2px solid var(--g200); padding: 28px; position: relative; text-align: center; transition: all 0.25s; }
+  .wave-node:hover { border-color: var(--gold); box-shadow: 0 8px 32px rgba(201,169,98,0.12); }
+  .wave-node .wn-phase { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--gold-dark); margin-bottom: 8px; }
+  .wave-node .wn-weeks { font-size: 13px; font-weight: 600; color: var(--g600); margin-bottom: 12px; }
+  .wave-node h4 { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+  .wave-node p { font-size: 13px; color: var(--g600); line-height: 1.7; }
+  .wave-node .wn-marker { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 24px; height: 24px; border-radius: 50%; background: var(--gold); border: 4px solid white; }
+
+  /* ── FILM CARD GRID ── */
+  .film-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 28px 0; }
+  .fc { background: white; border-radius: 14px; border: 1px solid var(--g200); overflow: hidden; transition: all 0.25s; }
+  .fc:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.08); transform: translateY(-2px); }
+  .fc-visual { width: 100%; height: 140px; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); display: flex; align-items: center; justify-content: center; font-size: 56px; }
+  .fc-content { padding: 24px; }
+  .fc-num { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--gold-dark); margin-bottom: 6px; }
+  .fc h4 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+  .fc p { font-size: 13px; color: var(--g600); line-height: 1.7; margin-bottom: 12px; }
+  .fc .fc-badge { display: inline-block; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 12px; background: rgba(201,169,98,0.12); color: var(--gold-dark); font-weight: 700; }
+
+  html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sb-logo">
+    <h1>BONNA</h1>
+    <p>Çatı İletişim Stratejisi</p>
+  </div>
+  <div class="sb-nav">
+    <span class="sb-group">Stratejik Çerçeve</span>
+    <a href="#manifesto" class="active"><span class="n">1</span> Manifesto</a>
+    <a href="#problem"><span class="n">2</span> Problem Tanımı</a>
+    <a href="#insight"><span class="n">3</span> İçgörü & Fırsat</a>
+    <a href="#konsept"><span class="n">4</span> Konsept & Mesaj Dili</a>
+    <a href="#hedef"><span class="n">5</span> Hedef Kitle Haritası</a>
+    <span class="sb-group">Kreatif Platform</span>
+    <a href="#film"><span class="n">6</span> Marka Filmi</a>
+    <a href="#dijital"><span class="n">7</span> Dijital Ekosistem</a>
+    <a href="#gastro"><span class="n">8</span> Gastronomi Programı</a>
+    <a href="#sponsor"><span class="n">9</span> Sponsorluk & OOH</a>
+    <span class="sb-group">Uygulama</span>
+    <a href="#web"><span class="n">10</span> Web Stratejisi</a>
+    <a href="#timeline"><span class="n">11</span> Yol Haritası</a>
+    <a href="#kpi"><span class="n">12</span> KPI & Bütçe</a>
+  </div>
+</nav>
+
+<div class="main">
+
+  <!-- ═══════════════════════════════════ HERO ═══════════════════════════════════ -->
+  <div class="hero">
+    <div class="h-badge">Stratejik Çerçeve Dokümanı — v2.0</div>
+    <h1>Sınırları Zorla.<br><em>Çıtlamazlık.</em></h1>
+    <p class="sub">Bir ürün özelliğini kültürel bir tutuma dönüştüren, HoReCa sektöründe Bonna'yı "tedarikçi"den "partner marka"ya taşıyan çatı iletişim platformu.</p>
+    <div class="h-meta">
+      <div class="h-meta-i"><span>Müşteri</span><strong>Bonna Premium Porcelain / Kar Porselen</strong></div>
+      <div class="h-meta-i"><span>Kapsam</span><strong>360° Çatı İletişim — Geleneksel + Dijital</strong></div>
+      <div class="h-meta-i"><span>Odak</span><strong>B2B / HoReCA Sektörü</strong></div>
+      <div class="h-meta-i"><span>Durum</span><strong><span class="st st-draft">TASLAK</span></strong></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ 1. BONNA BUGÜN ═══════════════════════════════════ -->
+  <div class="sec" id="manifesto">
+    <div class="sec-h">
+      <div class="sec-num">01 — Bonna Bugün</div>
+      <h2>Rakamlarla Dev, Algıyla Görünmez</h2>
+    </div>
+
+    <div class="big-num">
+      <div class="big-num-i"><div class="bn-v" style="color:var(--green);">40+</div><div class="bn-l">Yıl Üretim Mirası</div></div>
+      <div class="big-num-i"><div class="bn-v" style="color:var(--green);">110+</div><div class="bn-l">İhracat Ülkesi</div></div>
+      <div class="big-num-i"><div class="bn-v" style="color:var(--green);">40M</div><div class="bn-l">Yıllık Üretim Adedi</div></div>
+      <div class="big-num-i"><div class="bn-v" style="color:var(--green);">3×</div><div class="bn-l">İhracat Şampiyonu</div></div>
+      <div class="big-num-i"><div class="bn-v" style="color:var(--red);">Düşük</div><div class="bn-l">Dijital Görünürlük</div></div>
+      <div class="big-num-i"><div class="bn-v" style="color:var(--red);">—</div><div class="bn-l">YouTube Stratejisi</div></div>
+    </div>
+
+    <!-- GAP BAR: Ürün vs Algı -->
+    <div style="margin:36px 0 12px;">
+      <div style="display:flex; justify-content:space-between; font-size:11px; text-transform:uppercase; letter-spacing:1.5px; font-weight:700; color:var(--g400); margin-bottom:8px;">
+        <span>Ürün Performansı</span>
+        <span>Marka Algısı</span>
+      </div>
+      <div class="gap-bar">
+        <div class="gap-fill" style="width:82%; background:var(--green);">Ürün: Sektör Lideri</div>
+        <div class="gap-fill" style="width:18%; background:var(--red);">Algı: Görünmez</div>
+      </div>
+      <div style="text-align:center; margin-top:10px; font-size:13px; color:var(--g500);">
+        <strong style="color:var(--navy);">Bu aralık, bu stratejinin varlık sebebi.</strong> Ürün performansındaki liderlik, algıya yansımıyor.
+      </div>
+    </div>
+
+    <!-- Paradoks görselleştirmesi -->
+    <div class="cause-effect" style="margin-top:36px;">
+      <div class="ce-box ce-cause">
+        <div class="ce-label">Gerçek</div>
+        <h4>Bonna, kenar çıtlamazlıkta dünya lideri</h4>
+        <p>Ömür boyu garanti veren tek marka. FusionTech yenilikçiliği. 30+ koleksiyon. Fiyat/performansta üstün.</p>
+      </div>
+      <div class="ce-arrow">≠<span>Ama</span></div>
+      <div class="ce-box ce-effect">
+        <div class="ce-label">Algı</div>
+        <h4>"İyi ürün yapan Türk firması"</h4>
+        <p>Premium marka değil. Tender'larda marka puanı düşük. Şef tercihlerinde ikinci planda. Churchill'in "güvenli" konumuna karşı "risk".</p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:32px;">
+      <span class="callout-label">Bu Stratejinin Tek Amacı</span>
+      <h3>Ürün üstünlüğünü marka üstünlüğüne çevirmek.</h3>
+      <p>Bonna'nın elindeki en güçlü silah — kenar çıtlamazlık teknolojisi — bugün bir teknik şartnamenin satırında gizli. Bu strateji, o satırı marka platformunun merkezine taşıyor.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ 2. NEDEN BU AÇIK VAR ═══════════════════════════════════ -->
+  <div class="sec" id="problem">
+    <div class="sec-h">
+      <div class="sec-num">02 — Kök Neden Analizi</div>
+      <h2>Algı Açığı Nereden Geliyor?</h2>
+    </div>
+
+    <!-- Zincirleme neden-sonuç -->
+    <div style="margin-bottom:36px;">
+      <div class="chain">
+        <div class="chain-row">
+          <div class="chain-left" style="background:var(--red);">① Kök Neden</div>
+          <div class="chain-right"><strong>İletişim yatırımı yapılmamış.</strong> Bonna büyümesini ürün kalitesi ve distribütör ağıyla sağladı — marka iletişimine hiç ihtiyaç duymadı. Ürün kendini sattı. Ama ürün kendini "anlatmadı."</div>
+        </div>
+        <div class="chain-row">
+          <div class="chain-left" style="background:var(--red); opacity:0.9;">↓ Sonuç 1</div>
+          <div class="chain-right"><strong>En güçlü fayda sahipsiz kaldı.</strong> "Ömür boyu kenar çıtlama garantisi" sektörde benzersiz bir teklif — ama web sitesinin köşesinde, bir PDF datasheet'inde kaybolmuş durumda. Hiçbir kampanya bunu merkeze almadı.</div>
+        </div>
+        <div class="chain-row">
+          <div class="chain-left" style="background:var(--red); opacity:0.8;">↓ Sonuç 2</div>
+          <div class="chain-right"><strong>Dijital görünmezlik.</strong> YouTube'da sistematik içerik yok. Sosyal medyada marka algısı ve dijital görünürlük sektör potansiyelinin çok altında. LinkedIn'de thought leadership eksik. Google'da "chip resistant porcelain" aramasında Bonna yok.</div>
+        </div>
+        <div class="chain-row">
+          <div class="chain-left" style="background:var(--red); opacity:0.7;">↓ Sonuç 3</div>
+          <div class="chain-right"><strong>"Heritage" boşluğu.</strong> Churchill 230 yıl, Villeroy & Boch 275 yıl söyleyebiliyor. Bonna'nın 40 yılı yeterli ama anlatıdaki eksiklik, bu farkı olduğundan büyük gösteriyor. Bonna'nın hikayesi "tarih" değil "teknoloji" olmalı — ama henüz o hikaye de anlatılmıyor.</div>
+        </div>
+        <div class="chain-row">
+          <div class="chain-left" style="background:var(--navy);">= Nihai Etki</div>
+          <div class="chain-right"><strong style="color:var(--red);">Fiyatlama baskısı + tender dezavantajı + şef tercihlerinde görünmezlik.</strong> Teknik olarak kazanması gereken işlerde marka puanıyla kaybediyor. Premium segmentte hak ettiği fiyatı alamıyor.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rakiplerle konumlandırma haritası -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:0 0 8px;">Rekabette Bonna Nerede?</h3>
+    <p style="font-size:14px; color:var(--g500); margin-bottom:16px;">Ürün performansı (dikey) vs. marka algısı (yatay) — Bonna sol üstte sıkışmış: ürünü güçlü, algısı zayıf.</p>
+
+    <div class="position-map">
+      <div class="pm-axis-x"></div>
+      <div class="pm-axis-y"></div>
+      <div class="pm-label-x" style="left:80px;">Düşük algı</div>
+      <div class="pm-label-x" style="right:40px;">Yüksek algı</div>
+      <div class="pm-label-y" style="top:40px;">Yüksek performans</div>
+      <div class="pm-label-y" style="bottom:40px;">Düşük performans</div>
+      <!-- Bonna: yüksek performans, düşük algı -->
+      <div class="pm-dot" style="top:18%; left:28%; background:var(--gold); color:var(--navy); font-size:13px; padding:8px 18px; box-shadow:0 4px 16px rgba(201,169,98,0.4);">● BONNA</div>
+      <!-- Churchill: orta-yüksek performans, yüksek algı -->
+      <div class="pm-dot" style="top:30%; left:72%; background:var(--g300); color:var(--g700);">Churchill</div>
+      <!-- Steelite -->
+      <div class="pm-dot" style="top:35%; left:62%; background:var(--g300); color:var(--g700);">Steelite</div>
+      <!-- Villeroy -->
+      <div class="pm-dot" style="top:45%; left:82%; background:var(--g300); color:var(--g700);">Villeroy & Boch</div>
+      <!-- Hedef ok -->
+      <div style="position:absolute; top:18%; left:38%; font-size:28px; color:var(--gold); animation: pulse 2s infinite;">⟶</div>
+      <div class="pm-dot" style="top:15%; left:65%; background:rgba(201,169,98,0.15); color:var(--gold-dark); border:2px dashed var(--gold);">HEDEF</div>
+    </div>
+    <style>@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }</style>
+
+    <div class="info">
+      <strong>Stratejik hamle:</strong> Bonna'nın hedefi sol üstten sağ üste geçmek — yani ürün performansını koruyarak marka algısını yükseltmek. Heritage ile yarışmıyoruz (sağ alt). Teknoloji, garanti ve kanıtla yarışıyoruz (sağ üst).
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ 3. İÇGÖRÜ & FIRSAT ═══════════════════════════════════ -->
+  <div class="sec" id="insight">
+    <div class="sec-h">
+      <div class="sec-num">03 — İçgörü & Stratejik Fırsat</div>
+      <h2>Sektörün Gizli Acısı, Bonna'nın Çözümü</h2>
+    </div>
+
+    <!-- Sektörün döngüsü — görsel flow -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:20px; color:var(--navy); margin:0 0 8px;">HoReCa'nın Kırılgan Döngüsü</h3>
+    <p style="font-size:14px; color:var(--g500); margin-bottom:16px;">Her restoran bu döngüyü yılda en az 1 kez yaşıyor. Bonna bu döngüyü kıran tek marka.</p>
+
+    <div class="flow" style="background:white; border-radius:16px; border:1px solid var(--g200); padding:8px;">
+      <div class="flow-node">
+        <div class="fn-icon">🍽️</div>
+        <div class="fn-label">Adım 1</div>
+        <h4>Tabak Seçimi</h4>
+        <p>Şef estetik seçer, satın almacı fiyata bakar. Karar verilir.</p>
+      </div>
+      <div class="flow-node">
+        <div class="fn-icon">⏱️</div>
+        <div class="fn-label">6 Ay Sonra</div>
+        <h4>Yıpranma Başlar</h4>
+        <p>Kenarlar çıtlar, yüzey çizilir. Tabaklar "eskimiş" görünür.</p>
+      </div>
+      <div class="flow-node">
+        <div class="fn-icon">💸</div>
+        <div class="fn-label">Maliyet</div>
+        <h4>Yenileme Zorunluluğu</h4>
+        <p>Yılda setin %15-25'i yenilenir. 500 parçada = 75-125 adet/yıl.</p>
+      </div>
+      <div class="flow-node">
+        <div class="fn-icon">🔄</div>
+        <div class="fn-label">Her Yıl</div>
+        <h4>Döngü Tekrarlar</h4>
+        <p>5 yılda 7.500-12.500€ kayıp. Şef tekrar tabak aramaya başlar.</p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:24px; background:linear-gradient(135deg, #2e3a1f, #3a4a2a);">
+      <span class="callout-label">Bonna'nın Çözümü</span>
+      <h3>Döngüyü kır. Bir kere seç, bir daha düşünme.</h3>
+      <p>Ömür boyu kenar çıtlama garantisi + çizilmeye dirençli glazür = HoReCa'nın "kırılgan döngüsü"nü durduran tek formül. Şef için zaman tasarrufu, restoran sahibi için maliyet tasarrufu, otel için operasyonel verimlilik.</p>
+    </div>
+
+    <!-- TCO referansı kaldırıldı — detaylı maliyet karşılaştırması strateji sunumunda ayrıca ele alınacak -->
+
+    <!-- Rekabet tablosu -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:20px; color:var(--navy); margin:36px 0 8px;">Rekabet Haritası — Nerede Kazanıyoruz, Nerede Kaybediyoruz?</h3>
+
+    <table class="tbl">
+      <thead>
+        <tr><th>Kriter</th><th>Bonna</th><th>Churchill</th><th>Steelite</th><th>Villeroy & Boch</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Kenar Çıtlama Garantisi</strong></td><td style="color:var(--green); font-weight:700;">Ömür boyu ✓</td><td>Sınırlı</td><td>5 yıl</td><td>Yok</td></tr>
+        <tr><td><strong>Çizilmezlik Teknolojisi</strong></td><td style="color:var(--green); font-weight:700;">Var ✓</td><td>Kısmi</td><td>Var</td><td>Kısmi</td></tr>
+        <tr><td><strong>Tasarım Çeşitliliği</strong></td><td style="color:var(--green); font-weight:700;">30+ koleksiyon</td><td>15-20</td><td>20+</td><td>25+</td></tr>
+        <tr><td><strong>Fiyat/Performans</strong></td><td style="color:var(--green); font-weight:700;">Üstün ✓</td><td>Orta</td><td>Yüksek</td><td>Çok yüksek</td></tr>
+        <tr><td><strong>Marka Bilinirliği</strong></td><td style="color:var(--red); font-weight:600;">Düşük ✗</td><td>Yüksek</td><td>Yüksek</td><td>Çok yüksek</td></tr>
+        <tr><td><strong>Dijital Varlık</strong></td><td style="color:var(--red); font-weight:600;">Zayıf ✗</td><td>Orta</td><td>İyi</td><td>Güçlü</td></tr>
+        <tr><td><strong>Heritage</strong></td><td>40+ yıl</td><td style="font-weight:600;">230+ yıl</td><td>50+ yıl</td><td>275+ yıl</td></tr>
+        <tr><td><strong>Yenilikçilik</strong></td><td style="color:var(--green); font-weight:700;">Lider ✓</td><td>Takipçi</td><td>Orta</td><td>Orta</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Stratejik çıkarım: neden-sonuç -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:20px; color:var(--navy); margin:36px 0 16px;">Stratejik Çıkarım — Bu Tablo Ne Söylüyor?</h3>
+
+    <div class="cause-effect">
+      <div class="ce-box ce-cause">
+        <div class="ce-label">Zayıf Noktalarımız</div>
+        <h4>Marka bilinirliği + Dijital varlık + Heritage</h4>
+        <p>Bunların hepsi iletişimle çözülür. Ürün değişikliği gerektirmez.</p>
+      </div>
+      <div class="ce-arrow">→<span>Strateji</span></div>
+      <div class="ce-box ce-effect">
+        <div class="ce-label">Yapacağımız</div>
+        <h4>Güçlü ürünü, güçlü iletişimle buluştur</h4>
+        <p>Heritage ile değil, teknoloji + garanti + kanıtla yarışıyoruz. "En eski" değil, "en dayanıklı" — bu Bonna'nın hikayesi.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ 4. ÇATI KONSEPT ═══════════════════════════════════ -->
+  <div class="sec" id="konsept">
+    <div class="sec-h">
+      <div class="sec-num">04 — Çatı Konsept</div>
+      <h2>"Çıtlamazlık" — Bir Ürün Özelliğinden Kültürel Tutuma</h2>
+    </div>
+
+    <div class="prose">
+      <p>"Çıtlamazlık" kelimesi Türkçeye özgü, çevrilmesi zor, kulağa oturan bir kavram. Porselen sektöründe teknik bir terim olarak yaşıyor ama biz bunu <strong>bir marka felsefesine dönüştürüyoruz:</strong></p>
+      <p>Çıtlamayan porselen. Çıtlamayan performans. Çıtlamayan tutku. Çıtlamayan standartlar. <em>Baskı altında bile kırılmayan her şey "çıtlamaz"dır.</em></p>
+    </div>
+
+    <div class="callout" style="margin-top:28px;">
+      <span class="callout-label">Çatı Mesaj</span>
+      <h3>"Sınırları Zorla."<br><span style="font-size:18px; opacity:0.6;">Push the Limits.</span></h3>
+      <p>Sınırları zorlayan profesyoneller için, sınırlarını aşan porselen. Her gece yüzlerce tabak dönen bir mutfakta, her servis bir sınav. Her düşme bir test. Her yıkama bir meydan okuma. Bonna, bu sınavın her birinden çıtlamadan çıkan tek porselen — çünkü sınırları zorlamak için, sınırlarını bilen ekipmana ihtiyacın var.</p>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:40px 0 20px;">Konsept Evrimi — Teknikten Kültüre</h3>
+    <p style="margin-bottom:24px; font-size:14px; color:var(--g600);">Çıtlamazlık, tek boyutlu bir ürün avantajından üç boyutlu bir marka platformuna yükselen yaşayan bir konsept:</p>
+
+    <div class="ladder">
+      <div class="ladder-rung">
+        <div class="lr-num">Seviye 1</div>
+        <div class="lr-content">
+          <h4>Teknik Terim — Çıtlamazlık</h4>
+          <p>Porselen sektöründeki nesnel, ölçülebilir bir özellik. Kenar dayanımı, çatlak direnci, ömür boyu garantisi. İçgörü: Bonna bunu en iyi yapıyor.</p>
+        </div>
+      </div>
+      <div class="ladder-rung">
+        <div class="lr-num">Seviye 2</div>
+        <div class="lr-content">
+          <h4>Marka Garantisi — Ömür Boyu Çıtlama Garantisi</h4>
+          <p>Müşteri vaadine dönüşen teknik. "Bonna, seni asla hayal kırıklığına uğratmayacak." Güvenin maddi kanıtı. FusionTech ve kalite testi destekli.</p>
+        </div>
+      </div>
+      <div class="ladder-rung">
+        <div class="lr-num">Seviye 3</div>
+        <div class="lr-content">
+          <h4>Kültürel Tutum — Sınırları Zorlayan Bir Yaşam</h4>
+          <p>Ürünün ötesine geçerek insan tutumunu tanımlıyor. Şef, aşçıbaşı, profesyonel mutfak = sınırlarını zorlayan insanlar. Bonna da öyle — yani "Bonna seçen senin kabiliyetinden emin olanlar."</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:40px 0 20px;">Mesaj Hiyerarşisi</h3>
+
+    <div class="hier">
+      <div class="hier-i" style="background: var(--navy);">
+        <div class="hn">01</div>
+        <div class="hl">Birincil — Çatı Mesaj</div>
+        <h3>Çıtlamazlık</h3>
+        <p>Kenar dayanımı. Ömür boyu garanti. Sektörde rakipsiz. Her iletişimde sabit mesaj. "Bonna = çıtlamaz" denklemini kuruyoruz.</p>
+      </div>
+      <div class="hier-i" style="background: var(--navy-mid);">
+        <div class="hn">02</div>
+        <div class="hl">İkincil — Güçlendirici</div>
+        <h3>Çizilmezlik</h3>
+        <p>Glazür teknolojisi. Endüstriyel yıkamaya, çatala, bıçağa dirençli yüzey. Görsel yaşlanmaya karşı koruma. TCO argümanını destekliyor.</p>
+      </div>
+      <div class="hier-i" style="background: var(--navy-light);">
+        <div class="hn">03</div>
+        <div class="hl">Üçüncül — Farklılaştırıcı</div>
+        <h3>Tasarım</h3>
+        <p>FusionTech, 30+ koleksiyon, Asya'dan Akdeniz'e. "Dayanıklı ama güzel" paradoksunu çözen marka. Form + fonksiyon buluşması.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:40px 0 20px;">Ton ve Dil Rehberi</h3>
+
+    <div class="tone-grid">
+      <div class="tone-item">
+        <div class="ti-icon">💪</div>
+        <h4>Özgüvenli</h4>
+        <div class="ti-desc">Net, hızlı, kanıtlanabilir iddialar. "Humble brag" değil, direkt beyan. Rakiplerden bahsetmeden kendi üstünlüğümüzü söylüyoruz.</div>
+        <div class="ti-example">"En çok satan değil, en uzun dayanan."</div>
+      </div>
+      <div class="tone-item">
+        <div class="ti-icon">🎯</div>
+        <h4>Profesyonel</h4>
+        <div class="ti-desc">Sektörün dilini bilen, jargona hâkim iletişim. HoReCa'nın gerçek sorunlarından konuşuyoruz. Şefle şef gibi, CFO'ya CFO gibi.</div>
+        <div class="ti-example">"Servis başına maliyet" dil — "tabak güzelliği" değil</div>
+      </div>
+      <div class="tone-item">
+        <div class="ti-icon">⚡</div>
+        <h4>Cesur</h4>
+        <div class="ti-desc">Sınırları zorlayan marka, sınırları zorlayan dil. Kırılganlık değil dayanım. Zarafet değil güç+zarafet. Dramtik, sinematik, mutfağın gerçekliği.</div>
+        <div class="ti-example">"Premium" değil "kanıtlanmış"</div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:40px 0 20px;">Bonna Böyle Konuşur — Mecra Bazlı İletişim</h3>
+
+    <div class="msg-card">
+      <div class="mc-header">
+        <span class="mc-channel">🌍 Outdoor / Havalimanı</span>
+        <span class="mc-style">Tek Cümle, Büyük Etki</span>
+      </div>
+      <div class="mc-examples">
+        <div class="msg-item">"40 milyon tabak. 0 çıtlama." — Bonna. Sınırları Zorla.</div>
+        <div class="msg-item">"Tabağınız sizden önce emekli oluyorsa, yanlış tabağı seçtiniz."</div>
+        <div class="msg-item">"110 ülke güveniyor. Ömür boyu."</div>
+      </div>
+    </div>
+
+    <div class="msg-card">
+      <div class="mc-header">
+        <span class="mc-channel">📸 Instagram — Şeflere</span>
+        <span class="mc-style">Duygusal, Tutku Dolu</span>
+      </div>
+      <div class="mc-examples">
+        <div class="msg-item">"Bu tabağın üzerindeki yemek 6 ay süren bir Ar-Ge'nin sonucu. Tabağın kendisi? 40 yıllık."</div>
+        <div class="msg-item">"847 gün. 2.541 servis. 0 çıtlama. Bu sadece garanti değil — güven."</div>
+        <div class="msg-item">"Fark bulamadın, değil mi? Biz de bulamıyoruz." [3 yıllık vs. yeni tabak karşılaştırması]</div>
+      </div>
+    </div>
+
+    <div class="msg-card">
+      <div class="mc-header">
+        <span class="mc-channel">💼 LinkedIn — Satın Almacılara</span>
+        <span class="mc-style">Rasyonel, Veri Odaklı</span>
+      </div>
+      <div class="mc-examples">
+        <div class="msg-item">"Ortalama restoran yılda porseleninin %20'sini yeniler. Bonna ile: %0. TCO hesaplayıcıyı deneyin →"</div>
+        <div class="msg-item">"İhracat şampiyonu bir marka, masanıza ne katar? 110 ülkedeki HoReCa profesyonellerine sorun."</div>
+        <div class="msg-item">"[X Otel] Bonna'ya geçişin ilk yılında tabak yenileme bütçesini %85 azalttı."</div>
+      </div>
+    </div>
+
+    <div class="msg-card">
+      <div class="mc-header">
+        <span class="mc-channel">🎬 YouTube / Trade Basın</span>
+        <span class="mc-style">Hikaye Odaklı</span>
+      </div>
+      <div class="mc-examples">
+        <div class="msg-item">"Bazı markalar tarihe yaslanır. Bonna teknolojiye." [FusionTech, Ar-Ge, inovasyon]</div>
+        <div class="msg-item">"Her şey kırılır. Bonna hariç."</div>
+        <div class="msg-item">"1795'te porselen yapımı zanaattı. 2026'da mühendislik."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ 5. HEDEF KİTLE ═══════════════════════════════════ -->
+  <div class="sec" id="hedef">
+    <div class="sec-h">
+      <div class="sec-num">05 — Hedef Kitle Haritası</div>
+      <h2>Kime Konuşuyoruz, Ne Duymasını İstiyoruz?</h2>
+      <p class="sec-lead">B2B hedef kitle homojen değil. Her segmentin farklı bir karar motivasyonu, farklı bir medya tüketim alışkanlığı var. Etki akışı her zaman aynı: Şefler tavsiye → F&B Direktörleri karar → Sahipleri onay.</p>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:32px 0 24px;">Karar Etkisi Akışı</h3>
+
+    <div class="influence-flow">
+      <div class="if-node">
+        <div class="ifn-role">Aşama 1 — Tavsiye</div>
+        <h4>Şefler</h4>
+        <p>İnsiyatif sahibi, ürün uzmanı, mevcut kullanıcı. "Bu tabağı mutfakta istiyorum" demeleri söz konusu satın alırsa bile başlar.</p>
+      </div>
+      <div class="if-node">
+        <div class="ifn-role">Aşama 2 — Karar</div>
+        <h4>F&B Direktörleri</h4>
+        <p>Bütçe sahibi, sözleşme imzalayıcı. Şef tavsiyesini dinler ama TCO, tedarik, risk analizini yapan kişi.</p>
+      </div>
+      <div class="if-node">
+        <div class="ifn-role">Aşama 3 — Onay</div>
+        <h4>Otel/Restoran Sahipleri</h4>
+        <p>Strateji belirleyici, marka uyumu kontrol. Premium işletmelerde son söz onların, prestij merkeze alınır.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:32px 0 24px;">Persona Kartları</h3>
+
+    <div class="cg">
+      <div class="card">
+        <h3><span class="ci" style="background:rgba(201,169,98,0.12); color:var(--gold-dark);">👨‍🍳</span> Şefler</h3>
+        <h4>Karar Rolü</h4>
+        <p>Tavsiye edici, bazen doğrudan karar verici. Tabak seçimi genellikle şefin inisiyatifinde.</p>
+        <h4>Motivasyon</h4>
+        <p>Estetik + güvenilirlik. "Yemeğimi en iyi sunan tabak hangisi?" + "Servis ortasında çıtlamazsa?"</p>
+        <h4>Medya</h4>
+        <p>Instagram, YouTube gastronomi, sektörel etkinlikler, şef network'ü.</p>
+        <span class="b b-gold">Birincil Hedef</span><span class="b b-red">Yüksek Etki</span>
+      </div>
+
+      <div class="card">
+        <h3><span class="ci" style="background:rgba(46,94,142,0.1); color:var(--blue);">📊</span> F&B Direktörleri</h3>
+        <h4>Karar Rolü</h4>
+        <p>Nihai karar verici. Özellikle zincir oteller ve büyük gruplar.</p>
+        <h4>Motivasyon</h4>
+        <p>TCO analizi, tedarik güvenliği, maliyet-performans. Marka prestiji ikincil.</p>
+        <h4>Medya</h4>
+        <p>Trade dergiler, fuarlar (Ambiente, Host), LinkedIn, sektörel raporlar.</p>
+        <span class="b b-blue">Birincil Hedef</span><span class="b b-green">Bütçe Karar</span>
+      </div>
+
+      <div class="card">
+        <h3><span class="ci" style="background:rgba(94,58,142,0.1); color:var(--purple);">🏨</span> Sahipleri</h3>
+        <h4>Karar Rolü</h4>
+        <p>Strateji belirleyici, marka uyumu. Özellikle butik ve bağımsız işletmelerde.</p>
+        <h4>Motivasyon</h4>
+        <p>Marka pozisyonlaması, misafir algısı, prestij. "Bu marka mekanımın seviyesini mi yansıtıyor?"</p>
+        <h4>Medya</h4>
+        <p>Lifestyle medya, Instagram, tasarım yayınları, gastronomi etkinlikleri.</p>
+        <span class="b b-purple">İkincil Hedef</span><span class="b b-gold">Prestij Odaklı</span>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:32px 0 24px;">HoReCa Satın Alma Yolculuğu</h3>
+    <p style="margin-bottom:24px; font-size:14px; color:var(--g600);">Karar süreci 3-8 hafta, birden fazla paydaş dahil. Her aşamada farklı temas noktası ve mesaj:</p>
+
+    <div class="journey">
+      <div class="journey-step">
+        <div class="js-header">
+          <div class="js-icon">1️⃣</div>
+          <div class="js-title">Farkındalık — "Bu marka ne?"</div>
+        </div>
+        <div class="js-details">
+          <div class="js-detail-box">
+            <div class="jdb-label">Temas Noktaları</div>
+            Marka filmi (YouTube/LinkedIn), sektörel PR, outdoor, fuar
+          </div>
+          <div class="js-detail-box">
+            <div class="jdb-label">Ana Mesaj</div>
+            "Sınırları Zorla" — dikkat çekici, merak uyandırıcı, Bonna'yı tanıtan
+          </div>
+        </div>
+      </div>
+
+      <div class="journey-step">
+        <div class="js-header">
+          <div class="js-icon">2️⃣</div>
+          <div class="js-title">Değerlendirme — "Bu ürün bize uyar mı?"</div>
+        </div>
+        <div class="js-details">
+          <div class="js-detail-box">
+            <div class="jdb-label">Temas Noktaları</div>
+            Web sitesi (TCO hesaplayıcı), numune deneyimi, şef referansları, LinkedIn case study
+          </div>
+          <div class="js-detail-box">
+            <div class="jdb-label">Ana Mesaj</div>
+            Çıtlamazlık garantisi, çizilmezlik testleri, maliyet karşılaştırması
+          </div>
+        </div>
+      </div>
+
+      <div class="journey-step">
+        <div class="js-header">
+          <div class="js-icon">3️⃣</div>
+          <div class="js-title">Karar — "Bonna'yı seçiyoruz"</div>
+        </div>
+        <div class="js-details">
+          <div class="js-detail-box">
+            <div class="jdb-label">Temas Noktaları</div>
+            Satış sunumu, referans otel ziyareti, customization seçenekleri
+          </div>
+          <div class="js-detail-box">
+            <div class="jdb-label">Ana Mesaj</div>
+            Garanti koşulları, tedarik güvenilirliği, kurumsal destek
+          </div>
+        </div>
+      </div>
+
+      <div class="journey-step">
+        <div class="js-header">
+          <div class="js-icon">4️⃣</div>
+          <div class="js-title">Sadakat — "Bonna'yı öneriyoruz"</div>
+        </div>
+        <div class="js-details">
+          <div class="js-detail-box">
+            <div class="jdb-label">Temas Noktaları</div>
+            Şef ambassador programı, yeni koleksiyon erişim, etkinlik davetleri
+          </div>
+          <div class="js-detail-box">
+            <div class="jdb-label">Ana Mesaj</div>
+            "Bonna ailesi"nin parçası olma, birlikte büyüme
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ 6. MARKA FİLMİ ═══════════════════════════════════ -->
+  <div class="sec" id="film">
+    <div class="sec-h">
+      <div class="sec-num">06 — Marka Filmi</div>
+      <h2>"Sınırları Zorla" — Film Serisi</h2>
+      <p class="sec-lead">Bir reklam filmi değil. Bir manifesto filmi. İzlendiğinde Bonna hakkında değil, Bonna'nın dünya görüşü hakkında bir şey hissettiren.</p>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:32px 0 24px;">Film #1 — "Her Şey Kırılır" (Pilot)</h3>
+
+    <div style="margin-bottom:32px;">
+      <span class="b b-gold">Hero Content</span> <span class="b b-red">YouTube Premiere</span> <span class="b b-blue">60-90 sn</span>
+      <p style="margin-top:12px; font-size:14px; color:var(--g600);">Film "kırılma" kavramıyla açılıyor — ama porselen kırılmasıyla değil. Bir şefin hayatındaki baskıyla: Michelin denetçisinin geldiği gece. Tempo mutfağın kaosunu takip ediyor. Ve sonra — bir an durur. Kamera bir tabağa iner. Çıtlamayan o tabak.</p>
+    </div>
+
+    <div style="margin-bottom:32px;">
+      <h4 style="color:var(--navy); font-weight:700; margin-bottom:16px;">Sahneler (Storyboard)</h4>
+      <div class="storyboard">
+        <div class="sb-panel">
+          <div class="sb-visual">🌑</div>
+          <div class="sb-time">0-10 sn</div>
+          <div class="sb-desc">Karanlık mutfak. Şefin yorgun elleri. Voiceover başlıyor.</div>
+          <div class="sb-mood">Tension, Focus</div>
+        </div>
+        <div class="sb-panel">
+          <div class="sb-visual">🔥</div>
+          <div class="sb-time">10-25 sn</div>
+          <div class="sb-desc">Tempo artıyor. Ateşler, çığlıklar, tabaklar hızlıca diziliyor.</div>
+          <div class="sb-mood">Intensity, Chaos</div>
+        </div>
+        <div class="sb-panel">
+          <div class="sb-visual">🍽️</div>
+          <div class="sb-time">25-45 sn</div>
+          <div class="sb-desc">Makro çekimler. Tabağın kenarına yakın. Düşse bile çıtlamıyor.</div>
+          <div class="sb-mood">Precision, Trust</div>
+        </div>
+        <div class="sb-panel">
+          <div class="sb-visual">✨</div>
+          <div class="sb-time">45-60 sn</div>
+          <div class="sb-desc">Sakinlik. Şef masaya yaslanıyor. Bonna tabak önünde.</div>
+          <div class="sb-mood">Relief, Victory</div>
+        </div>
+        <div class="sb-panel">
+          <div class="sb-visual">🎯</div>
+          <div class="sb-time">60-70 sn</div>
+          <div class="sb-desc">Logo ve tagline. "Sınırları Zorla."</div>
+          <div class="sb-mood">Resolution</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pb" style="margin-top:24px; border-left-color: var(--orange);">
+      <h3>Prodüksiyon Notları</h3>
+      <ul>
+        <li><strong>Gerçekçi çekim:</strong> Stüdyo değil, çalışan restoranda. Ham, otantik, sinematik.</li>
+        <li><strong>Işık:</strong> Doğal mutfak ışığı + pratik kaynakları. Jiro Dreams of Sushi estetiği.</li>
+        <li><strong>Müzik:</strong> Minimal, ritmik, crescendo. Elektronik + akustik. Foley sesleri ön planda.</li>
+        <li><strong>Format:</strong> 4K, 2.39:1 sinema oranı. Master (70sn) + Social cut (30sn) + Pre-roll (15sn) + Vertical (9:16)</li>
+        <li><strong>Dil:</strong> Türkçe voiceover + İngilizce altyazı. Global dub ayrıca.</li>
+      </ul>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:40px 0 24px;">Film Serisi — Sonraki Bölümler</h3>
+
+    <div class="film-cards">
+      <div class="fc">
+        <div class="fc-visual">⚔️</div>
+        <div class="fc-content">
+          <div class="fc-num">Film #2</div>
+          <h4>"Çizik" — Eskrim + Çizilmezlik</h4>
+          <p>Eskrimci ve şef paralel montajı. Kılıç yüzeyi çizerken, bıçak tabağı çizemiyor. Premium konumlandırma.</p>
+          <span class="fc-badge">45 sn</span>
+        </div>
+      </div>
+
+      <div class="fc">
+        <div class="fc-visual">🏒</div>
+        <div class="fc-content">
+          <div class="fc-num">Film #3</div>
+          <h4>"Buz" — Buz Hokeyi + Dayanım</h4>
+          <p>Pist sertliği, disk şiddeti. Sonra mutfak: aynı sertlik, aynı dayanım, farklı arena.</p>
+          <span class="fc-badge">45 sn</span>
+        </div>
+      </div>
+
+      <div class="fc">
+        <div class="fc-visual">🎨</div>
+        <div class="fc-content">
+          <div class="fc-num">Film #4</div>
+          <h4>"Form" — Tasarım + Sanat</h4>
+          <p>FusionTech'i gösteren, yavaş tempolu, görsel odaklı. Heykeltıraş metaforu. "Dayanıklılık güzel olmamalı diye bir kural yok."</p>
+          <span class="fc-badge">45 sn</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:40px 0 24px;">Teaser & Lansman Stratejisi</h3>
+    <p style="margin-bottom:24px; font-size:14px; color:var(--g600);">Merak uyandıran 3 aşamalı countdown, sosyal medya ve YouTube ile senkronize:</p>
+
+    <div class="wave-timeline">
+      <div class="wave-node">
+        <div class="wn-marker"></div>
+        <div class="wn-phase">Hafta 1-2</div>
+        <div class="wn-weeks">Lansman Öncesi</div>
+        <h4>Enigma Fazı</h4>
+        <p>Sosyal medyada marka adı olmadan enigmatik 5 sn videolar. Porselen kenarına darbe, slow-motion. Sonuç gösterilmiyor. Merak.</p>
+      </div>
+      <div class="wave-node">
+        <div class="wn-marker"></div>
+        <div class="wn-phase">Hafta 3</div>
+        <div class="wn-weeks">Reveal Fazı</div>
+        <h4>İdentite Açıklama</h4>
+        <p>"Kim çıtlamaz?" Şef yüzü gösteriliyor. Bonna logosu beliriyor. Countdown başladı. YouTube premiere hazırlığı.</p>
+      </div>
+      <div class="wave-node">
+        <div class="wn-marker"></div>
+        <div class="wn-phase">Hafta 4</div>
+        <div class="wn-weeks">Premiere</div>
+        <h4>Lansman Günü</h4>
+        <p>YouTube premiere event. LinkedIn eşzamanlı paylaşım. Instagram countdown sticker. Email kampanyası. Sektörel basın basılı.</p>
+      </div>
+    </div>
+
+    <div class="info" style="margin-top:32px;">
+      <strong>Metrik Hedefleri:</strong> YouTube premiere'de 5.000+ concurrent viewers, 100K+ views ilk 48 saat, LinkedIn post 50K+ impressions, Instagram Reels 500K+ views (organik), PR coverage en az 10 trade yayın.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ 7. DİJİTAL ═══════════════════════════════════ -->
+  <div class="sec" id="dijital">
+    <div class="sec-h">
+      <div class="sec-num">07 — Dijital Ekosistem</div>
+      <h2>Her Mecra, Bir Görev</h2>
+      <p class="sec-lead">Aynı içeriği her yere koymak değil — her mecranın rolünü bilmek ve o role göre içerik üretmek.</p>
+    </div>
+
+    <!-- Hub & Spoke Dijital Ekosistem -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:36px 0 28px;">Dijital Ekosistem Modeli</h3>
+    <div style="position:relative; width:100%; height:360px; background:white; border-radius:20px; border:1px solid var(--g200); display:flex; align-items:center; justify-content:center; overflow:hidden; margin-bottom:40px;">
+      <!-- Merkez: Bonna -->
+      <div style="position:absolute; width:140px; height:140px; border-radius:50%; background:linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); display:flex; align-items:center; justify-content:center; color:white; z-index:10; box-shadow:0 12px 40px rgba(15,22,41,0.16);"><div style="text-align:center;"><div style="font-family:'Playfair Display',serif; font-size:22px; font-weight:800; color:var(--gold); margin-bottom:4px;">BONNA</div><div style="font-size:9px; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,0.6);">Hub</div></div></div>
+      <!-- YouTube (Sol Üst) -->
+      <div style="position:absolute; top:40px; left:50px; width:100px; height:100px; border-radius:16px; background:rgba(230,46,46,0.08); border:2px solid rgba(230,46,46,0.25); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:16px;"><div style="font-size:32px; margin-bottom:8px;">▶️</div><div style="font-size:12px; font-weight:700; color:var(--navy);">YouTube</div><div style="font-size:9px; color:var(--g500); margin-top:4px;">Hikaye & SEO</div></div>
+      <svg style="position:absolute; top:45%; left:160px; width:90px; height:50px;" viewBox="0 0 90 50"><path d="M10 25 Q 45 15, 80 20" stroke="var(--gold)" stroke-width="2.5" fill="none" stroke-dasharray="5,3"/><polygon points="80,20 72,17 76,25" fill="var(--gold)"/></svg>
+      <!-- Instagram (Sağ Üst) -->
+      <div style="position:absolute; top:40px; right:50px; width:100px; height:100px; border-radius:16px; background:rgba(184,114,45,0.08); border:2px solid rgba(184,114,45,0.25); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:16px;"><div style="font-size:32px; margin-bottom:8px;">📸</div><div style="font-size:12px; font-weight:700; color:var(--navy);">Instagram</div><div style="font-size:9px; color:var(--g500); margin-top:4px;">Görsel Cazibe</div></div>
+      <svg style="position:absolute; top:45%; right:160px; width:90px; height:50px;" viewBox="0 0 90 50"><path d="M80 25 Q 45 35, 10 30" stroke="var(--gold)" stroke-width="2.5" fill="none" stroke-dasharray="5,3"/><polygon points="10,30 18,33 14,25" fill="var(--gold)"/></svg>
+      <!-- LinkedIn (Sol Alt) -->
+      <div style="position:absolute; bottom:40px; left:50px; width:100px; height:100px; border-radius:16px; background:rgba(46,94,142,0.08); border:2px solid rgba(46,94,142,0.25); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:16px;"><div style="font-size:32px; margin-bottom:8px;">💼</div><div style="font-size:12px; font-weight:700; color:var(--navy);">LinkedIn</div><div style="font-size:9px; color:var(--g500); margin-top:4px;">B2B Otorite</div></div>
+      <svg style="position:absolute; bottom:45%; left:160px; width:90px; height:50px;" viewBox="0 0 90 50"><path d="M10 25 Q 45 35, 80 30" stroke="var(--gold)" stroke-width="2.5" fill="none" stroke-dasharray="5,3"/><polygon points="80,30 72,28 76,35" fill="var(--gold)"/></svg>
+      <!-- TikTok (Sağ Alt) -->
+      <div style="position:absolute; bottom:40px; right:50px; width:100px; height:100px; border-radius:16px; background:rgba(126,66,150,0.08); border:2px solid rgba(126,66,150,0.25); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:16px;"><div style="font-size:32px; margin-bottom:8px;">🎵</div><div style="font-size:12px; font-weight:700; color:var(--navy);">TikTok</div><div style="font-size:9px; color:var(--g500); margin-top:4px;">Viral Gen Z</div></div>
+      <svg style="position:absolute; bottom:45%; right:160px; width:90px; height:50px;" viewBox="0 0 90 50"><path d="M80 25 Q 45 15, 10 20" stroke="var(--gold)" stroke-width="2.5" fill="none" stroke-dasharray="5,3"/><polygon points="10,20 18,22 14,15" fill="var(--gold)"/></svg>
+    </div>
+
+    <!-- İçerik Sütunları / Content Pillars -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:48px 0 24px;">İçerik Sütunları</h3>
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; margin:0 0 48px 0;">
+      <div style="padding:32px 20px; background:linear-gradient(180deg, rgba(201,169,98,0.1) 0%, rgba(201,169,98,0.03) 100%); border-radius:12px; border:1px solid rgba(201,169,98,0.2); text-align:center; border-top:4px solid var(--gold);"><div style="font-size:32px; margin-bottom:10px;">🔬</div><div style="font-size:13px; font-weight:700; color:var(--navy);">Çıtlamazlık Kanıtı</div><p style="font-size:12px; color:var(--g500); margin:8px 0 0;">Test, karşılaştırma, veriler</p></div>
+      <div style="padding:32px 20px; background:linear-gradient(180deg, rgba(46,94,142,0.1) 0%, rgba(46,94,142,0.03) 100%); border-radius:12px; border:1px solid rgba(46,94,142,0.2); text-align:center; border-top:4px solid var(--blue);"><div style="font-size:32px; margin-bottom:10px;">👨‍🍳</div><div style="font-size:13px; font-weight:700; color:var(--navy);">Şef Hikayeleri</div><p style="font-size:12px; color:var(--g500); margin:8px 0 0;">Podcast, röportaj, yolculuk</p></div>
+      <div style="padding:32px 20px; background:linear-gradient(180deg, rgba(94,58,142,0.1) 0%, rgba(94,58,142,0.03) 100%); border-radius:12px; border:1px solid rgba(94,58,142,0.2); text-align:center; border-top:4px solid var(--purple);"><div style="font-size:32px; margin-bottom:10px;">📊</div><div style="font-size:13px; font-weight:700; color:var(--navy);">Sektör Otoritesi</div><p style="font-size:12px; color:var(--g500); margin:8px 0 0;">Trend, veri, leadership</p></div>
+      <div style="padding:32px 20px; background:linear-gradient(180deg, rgba(184,114,45,0.1) 0%, rgba(184,114,45,0.03) 100%); border-radius:12px; border:1px solid rgba(184,114,45,0.2); text-align:center; border-top:4px solid var(--orange);"><div style="font-size:32px; margin-bottom:10px;">✨</div><div style="font-size:13px; font-weight:700; color:var(--navy);">Ürün Estetiği</div><p style="font-size:12px; color:var(--g500); margin:8px 0 0;">Food styling, plating</p></div>
+    </div>
+
+    <div class="col2">
+      <div class="pb" style="margin-top:0; border-left-color:var(--red);">
+        <h3>🎙 "Çıtlamazlar" Podcast</h3>
+        <p><strong>YouTube + Spotify + Apple Podcasts</strong></p>
+        <p>Sadece şeflerle değil — sınırlarını zorlayan her profesyonelle. Bir buz hokeycisi, bir cerrah, bir itfaiyeci, bir orkestra şefi. "Çıtlamazlık" kavramını farklı dünyalara taşıyan sohbetler.</p>
+        <h4>Neden İşe Yarar</h4>
+        <ul>
+          <li>Podcast, B2B karar vericilerin en çok tükettiği içerik formatlarından biri</li>
+          <li>"Çıtlamazlık" kavramını porselen dışına taşıyarak marka platformunu genişletiyor</li>
+          <li>Her bölüm ayrı bir sosyal medya içerik kaynağı — kısa kesitler, quote görseller</li>
+          <li>Sponsorluk ve cross-promotion fırsatları</li>
+        </ul>
+        <p><strong>Format:</strong> 30-45 dk, video podcast (YouTube) + ses (Spotify). Aylık 2 bölüm.</p>
+      </div>
+
+      <div class="pb" style="margin-top:0; border-left-color:var(--teal);">
+        <h3>🧪 "Bonna vs." Serisi</h3>
+        <p><strong>YouTube Shorts + TikTok + Instagram Reels</strong></p>
+        <p>Çıtlamazlık iddiasını kanıtlayan, eğlenceli, paylaşılabilir kısa videolar. Gerçek testler, dramatik slow-motion, sürpriz sonuçlar.</p>
+        <h4>Bölüm Fikirleri</h4>
+        <ul>
+          <li>"Bonna vs. 1000 yıkama döngüsü" — endüstriyel bulaşık makinesinde maratonu</li>
+          <li>"Bonna vs. Michelin şefin bıçağı" — çizilmezlik testi, makro çekim</li>
+          <li>"Bonna vs. yerçekimi" — yükseklik düşürme testi (gerçek, abartısız)</li>
+          <li>"Bonna vs. rakip" — kör test, şefler farkı görüyor mu?</li>
+          <li>"Bonna vs. zaman" — 5 yıl kullanılmış vs. yeni tabak karşılaştırma</li>
+        </ul>
+        <p><strong>Format:</strong> 15-60 sn, dikey, haftada 2.</p>
+      </div>
+    </div>
+
+    <div class="col2" style="margin-top:24px;">
+      <div class="pb" style="margin-top:0; border-left-color:var(--orange);">
+        <h3>🏷️ "Tabağın Doğum Sertifikası" — QR Code Storytelling</h3>
+        <p><strong>Her Bonna tabağın altında benzersiz bir QR kod.</strong> Tarayan kişi, o tabağın üretim hikayesine ulaşıyor: hangi fabrikada, hangi tarihte üretildiği, kaç derece fırında piştiği, hangi kalite testlerinden geçtiği. AR ile fabrika turuna çıkıyor.</p>
+        <h4>İletişim Değeri</h4>
+        <ul>
+          <li>"Farm to table" gıdada devrim yaptı — "Factory to table" porselende aynısını yapıyor</li>
+          <li>Restoranda misafir tabağı çevirip QR taradığında → Bonna ile organik temas noktası</li>
+          <li>Hangi ülke/şehirden taranıyor? Hangi koleksiyon ilgi görüyor? → Marketing data goldmine</li>
+          <li>Sosyal medya: "Tabağımı taradım, Bilecik'te doğmuş!" paylaşım teşviki → organik UGC</li>
+          <li>Maliyet minimal — QR lazer baskı + landing page geliştirme</li>
+        </ul>
+      </div>
+
+      <div class="pb" style="margin-top:0; border-left-color:var(--red);">
+        <h3>🎬 "24 Saat Bir Tabak" — Belgesel Mikro-Seri</h3>
+        <p><strong>Yoğun bir restoranda tek bir Bonna tabağa kamera takıyoruz.</strong> 24 saat boyunca o tabağın hayatını belgeliyoruz: sabah depodan çıkışı, mutfakta hazırlık, şefin elinden masaya, misafirin dokunuşu, bulaşık makinesine giriş, tekrar rafa — ertesi gün aynı döngü. Porselen hiçbir zaman "protagonist" olmadı.</p>
+        <h4>Format Seçenekleri</h4>
+        <ul>
+          <li><strong>YouTube:</strong> 15-20 dk belgesel versiyon. Minimal voiceover, ASMR niteliğinde foley sesleri (porselen sesleri) ön planda</li>
+          <li><strong>Instagram Reels:</strong> 60 sn timelapse — "Bir tabağın 24 saati 60 saniyede"</li>
+          <li><strong>TikTok:</strong> 30 sn POV "tabak kamera" — deneysel, eğlenceli</li>
+          <li><strong>Seri:</strong> Farklı restoran türleri (fine dining, sokak lezzeti, otel kahvaltısı) = farklı bölümler</li>
+          <li>Alt mesaj: 24 saat, yüzlerce temas, sıfır çıtlama — mesajı gösteriyor, söylemiyor</li>
+        </ul>
+      </div>
+
+      <div class="pb" style="margin-top:0; border-left-color:var(--purple);">
+        <h3>📸 "Tabakta Sanat" (Instagram)</h3>
+        <p>Bonna koleksiyonlarını food styling trendleriyle buluşturan görsel seri. Her hafta farklı koleksiyon + farklı mutfak teması.</p>
+        <h4>Yaklaşım</h4>
+        <ul>
+          <li>Stock food photography değil — gerçek şeflerin gerçek yemekleri, Bonna tabakları üzerinde</li>
+          <li>Her post: Tabak adı + koleksiyon + şef tag → keşfet sayfasında organik erişim</li>
+          <li>Carousel format: 1. Son kare (yemek), 2. Hazırlık süreci, 3. Tabak detay, 4. Koleksiyon bilgisi</li>
+          <li>Mevsimsel: İlkbahar-yaz hafif, sonbahar-kış koyu tonlar</li>
+        </ul>
+      </div>
+
+      <div class="pb" style="margin-top:0; border-left-color:var(--green);">
+        <h3>💼 LinkedIn İçerik Matrisi</h3>
+        <p>B2B karar vericilere direkt ulaşan, <strong>satış hunisinin üst katmanını besleyen</strong> profesyonel içerik.</p>
+        <h4>Haftalık Plan</h4>
+        <ul>
+          <li><strong>Pazartesi:</strong> Sektör insight — "HoReCa'da bu hafta" trendler, veri, analiz</li>
+          <li><strong>Çarşamba:</strong> Ürün/teknoloji — FusionTech, çıtlamazlık testleri, Ar-Ge hikayeleri</li>
+          <li><strong>Cuma:</strong> Başarı hikayesi — Bonna kullanan otel/restoranın case study'si</li>
+          <li><strong>Ekstra:</strong> C-level thought leadership — Kar Porselen CEO'sunun görüşleri</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- İçerik Serileri — 3 Sütun Kart Grid -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:48px 0 28px;">İçerik Serileri</h3>
+    <div class="cg" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="card" style="border-top:4px solid var(--red);"><h3 style="display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:16px;"><span style="font-size:24px;">🎙</span> "Çıtlamazlar" Podcast</h3><div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;"><span class="b b-red">YouTube</span> <span class="b b-gold">Spotify</span></div><p style="font-size:14px; color:var(--g600); line-height:1.65; margin:0;">Sınırlarını zorlayan profesyonellerle — buz hokeycisi, cerrah, itfaiyeci. "Çıtlamazlık" başka dünyalara taşınıyor.</p><div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--g100); font-size:12px; font-weight:600; color:var(--navy);">📋 30-45 dk | Aylık 2</div></div>
+      <div class="card" style="border-top:4px solid var(--teal);"><h3 style="display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:16px;"><span style="font-size:24px;">🧪</span> "Bonna vs." Serisi</h3><div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;"><span class="b b-teal">YouTube</span> <span class="b" style="background:rgba(126,66,150,0.08); color:var(--purple);">TikTok</span></div><p style="font-size:14px; color:var(--g600); line-height:1.65; margin:0;">Çıtlamazlık kanıtı eğlenceli testler. 1000 yıkama, Michelin bıçağı, düşürme, kör test.</p><div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--g100); font-size:12px; font-weight:600; color:var(--navy);">⏱ 15-60 sn | Haftada 2</div></div>
+      <div class="card" style="border-top:4px solid var(--green);"><h3 style="display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:16px;"><span style="font-size:24px;">🎬</span> "24 Saat Bir Tabak"</h3><div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;"><span class="b b-green">YouTube</span> <span class="b" style="background:rgba(184,114,45,0.08); color:var(--orange);">Reels</span></div><p style="font-size:14px; color:var(--g600); line-height:1.65; margin:0;">Belgesel: tabağın 24 saati. Depo → mutfak → şef → misafir → bulaşık. ASMR foley.</p><div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--g100); font-size:12px; font-weight:600; color:var(--navy);">🎥 15-20 dk | Timelapse</div></div>
+      <div class="card" style="border-top:4px solid var(--orange);"><h3 style="display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:16px;"><span style="font-size:24px;">🏷️</span> "Tabağın Sertifikası"</h3><div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;"><span class="b" style="background:rgba(184,114,45,0.08); color:var(--orange);">QR</span> <span class="b b-gold">UGC</span></div><p style="font-size:14px; color:var(--g600); line-height:1.65; margin:0;">"Factory to table": Her tabağın QR → üretim hikayesi. Restoranda organik temas.</p><div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--g100); font-size:12px; font-weight:600; color:var(--navy);">📍 Lokasyon Data</div></div>
+      <div class="card" style="border-top:4px solid var(--purple);"><h3 style="display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:16px;"><span style="font-size:24px;">📸</span> "Tabakta Sanat"</h3><div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;"><span class="b b-purple">Instagram</span> <span class="b" style="background:rgba(184,114,45,0.08); color:var(--orange);">Carousel</span></div><p style="font-size:14px; color:var(--g600); line-height:1.65; margin:0;">Food styling + koleksiyon. Gerçek şef yemekleri, Bonna tabakları. Haftalık.</p><div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--g100); font-size:12px; font-weight:600; color:var(--navy);">🎨 Haftalık | Professional</div></div>
+      <div class="card" style="border-top:4px solid var(--blue);"><h3 style="display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:16px;"><span style="font-size:24px;">💼</span> LinkedIn Matrisi</h3><div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;"><span class="b b-blue">LinkedIn</span> <span class="b" style="background:rgba(46,94,142,0.1); color:var(--blue);">B2B</span></div><p style="font-size:14px; color:var(--g600); line-height:1.65; margin:0;"><strong>Pzt:</strong> Sektör | <strong>Çar:</strong> Ürün | <strong>Cum:</strong> Case Study | <strong>Ekstra:</strong> C-level</p><div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--g100); font-size:12px; font-weight:600; color:var(--navy);">📈 3-4/hafta | Lead Gen</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ 8. GASTRONOMİ ═══════════════════════════════════ -->
+  <div class="sec" id="gastro">
+    <div class="sec-h">
+      <div class="sec-num">08 — Gastronomi Programı</div>
+      <h2>Şef Ekosistemi — "Bonna Collective"</h2>
+      <p class="sec-lead">Bir influencer anlaşması değil. Bonna etrafında organik olarak büyüyen, şeflerin gönüllü parçası olmak istediği bir profesyonel topluluk.</p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">Program Vizyonu</span>
+      <h3>"Bonna Collective" — Sınırları Zorlayan Şeflerin Evi</h3>
+      <p>Bonna sadece tabak tedarik etmiyor — şeflere bir platform sunuyor. Görünürlük, networking, içerik üretimi, yeni koleksiyonlara ilk erişim. Karşılığında organik savunuculuk, otantik içerik ve sektörel güvenilirlik kazanıyoruz.</p>
+    </div>
+
+    <div class="cg">
+      <div class="card">
+        <h3><span class="ci" style="background:rgba(201,169,98,0.12); color:var(--gold-dark);">⭐</span> Tier 1 — Global Ambassador (1-2)</h3>
+        <p><strong>Profil:</strong> Türkiye'de ve uluslararası arenada tanınan, Michelin yıldızlı veya eşdeğer prestijde şef. Medya görünürlüğü yüksek, sosyal medya takipçisi 100K+.</p>
+        <p><strong>Angajman:</strong> 12 aylık anlaşma. Marka filminde başrol. Podcast'in ilk konuğu. 2 büyük etkinlikte Bonna yüzü. Yıl sonunda co-designed koleksiyon lansmanı.</p>
+        <p><strong>Bonna'nın kazancı:</strong> Marka prestiji, medya değeri, ilk filmin gücü. <strong>Şefin kazancı:</strong> Prodüksiyon değeri yüksek içerik, global görünürlük, kendi adını taşıyan koleksiyon.</p>
+        <span class="b b-gold">Yüksek Yatırım</span><span class="b b-red">Yüksek Etki</span>
+      </div>
+
+      <div class="card">
+        <h3><span class="ci" style="background:rgba(46,94,142,0.1); color:var(--blue);">🔷</span> Tier 2 — İçerik Ortağı (5-8)</h3>
+        <p><strong>Profil:</strong> Farklı mutfak dallarından (Türk, İtalyan, Asya, Güney Amerika), şehirlerde tanınan, aktif sosyal medya kullanan şefler. Takipçi 10K-100K.</p>
+        <p><strong>Angajman:</strong> Proje bazlı (3-6 ay). Instagram co-created içerik (aylık 2-3), koleksiyon eşleştirme, "Bonna Chef's Table" etkinliklerine katılım.</p>
+        <p><strong>Bonna'nın kazancı:</strong> Çeşitlilik, farklı mutfak temsili, düzenli organik içerik. <strong>Şefin kazancı:</strong> Profesyonel fotoğraf/video, Bonna platformunda görünürlük.</p>
+        <span class="b b-blue">Orta Yatırım</span><span class="b b-green">Sürekli İçerik</span>
+      </div>
+
+      <div class="card">
+        <h3><span class="ci" style="background:rgba(74,124,89,0.1); color:var(--green);">🌱</span> Tier 3 — Yükselen İsimler (15-25)</h3>
+        <p><strong>Profil:</strong> Genç şefler, mutfak okulları son sınıf/yeni mezun, aşçılık yarışması katılımcıları. Sosyal medyada aktif, büyüme potansiyeli yüksek.</p>
+        <p><strong>Angajman:</strong> Ürün seeding (ücretsiz set gönderimi) + organik paylaşım beklentisi. Zorunluluk yok, gönüllülük esası. Bonna stajyer/genç şef programıyla entegre.</p>
+        <p><strong>Bonna'nın kazancı:</strong> Gelecek nesil sadakati, UGC içerik, autantik görünürlük. <strong>Şefin kazancı:</strong> Premium porselen erişimi, kariyer başında marka desteği.</p>
+        <span class="b b-green">Düşük Yatırım</span><span class="b b-purple">Uzun Vadeli</span>
+      </div>
+    </div>
+
+    <!-- Program Piramidi -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:48px 0 28px;">Üç Tier Program Yapısı</h3>
+    <div style="display:flex; align-items:flex-end; justify-content:center; gap:0; margin:40px 0 36px; height:280px;">
+      <!-- Tier 1 -->
+      <div style="width:120px; height:80px; background:linear-gradient(180deg, var(--gold) 0%, var(--gold-dark) 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; border-radius:8px 8px 0 0; text-align:center;">
+        <div style="font-size:20px; font-weight:800;">1-2</div>
+        <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-top:4px;">Global Amb.</div>
+      </div>
+      <!-- Tier 2 -->
+      <div style="width:200px; height:160px; background:linear-gradient(180deg, var(--blue) 0%, rgba(46,94,142,0.8) 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; border-radius:8px 8px 0 0; text-align:center;">
+        <div style="font-size:28px; font-weight:800;">5-8</div>
+        <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-top:6px;">İçerik Ortağı</div>
+        <div style="font-size:11px; font-weight:600; margin-top:8px; opacity:0.9;">Proje Bazlı</div>
+      </div>
+      <!-- Tier 3 -->
+      <div style="width:280px; height:240px; background:linear-gradient(180deg, var(--green) 0%, rgba(58,107,69,0.8) 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; border-radius:8px 8px 0 0; text-align:center;">
+        <div style="font-size:36px; font-weight:800;">15-25</div>
+        <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-top:8px;">Yükselen İsimler</div>
+        <div style="font-size:11px; font-weight:600; margin-top:10px; opacity:0.9;">Seeding</div>
+      </div>
+    </div>
+
+    <!-- Big Numbers Stats -->
+    <div class="big-num">
+      <div class="big-num-i"><div class="bn-v">6</div><div class="bn-l">Chef's Table / Yıl</div></div>
+      <div class="big-num-i"><div class="bn-v">3</div><div class="bn-l">Tier Program</div></div>
+      <div class="big-num-i"><div class="bn-v">25+</div><div class="bn-l">Aktif Şef</div></div>
+      <div class="big-num-i"><div class="bn-v">5</div><div class="bn-l">Fuar / Yıl</div></div>
+    </div>
+
+    <!-- Etkinlik Takvimi -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:48px 0 28px;">Yıllık Etkinlik Takvimi</h3>
+    <div style="display:flex; gap:8px; margin:0 0 32px 0; flex-wrap:wrap; align-items:center;">
+      <div style="display:flex; align-items:center; padding:10px 16px; background:rgba(201,169,98,0.08); border-radius:20px; border:1px solid rgba(201,169,98,0.2); font-size:12px; font-weight:600; color:var(--navy);"><span style="width:20px; height:20px; border-radius:50%; background:var(--gold); color:white; display:flex; align-items:center; justify-content:center; font-size:10px; margin-right:8px;">🏛️</span>Ambiente (Şub)</div>
+      <div style="font-size:14px; color:var(--g400);">→</div>
+      <div style="display:flex; align-items:center; padding:10px 16px; background:rgba(184,114,45,0.08); border-radius:20px; border:1px solid rgba(184,114,45,0.2); font-size:12px; font-weight:600; color:var(--navy);"><span style="width:20px; height:20px; border-radius:50%; background:var(--orange); color:white; display:flex; align-items:center; justify-content:center; font-size:10px; margin-right:8px;">🍽️</span>İstanbul Gastro (May)</div>
+      <div style="font-size:14px; color:var(--g400);">→</div>
+      <div style="display:flex; align-items:center; padding:10px 16px; background:rgba(46,94,142,0.08); border-radius:20px; border:1px solid rgba(46,94,142,0.2); font-size:12px; font-weight:600; color:var(--navy);"><span style="width:20px; height:20px; border-radius:50%; background:var(--blue); color:white; display:flex; align-items:center; justify-content:center; font-size:10px; margin-right:8px;">🏆</span>Host (Eki)</div>
+      <div style="font-size:14px; color:var(--g400);">→</div>
+      <div style="display:flex; align-items:center; padding:10px 16px; background:rgba(126,66,150,0.08); border-radius:20px; border:1px solid rgba(126,66,150,0.2); font-size:12px; font-weight:600; color:var(--navy);"><span style="width:20px; height:20px; border-radius:50%; background:var(--purple); color:white; display:flex; align-items:center; justify-content:center; font-size:10px; margin-right:8px;">✨</span>EquipHotel (Kas)</div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:40px 0 20px;">Etkinlik Programı</h3>
+
+    <div class="col2">
+      <div class="pb" style="margin-top:0;">
+        <h3>"Bonna Chef's Table" — Aylık Davet Serisi</h3>
+        <p>Her ay farklı bir şehirde (İstanbul, İzmir, Ankara + yılda 2 uluslararası), Tier 1 veya Tier 2 şefin hazırladığı özel menü. 20-30 kişilik, sadece davetli.</p>
+        <h4>Davetli Profili</h4>
+        <ul>
+          <li>%40 HoReCa karar vericileri (otel F&B, restoran grubu yöneticileri)</li>
+          <li>%30 Gastronomi medyası (editörler, food bloggerlar, kritikler)</li>
+          <li>%20 Diğer şefler (network genişletme, peer etkisi)</li>
+          <li>%10 VIP — marka dostu iş insanları, sponsorluk potansiyeli</li>
+        </ul>
+        <h4>İçerik Çıktısı</h4>
+        <ul>
+          <li>Profesyonel video (YouTube + sosyal medya, 3-5 dk)</li>
+          <li>Fotoğraf seti (Instagram carousel + LinkedIn)</li>
+          <li>Podcast bölümü (şefle sohbet)</li>
+        </ul>
+      </div>
+
+      <div class="pb" style="margin-top:0; border-left-color:var(--teal);">
+        <h3>"Çıtlamaz Mutfak" — Pop-up Aktivasyonlar</h3>
+        <p>Fuarlarda ve gastronomi festivallerinde Bonna'nın fiziksel deneyim alanı.</p>
+        <h4>Konsept</h4>
+        <ul>
+          <li><strong>Canlı dayanıklılık testi:</strong> Ziyaretçiler Bonna ve rakip tabakları yan yana test ediyor — kenar vurma, çizme, yıkama simülasyonu</li>
+          <li><strong>Canlı pişirme:</strong> Bonna şefi, etkinlik boyunca Bonna tabakları üzerinde servis</li>
+          <li><strong>TCO hesaplayıcı kiosk:</strong> İnteraktif ekranda "senin restoranın Bonna ile ne kadar tasarruf eder?" hesaplatma</li>
+          <li><strong>Numune kutusu:</strong> İlgilenen profesyonellere özel numune paketi + takip sistemi (lead gen)</li>
+        </ul>
+        <h4>Potansiyel Etkinlikler</h4>
+        <ul>
+          <li>Ambiente (Frankfurt) — Şubat</li>
+          <li>Host Milano — Ekim</li>
+          <li>EquipHotel (Paris) — Kasım</li>
+          <li>İstanbul Gastronomi Festivali — Mayıs</li>
+          <li>Taste of İstanbul — Haziran</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ 9. SPONSORLUK ═══════════════════════════════════ -->
+  <div class="sec" id="sponsor">
+    <div class="sec-h">
+      <div class="sec-num">09 — Sponsorluk & OOH</div>
+      <h2>Dayanımı Sahneye Taşımak</h2>
+    </div>
+
+    <div class="prose">
+      <p>Sponsorluk stratejisi üç amaca hizmet ediyor: <strong>(1)</strong> "Sınırları Zorla" temasını spor metaforuyla güçlendirmek, <strong>(2)</strong> marka filmi için otantik içerik kaynağı yaratmak, <strong>(3)</strong> B2B hospitality alanlarında ürün deneyimi sunmak. Her sponsorluk "sadece logo" değil — bir içerik ortaklığı ve deneyim platformu.</p>
+    </div>
+
+    <!-- Sponsorluk Bağlantı Kartları -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:36px 0 28px;">Sponsorluk Bağlantıları</h3>
+    <div class="cg" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="card" style="border-top:4px solid var(--red);">
+        <h3 style="display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:16px;"><span style="font-size:24px;">🏒</span> Buz Hokeyi</h3>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;">
+          <span class="b b-red">Spor</span> <span class="b" style="background:rgba(15,22,41,0.05); color:var(--navy);">Dayanım</span>
+        </div>
+        <p style="font-size:14px; color:var(--g600); line-height:1.65; margin:0;">Sertlik, performans altında dayanım → Çıtlamazlık metaforu</p>
+        <div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--g100);">
+          <div style="font-size:12px; color:var(--navy); font-weight:600; margin-bottom:6px;">💡 B2B Temas</div>
+          <p style="font-size:12px; color:var(--g600); margin:0;">VIP loca, kurumsal servis, film #3 çekimi</p>
+        </div>
+        <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--g100);"><span class="b b-green">ROI: Yüksek</span></div>
+      </div>
+
+      <div class="card" style="border-top:4px solid var(--purple);">
+        <h3 style="display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:16px;"><span style="font-size:24px;">⚔️</span> Eskrim</h3>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;">
+          <span class="b b-purple">Spor</span> <span class="b" style="background:rgba(201,169,98,0.08); color:var(--orange);">Premium</span>
+        </div>
+        <p style="font-size:14px; color:var(--g600); line-height:1.65; margin:0;">Kılıç çizikleri → Çizilmezlik. Zarafet + güç → Premium porselen</p>
+        <div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--g100);">
+          <div style="font-size:12px; color:var(--navy); font-weight:600; margin-bottom:6px;">💡 B2B Temas</div>
+          <p style="font-size:12px; color:var(--g600); margin:0;">Premium algı, niş ama etkili, film #2 ortağı</p>
+        </div>
+        <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--g100);"><span class="b b-purple">ROI: Yüksek</span></div>
+      </div>
+
+      <div class="card" style="border-top:4px solid var(--gold);">
+        <h3 style="display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:16px;"><span style="font-size:24px;">🍽️</span> Gastro Fest</h3>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;">
+          <span class="b b-gold">Doğrudan</span> <span class="b" style="background:rgba(74,124,89,0.1); color:var(--green);">Hedef Kitle</span>
+        </div>
+        <p style="font-size:14px; color:var(--g600); line-height:1.65; margin:0;">Porselen evinde, doğal ortamında. En yüksek fiziksel temas</p>
+        <div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--g100);">
+          <div style="font-size:12px; color:var(--navy); font-weight:600; margin-bottom:6px;">💡 B2B Temas</div>
+          <p style="font-size:12px; color:var(--g600); margin:0;">Lead toplama, numune, etkinlik content</p>
+        </div>
+        <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--g100);"><span class="b b-gold">ROI: Çok Yüksek</span></div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:48px 0 28px;">OOH (Outdoor) Stratejisi</h3>
+
+    <!-- OOH Impact Timeline -->
+    <div style="margin:32px 0; padding:32px; background:rgba(15,22,41,0.03); border-radius:16px; border:1px solid rgba(201,169,98,0.12);">
+      <h4 style="font-size:14px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:2px; margin-bottom:24px;">Lansman Zaman Çizelgesi</h4>
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px;">
+        <!-- Hafta 1-4 -->
+        <div style="padding:24px; background:white; border-radius:12px; border-left:4px solid var(--red); border:1px solid var(--g200); border-left:4px solid var(--red);">
+          <div style="font-size:13px; text-transform:uppercase; letter-spacing:1.5px; color:var(--red); font-weight:700; margin-bottom:8px;">📍 Hafta 1-4</div>
+          <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:12px;">Teaser OOH</div>
+          <p style="font-size:13px; color:var(--g600); line-height:1.65; margin:0;">İstanbul Havalimanı, premium sinemalar. "Sınırları Zorla" teaser, minimal metin. Merak uyandır.</p>
+          <div style="margin-top:12px; font-size:11px; color:var(--g500); font-weight:600;">Bütçe: 40% | Impact: Awareness</div>
+        </div>
+
+        <!-- Hafta 5-8 -->
+        <div style="padding:24px; background:white; border-radius:12px; border:1px solid var(--g200); border-left:4px solid var(--gold);">
+          <div style="font-size:13px; text-transform:uppercase; letter-spacing:1.5px; color:var(--gold-dark); font-weight:700; margin-bottom:8px;">🎯 Hafta 5-8</div>
+          <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:12px;">Full Campaign</div>
+          <p style="font-size:13px; color:var(--g600); line-height:1.65; margin:0;">Marka filmi, Bonna logo, garantı ikonu. Gastronomi bölgeleri aktif. Maximum visibility.</p>
+          <div style="margin-top:12px; font-size:11px; color:var(--g500); font-weight:600;">Bütçe: 40% | Impact: Consideration</div>
+        </div>
+
+        <!-- Hafta 9-12 -->
+        <div style="padding:24px; background:white; border-radius:12px; border:1px solid var(--g200); border-left:4px solid var(--blue);">
+          <div style="font-size:13px; text-transform:uppercase; letter-spacing:1.5px; color:var(--blue); font-weight:700; margin-bottom:8px;">⚡ Hafta 9-12</div>
+          <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:12px;">Sustain Phase</div>
+          <p style="font-size:13px; color:var(--g600); line-height:1.65; margin:0;">Seçili lokasyonlarda devam. Gastronomi bölgeleri, havalimanı lounge. Uzun etki.</p>
+          <div style="margin-top:12px; font-size:11px; color:var(--g500); font-weight:600;">Bütçe: 20% | Impact: Retention</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OOH Mock Billboard -->
+    <h4 style="font-size:14px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:2px; margin:40px 0 20px;">Kreatif Mock: Billboard</h4>
+    <div style="padding:48px 40px; background:var(--navy); border-radius:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; aspect-ratio:2/1; position:relative; overflow:hidden;">
+      <div style="position:absolute; top:0; left:0; right:0; bottom:0; opacity:0.03; background:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22white%22 width=%2250%22 height=%2250%22/%3E%3Crect x=%2250%22 y=%2250%22 fill=%22white%22 width=%2250%22 height=%2250%22/%3E%3C/svg%3E'); background-size:100px 100px;"></div>
+      <div style="position:relative; z-index:2; text-align:center;">
+        <div style="font-size:14px; text-transform:uppercase; letter-spacing:3px; color:var(--gold); font-weight:700; margin-bottom:24px; opacity:0.85;">Porselen Alanında Sınırlar Yok</div>
+        <div style="font-family:'Playfair Display',serif; font-size:72px; font-weight:800; color:white; line-height:0.95; margin-bottom:32px; letter-spacing:-2px;">Sınırları<br/>Zorla</div>
+        <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:28px;">
+          <div style="width:2px; height:30px; background:var(--gold);"></div>
+          <div style="font-size:13px; text-transform:uppercase; letter-spacing:2px; color:var(--gold-light);">Bonna Premium Porselen</div>
+          <div style="width:2px; height:30px; background:var(--gold);"></div>
+        </div>
+        <div style="font-size:11px; color:rgba(255,255,255,0.6); letter-spacing:1px;">∞ Ömür Boyu Garanti</div>
+      </div>
+    </div>
+
+    <div class="pb" style="margin-top:32px;">
+      <h4>Seçili Lokasyonlar</h4>
+      <ul>
+        <li><strong>İstanbul Havalimanı — Dijital ekranlar:</strong> Uluslararası seyahat eden F&B profesyonelleri, otel yöneticileri.</li>
+        <li><strong>Premium sinema salonları:</strong> 15 sn pre-roll + lobi afişi. Karar vericilerin sosyo-ekonomik profili.</li>
+        <li><strong>Gastronomi bölgeleri:</strong> Karaköy, Nişantaşı, Alaçatı, Bodrum. Şef & restoran sahipleri yoğun geçişi.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ 10. WEB ═══════════════════════════════════ -->
+  <div class="sec" id="web">
+    <div class="sec-h">
+      <div class="sec-num">10 — Web Stratejisi</div>
+      <h2>Dijital Vitrin ≠ Katalog</h2>
+    </div>
+
+    <div class="prose">
+      <p>Bonna'nın web sitesi bugün bir ürün kataloğu gibi çalışıyor. Ama çatı iletişim stratejisi devreye girdiğinde, web sitesi <strong>üç farklı görevi eşzamanlı yerine getirmeli:</strong> marka hikayesi anlatma, ürün keşfi sağlama ve B2B lead toplama.</p>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:20px; color:var(--navy); margin:36px 0 24px;">Üç Misyon — Dönüşüm</h3>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-bottom:40px; align-items:center;">
+      <div style="text-align:center; padding:20px; background:rgba(15,22,41,0.05); border-radius:12px; border:1px solid rgba(201,169,98,0.15);">
+        <div style="font-size:13px; text-transform:uppercase; letter-spacing:2px; color:var(--gold-dark); font-weight:700; margin-bottom:12px;">Bugün</div>
+        <div style="font-size:18px; font-weight:700; color:var(--navy); margin-bottom:8px;">📋 Katalog</div>
+        <p style="font-size:13px; color:#666; line-height:1.5;">Ürün listesi, teknik spec, fiyat tablosu.</p>
+      </div>
+
+      <div style="text-align:center; font-size:32px; color:var(--gold); font-weight:700; margin-top:-12px;">→</div>
+
+      <div style="padding:24px; background:linear-gradient(135deg, rgba(201,169,98,0.1) 0%, rgba(74,124,89,0.05) 100%); border-radius:12px; border:2px solid var(--gold);">
+        <div style="font-size:13px; text-transform:uppercase; letter-spacing:2px; color:var(--gold-dark); font-weight:700; margin-bottom:16px;">Stratejiye Göre</div>
+        <div style="display:grid; gap:12px;">
+          <div style="text-align:center; padding:12px; background:white; border-radius:8px; border-left:3px solid var(--red);">
+            <div style="font-size:12px; font-weight:700; color:var(--navy);">🎬 Hikaye Anlatma</div>
+          </div>
+          <div style="text-align:center; padding:12px; background:white; border-radius:8px; border-left:3px solid var(--green);">
+            <div style="font-size:12px; font-weight:700; color:var(--navy);">🔍 Ürün Keşfi</div>
+          </div>
+          <div style="text-align:center; padding:12px; background:white; border-radius:8px; border-left:3px solid var(--blue);">
+            <div style="font-size:12px; font-weight:700; color:var(--navy);">📊 B2B Lead</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:20px; color:var(--navy); margin:36px 0 24px;">Site Mimarisi — Akış Şeması</h3>
+
+    <div style="background:rgba(15,22,41,0.03); padding:40px 32px; border-radius:14px; border:1px solid rgba(201,169,98,0.12);">
+      <div style="text-align:center; margin-bottom:32px;">
+        <div style="display:inline-block; padding:16px 28px; background:var(--navy); color:white; border-radius:8px; font-weight:700; font-size:14px; margin-bottom:20px;">🏠 Anasayfa</div>
+        <div style="font-size:20px; color:var(--gold); margin-bottom:20px;">↓</div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-bottom:24px;">
+        <div style="text-align:center; padding:20px; background:white; border-radius:10px; border:2px solid var(--red); border-top:4px solid var(--red);">
+          <div style="font-size:12px; color:var(--red); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Hub</div>
+          <div style="font-size:13px; font-weight:700; color:var(--navy);">Çıtlamazlık Hub</div>
+          <p style="font-size:11px; color:#666; margin-top:8px;">Film, test videoları, garanti</p>
+        </div>
+
+        <div style="text-align:center; padding:20px; background:white; border-radius:10px; border:2px solid var(--green); border-top:4px solid var(--green);">
+          <div style="font-size:12px; color:var(--green); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Keşif</div>
+          <div style="font-size:13px; font-weight:700; color:var(--navy);">Koleksiyonlar</div>
+          <p style="font-size:11px; color:#666; margin-top:8px;">Kategoriler, renkler, senaryolar</p>
+        </div>
+
+        <div style="text-align:center; padding:20px; background:white; border-radius:10px; border:2px solid var(--blue); border-top:4px solid var(--blue);">
+          <div style="font-size:12px; color:var(--blue); font-weight:700; text-transform:uppercase; margin-bottom:8px;">B2B</div>
+          <div style="font-size:13px; font-weight:700; color:var(--navy);">B2B Portal</div>
+          <p style="font-size:11px; color:#666; margin-top:8px;">Teklif, numune, sipariş</p>
+        </div>
+
+        <div style="text-align:center; padding:20px; background:white; border-radius:10px; border:2px solid var(--purple); border-top:4px solid var(--purple);">
+          <div style="font-size:12px; color:var(--purple); font-weight:700; text-transform:uppercase; margin-bottom:8px;">İçerik</div>
+          <div style="font-size:13px; font-weight:700; color:var(--navy);">Blog & Insight</div>
+          <p style="font-size:11px; color:#666; margin-top:8px;">Trend, case study, podcast</p>
+        </div>
+      </div>
+
+      <div style="text-align:center; font-size:11px; color:#666; font-weight:600; padding:16px; background:white; border-radius:8px; border-left:3px solid var(--gold);">
+        Her yol CRM'e leads → satış team'e gidiyor
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:20px; color:var(--navy); margin:36px 0 24px;">Churchill Benchmark — Almamız vs Almamamız</h3>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:0;">
+      <div style="padding:28px; background:rgba(74,124,89,0.08); border-radius:12px; border:1px solid rgba(74,124,89,0.2); border-left:4px solid var(--green);">
+        <div style="font-size:16px; font-weight:700; color:var(--navy); margin-bottom:20px; display:flex; align-items:center; gap:10px;">
+          <span style="font-size:20px;">✓</span> Almamız Gereken
+        </div>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li style="margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid rgba(74,124,89,0.15); font-size:13px; line-height:1.6;">
+            <strong style="color:var(--navy); display:block; margin-bottom:4px;">Koleksiyon Deneyimi</strong>
+            Churchill ürün sayfaları koleksiyonu "dünya" olarak sunar — hikaye, ilham, senaryolar. Bonna'da şu anda sadece ürün listesi var.
+          </li>
+          <li style="margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid rgba(74,124,89,0.15); font-size:13px; line-height:1.6;">
+            <strong style="color:var(--navy); display:block; margin-bottom:4px;">Sektörel İçerik</strong>
+            Blog, trend raporu, case study — Churchill web'i "bilgi kaynağı" konumunda. SEO avantajı çok büyük.
+          </li>
+          <li style="font-size:13px; line-height:1.6;">
+            <strong style="color:var(--navy); display:block; margin-bottom:4px;">Distribütör Portali</strong>
+            B2B müşteriler için özel giriş, sipariş takip, fatura geçmişi, kolay tamamlanabilir.
+          </li>
+        </ul>
+      </div>
+
+      <div style="padding:28px; background:rgba(142,46,46,0.08); border-radius:12px; border:1px solid rgba(142,46,46,0.2); border-left:4px solid var(--red);">
+        <div style="font-size:16px; font-weight:700; color:var(--navy); margin-bottom:20px; display:flex; align-items:center; gap:10px;">
+          <span style="font-size:20px;">✕</span> Almamamız Gereken
+        </div>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li style="margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid rgba(142,46,46,0.15); font-size:13px; line-height:1.6;">
+            <strong style="color:var(--navy); display:block; margin-bottom:4px;">Heritage Odaklı Anlatı</strong>
+            Churchill 1795'ten beri var — bu onların gücü. Bonna'nın web'i "gelecek" dili ve inovasyonu vurgulamalı.
+          </li>
+          <li style="margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid rgba(142,46,46,0.15); font-size:13px; line-height:1.6;">
+            <strong style="color:var(--navy); display:block; margin-bottom:4px;">Kalabalık Navigasyon</strong>
+            Çok fazla sayfa, çok fazla submenu. Bonna temiz, modern UX ile farklanmalı — basitlik bir güçmüş gibi tasarla.
+          </li>
+          <li style="font-size:13px; line-height:1.6;">
+            <strong style="color:var(--navy); display:block; margin-bottom:4px;">Geleneksel Design Kütüphaneleri</strong>
+            Klasik grid, ağır tipografi. Bonna daha bold, contemporary, risk alan bir tasarım almalı.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ 11. YOL HARİTASI ═══════════════════════════════════ -->
+  <div class="sec" id="timeline">
+    <div class="sec-h">
+      <div class="sec-num">11 — Yol Haritası</div>
+      <h2>Adım Adım Uygulama Planı</h2>
+      <p class="sec-lead">Orijinal toplantıdaki Mayıs-Haziran hedefi revize edilmeli. Aşağıda önerilen 5 fazlı plan — tarihleri birlikte netleştireceğiz.</p>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-bottom:40px;">
+      <div style="text-align:center; padding:24px; background:linear-gradient(135deg, rgba(201,169,98,0.14) 0%, rgba(201,169,98,0.06) 100%); border-radius:12px; border:1px solid rgba(201,169,98,0.2);">
+        <div style="font-family:'Playfair Display',serif; font-size:32px; font-weight:800; color:var(--navy); margin-bottom:4px;">5</div>
+        <p style="font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--gold-dark); font-weight:700;">Faz</p>
+      </div>
+      <div style="text-align:center; padding:24px; background:linear-gradient(135deg, rgba(46,94,142,0.12) 0%, rgba(46,94,142,0.04) 100%); border-radius:12px; border:1px solid rgba(46,94,142,0.2);">
+        <div style="font-family:'Playfair Display',serif; font-size:32px; font-weight:800; color:var(--navy); margin-bottom:4px;">~30</div>
+        <p style="font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--blue); font-weight:700;">Hafta</p>
+      </div>
+      <div style="text-align:center; padding:24px; background:linear-gradient(135deg, rgba(74,124,89,0.12) 0%, rgba(74,124,89,0.04) 100%); border-radius:12px; border:1px solid rgba(74,124,89,0.2);">
+        <div style="font-family:'Playfair Display',serif; font-size:32px; font-weight:800; color:var(--navy); margin-bottom:4px;">∞</div>
+        <p style="font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--green); font-weight:700;">Etki</p>
+      </div>
+      <div style="text-align:center; padding:24px; background:linear-gradient(135deg, rgba(186,51,51,0.12) 0%, rgba(186,51,51,0.04) 100%); border-radius:12px; border:1px solid rgba(186,51,51,0.2);">
+        <div style="font-family:'Playfair Display',serif; font-size:32px; font-weight:800; color:var(--navy); margin-bottom:4px;">📈</div>
+        <p style="font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--red); font-weight:700;">Merkezden Dışa</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">Lansman Yaklaşımı — "Dalga Etkisi"</span>
+      <h3>Herkese aynı anda bağırma. Merkezden dışarıya doğru yayıl.</h3>
+      <p>B2B'de "ağızdan ağıza" her şeyin önünde gelir. Bir otel F&B direktörü YouTube reklamına değil, güvendiği şefin tavsiyesine inanır. O şef de kendi deneyimine inanır. Dolayısıyla <strong>önce deneyimi yaratıyoruz, sonra anlatımı.</strong> Bonna'nın lansmanı "büyük patlama" değil — merkezden dışa doğru yayılan, her dalgada güçlenen bir hareket.</p>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:20px; color:var(--navy); margin:40px 0 32px;">Beş Faz — Dalga Haritası</h3>
+
+    <div style="position:relative; padding:60px 40px; background:radial-gradient(circle at center, rgba(201,169,98,0.04) 0%, rgba(201,169,98,0.01) 100%);">
+      <!-- Faz 3 — Outermost (lightest) -->
+      <div style="position:relative; margin-bottom:40px; padding:32px; border-radius:12px; border:2px dashed rgba(142,46,46,0.3); background:rgba(142,46,46,0.02);">
+        <div style="display:flex; align-items:flex-start; gap:24px;">
+          <div style="flex-shrink:0; width:80px; text-align:center;">
+            <div style="font-size:28px; font-weight:700; color:var(--red); font-family:'Playfair Display',serif; margin-bottom:4px;">Faz 3</div>
+            <div style="font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--red); font-weight:700;">Hafta 23+</div>
+          </div>
+          <div style="flex:1;">
+            <h4 style="font-size:16px; font-weight:700; color:var(--navy); margin-bottom:10px;">Genişleme & İkinci Dalga</h4>
+            <p style="font-size:13px; line-height:1.6; color:#444; margin-bottom:12px;"><strong>Kreatif:</strong> Film #2 (Eskrim + Çizilmezlik) pre-prod ve çekim. Sponsorluk aktivasyonları sezonu başlatma. <strong>Dijital:</strong> İlk 6 ay analizi → mecra optimizasyonu. <strong>Gastronomi:</strong> Uluslararası Chef's Table (Londra/Dubai). Co-designed koleksiyon lansmanı. <strong>Web:</strong> Full site redesign.</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="b b-red" style="font-size:11px;">Film #2</span>
+              <span class="b b-red" style="font-size:11px;">Uluslararası</span>
+              <span class="b b-red" style="font-size:11px;">Co-Brand</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Faz 2 -->
+      <div style="position:relative; margin-bottom:40px; padding:32px; border-radius:12px; border:2px solid rgba(46,94,142,0.4); background:rgba(46,94,142,0.06); border-left:4px solid var(--blue);">
+        <div style="display:flex; align-items:flex-start; gap:24px;">
+          <div style="flex-shrink:0; width:80px; text-align:center;">
+            <div style="font-size:28px; font-weight:700; color:var(--blue); font-family:'Playfair Display',serif; margin-bottom:4px;">Faz 2</div>
+            <div style="font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--blue); font-weight:700;">Hafta 11-22</div>
+          </div>
+          <div style="flex:1;">
+            <h4 style="font-size:16px; font-weight:700; color:var(--navy); margin-bottom:10px;">İvmelendirme & Ekosistem</h4>
+            <p style="font-size:13px; line-height:1.6; color:#444; margin-bottom:12px;"><strong>İçerik:</strong> "Çıtlamazlar" podcast (2 bölüm/ay), "Bonna vs." haftalık video, Instagram rutini (4-5/hafta), LinkedIn thought leadership. <strong>Gastronomi:</strong> Tier 2 co-created, 2-3. Chef's Table, Tier 3 seeding. <strong>Sponsorluk & Web:</strong> Anlaşmalar imzalanıyor, B2B portal beta yayında.</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="b b-blue" style="font-size:11px;">Podcast</span>
+              <span class="b b-blue" style="font-size:11px;">Video Serisi</span>
+              <span class="b b-blue" style="font-size:11px;">Portal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Faz 1 — Centered (darkest/strongest) -->
+      <div style="position:relative; margin-bottom:40px; padding:36px; border-radius:12px; border:2px solid var(--red); background:linear-gradient(135deg, rgba(186,51,51,0.14) 0%, rgba(186,51,51,0.08) 100%); border-left:4px solid var(--red); box-shadow:0 4px 12px rgba(186,51,51,0.1);">
+        <div style="display:flex; align-items:flex-start; gap:24px;">
+          <div style="flex-shrink:0; width:80px; text-align:center;">
+            <div style="font-size:28px; font-weight:700; color:var(--red); font-family:'Playfair Display',serif; margin-bottom:4px;">Faz 1</div>
+            <div style="font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--red); font-weight:700;">Hafta 7-12</div>
+          </div>
+          <div style="flex:1;">
+            <h4 style="font-size:16px; font-weight:700; color:var(--navy); margin-bottom:10px;">Lansman — "Çıtlamazlık" Devrimi</h4>
+            <p style="font-size:13px; line-height:1.6; color:#333; margin-bottom:12px;"><strong>Hafta 7-8:</strong> Kırlangıç kampanyası — enigmatik 5sn videolar, marka adı olmadan. <strong>Hafta 9:</strong> Marka filmi çekim, landing page, "Kim çıtlamaz?" countdown. <strong>Hafta 10:</strong> YouTube Premiere, outdoor (havalimanı + sinema), sektörel PR. <strong>Hafta 11-12:</strong> İlk Chef's Table etkinliği (30 davetli), belgesel çekimine başlangıç.</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="b b-red" style="font-size:11px;">YouTube Premiere</span>
+              <span class="b b-red" style="font-size:11px;">Outdoor Aktif</span>
+              <span class="b b-red" style="font-size:11px;">Chef's Table</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Faz 0.5 -->
+      <div style="position:relative; margin-bottom:40px; padding:32px; border-radius:12px; border:2px solid rgba(74,124,89,0.4); background:rgba(74,124,89,0.06); border-left:4px solid var(--green);">
+        <div style="display:flex; align-items:flex-start; gap:24px;">
+          <div style="flex-shrink:0; width:80px; text-align:center;">
+            <div style="font-size:28px; font-weight:700; color:var(--green); font-family:'Playfair Display',serif; margin-bottom:4px;">Faz 0.5</div>
+            <div style="font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--green); font-weight:700;">Hafta 5-6</div>
+          </div>
+          <div style="flex:1;">
+            <h4 style="font-size:16px; font-weight:700; color:var(--navy); margin-bottom:10px;">Sessiz Seeding — İç Çember Deneyimi</h4>
+            <p style="font-size:13px; line-height:1.6; color:#444; margin-bottom:12px;"><strong>Hafta 5:</strong> 30 kilit şef + F&B yöneticisine kişisel notla numune seti. Hiç reklam, hiç brief — sadece ürün deneyimi. <strong>Hafta 6:</strong> Doğal reaksiyonlar, organik paylaşımlar, sektörde "Bonna bir şeyler yapıyor" fısıltısı başlıyor.</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="b b-green" style="font-size:11px;">Organik Merak</span>
+              <span class="b b-green" style="font-size:11px;">İç Çember</span>
+              <span class="b b-green" style="font-size:11px;">Fısıltı</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Faz 0 — Innermost (foundation) -->
+      <div style="position:relative; padding:32px; border-radius:12px; border:2px dashed rgba(201,169,98,0.4); background:rgba(201,169,98,0.08);">
+        <div style="display:flex; align-items:flex-start; gap:24px;">
+          <div style="flex-shrink:0; width:80px; text-align:center;">
+            <div style="font-size:28px; font-weight:700; color:var(--gold-dark); font-family:'Playfair Display',serif; margin-bottom:4px;">Faz 0</div>
+            <div style="font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--gold-dark); font-weight:700;">Hafta 1-4</div>
+          </div>
+          <div style="flex:1;">
+            <h4 style="font-size:16px; font-weight:700; color:var(--navy); margin-bottom:10px;">Temel Atma — Strateji & Hazırlık</h4>
+            <p style="font-size:13px; line-height:1.6; color:#444; margin-bottom:12px;"><strong>Hafta 1-2:</strong> Strateji sunumu + Bonna onayı, 3 ambassador seçimi, SEO audit, Churchill benchmark. <strong>Hafta 3-4:</strong> Ambassador anlaşması, marka filmi yönetmen + brief, senaryo onayı, front-end toplantısı, dijital ekip kurulması, QR prototip testi (100 pilot tabak).</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="b b-gold" style="font-size:11px;">Strateji Onayı</span>
+              <span class="b b-gold" style="font-size:11px;">Ambassador</span>
+              <span class="b b-gold" style="font-size:11px;">QR Prototip</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ 12. KPI & BÜTÇE ═══════════════════════════════════ -->
+  <div class="sec" id="kpi">
+    <div class="sec-h">
+      <div class="sec-num">12 — KPI, Ölçümleme & Bütçe</div>
+      <h2>Neyi Ölçüyoruz, Neye Yatırım Yapıyoruz</h2>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:0 0 16px;">Başarı Kriterleri (6 Aylık Hedefler)</h3>
+
+    <div class="kpig">
+      <div class="kpi"><h4>Marka Bilinirliği</h4><div class="kv">+40%</div><p>HoReCa sektöründe aided brand awareness artışı. Ölçüm: Lansman öncesi ve 6 ay sonra anket araştırması.</p></div>
+      <div class="kpi"><h4>YouTube — Film</h4><div class="kv">500K+</div><p>Marka filmi #1 toplam görüntülenme. View-through rate hedefi: %30+ (sektör ort. %15).</p></div>
+      <div class="kpi"><h4>YouTube — Kanal</h4><div class="kv">25K</div><p>Subscriber. Podcast + Bonna vs. serisi ile organik büyüme. Watch time hedefi: 50K saat/ay.</p></div>
+      <div class="kpi"><h4>Instagram</h4><div class="kv">3×</div><p>Dijital görünürlük ve marka algısı artışı. Engagement rate: %4+ (sektör ort. %1.5). Erişim ve etkileşim odaklı büyüme.</p></div>
+      <div class="kpi"><h4>Web Trafiği</h4><div class="kv">3×</div><p>bonna.com.tr organik trafik artışı. Çıtlamazlık landing page'den B2B form doldurma: 50+/ay.</p></div>
+      <div class="kpi"><h4>B2B Lead</h4><div class="kv">200+</div><p>Web + etkinlik + LinkedIn üzerinden gelen yeni teklif talebi (yıllık). Lead → müşteri dönüşüm: %15+.</p></div>
+    </div>
+
+    <div class="pb" style="margin-top:32px; border-left-color:var(--teal);">
+      <h3>Ölçümleme Mekanizması</h3>
+      <ul>
+        <li><strong>Haftalık:</strong> Sosyal medya performans dashboard (follower, engagement, reach). Otomatik raporlama.</li>
+        <li><strong>Aylık:</strong> Konsolide dijital performans raporu + ajans-müşteri toplantısı. YouTube analytics derinlemesine. Web trafiği + conversion analizi.</li>
+        <li><strong>Üç Aylık:</strong> Marka sağlığı araştırması (HoReCa sektörel panel). Content audit — neyin çalıştığı, neyin çalışmadığı. Bütçe reallokasyonu değerlendirmesi.</li>
+        <li><strong>Altı Aylık:</strong> Kapsamlı strateji revizyonu. Yıllık planın ikinci yarısı için güncelleme. ROI hesaplaması: harcanan bütçe vs. ölçülen marka değeri + lead değeri.</li>
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:0 0 32px;">Bütçe Dağılımı — Stacked Bar (1M+ TL)</h3>
+
+    <div style="margin-bottom:40px;">
+      <!-- Stacked Bar Visual -->
+      <div style="display:flex; height:60px; border-radius:8px; overflow:hidden; gap:0; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+        <!-- Film %28 -->
+        <div style="flex:0 0 28%; background:var(--red); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:12px; position:relative;">
+          <span style="z-index:2;">%28</span>
+        </div>
+        <!-- Medya %21 -->
+        <div style="flex:0 0 21%; background:var(--blue); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:12px;">
+          <span>%21</span>
+        </div>
+        <!-- Ambassador %13 -->
+        <div style="flex:0 0 13%; background:var(--gold); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:11px;">
+          <span>%13</span>
+        </div>
+        <!-- İçerik %13 -->
+        <div style="flex:0 0 13%; background:var(--green); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:11px;">
+          <span>%13</span>
+        </div>
+        <!-- Sponsorluk %9 -->
+        <div style="flex:0 0 9%; background:var(--purple); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:10px;">
+          <span>%9</span>
+        </div>
+        <!-- OOH %3 -->
+        <div style="flex:0 0 3%; background:#e0a67c; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:9px;">
+          <span>%3</span>
+        </div>
+        <!-- Web %6 -->
+        <div style="flex:0 0 6%; background:var(--teal); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:10px;">
+          <span>%6</span>
+        </div>
+      </div>
+
+      <!-- Legend & Details Grid -->
+      <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:16px;">
+        <div style="padding:16px; background:rgba(186,51,51,0.08); border-radius:10px; border-left:3px solid var(--red);">
+          <div style="font-weight:700; color:var(--navy); font-size:13px; margin-bottom:4px;">🎬 Marka Filmi #1</div>
+          <div style="font-size:12px; color:#666; line-height:1.5;"><strong>%28</strong> — Hero content. Kalite = tüm stratejinin omurgası. Sinema kalitesi prodüksiyon.</div>
+        </div>
+
+        <div style="padding:16px; background:rgba(46,94,142,0.08); border-radius:10px; border-left:3px solid var(--blue);">
+          <div style="font-weight:700; color:var(--navy); font-size:13px; margin-bottom:4px;">📺 Dijital Medya</div>
+          <div style="font-size:12px; color:#666; line-height:1.5;"><strong>%21</strong> — YouTube, LinkedIn, Instagram ads. Paid olmadan film erişimi sınırlı.</div>
+        </div>
+
+        <div style="padding:16px; background:rgba(201,169,98,0.12); border-radius:10px; border-left:3px solid var(--gold);">
+          <div style="font-weight:700; color:var(--navy); font-size:13px; margin-bottom:4px;">👨‍🍳 Şef Ambassadors</div>
+          <div style="font-size:12px; color:#666; line-height:1.5;"><strong>%13</strong> — Tier 1 ücreti, Tier 2 proje, Chef's Table. Marka güvenilirliğin temeli.</div>
+        </div>
+
+        <div style="padding:16px; background:rgba(74,124,89,0.08); border-radius:10px; border-left:3px solid var(--green);">
+          <div style="font-weight:700; color:var(--navy); font-size:13px; margin-bottom:4px;">✍️ Sürekli İçerik</div>
+          <div style="font-size:12px; color:#666; line-height:1.5;"><strong>%13</strong> — Podcast, video, Instagram, LinkedIn. Aylık sabit — içerik makinesi durmamalı.</div>
+        </div>
+
+        <div style="padding:16px; background:rgba(128,90,170,0.08); border-radius:10px; border-left:3px solid var(--purple);">
+          <div style="font-weight:700; color:var(--navy); font-size:13px; margin-bottom:4px;">⚽ Sponsorluklar</div>
+          <div style="font-size:12px; color:#666; line-height:1.5;"><strong>%9</strong> — Buz hokeyi, eskrim, gastronomi. Logo değil, içerik + VIP + aktivasyon.</div>
+        </div>
+
+        <div style="padding:16px; background:rgba(121,200,197,0.08); border-radius:10px; border-left:3px solid var(--teal);">
+          <div style="font-weight:700; color:var(--navy); font-size:13px; margin-bottom:4px;">🛠️ Web & Teknik</div>
+          <div style="font-size:12px; color:#666; line-height:1.5;"><strong>%6+3</strong> — Landing page, B2B portal, SEO, CRM. OOH lansman dönemine özel (8-12 hafta).</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:var(--navy); margin:36px 0 24px;">Ölçümleme Ritimleri — Measurement Cadence</h3>
+
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-bottom:32px;">
+      <div style="padding:24px; background:white; border-radius:12px; border:2px solid var(--red); border-top:4px solid var(--red); text-align:center;">
+        <div style="font-size:20px; font-weight:700; color:var(--red); font-family:'Playfair Display',serif; margin-bottom:8px;">📊</div>
+        <div style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:12px;">Haftalık</div>
+        <ul style="font-size:11px; color:#666; line-height:1.7; list-style:none; padding:0;">
+          <li>• Sosyal medya analytics</li>
+          <li>• Engagement rate</li>
+          <li>• Otomatik dashboard</li>
+        </ul>
+      </div>
+
+      <div style="padding:24px; background:white; border-radius:12px; border:2px solid var(--blue); border-top:4px solid var(--blue); text-align:center;">
+        <div style="font-size:20px; font-weight:700; color:var(--blue); font-family:'Playfair Display',serif; margin-bottom:8px;">📈</div>
+        <div style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:12px;">Aylık</div>
+        <ul style="font-size:11px; color:#666; line-height:1.7; list-style:none; padding:0;">
+          <li>• Dijital konsolidedir</li>
+          <li>• YouTube derinlemesine</li>
+          <li>• Web traffic + conversion</li>
+        </ul>
+      </div>
+
+      <div style="padding:24px; background:white; border-radius:12px; border:2px solid var(--gold); border-top:4px solid var(--gold); text-align:center;">
+        <div style="font-size:20px; font-weight:700; color:var(--gold-dark); font-family:'Playfair Display',serif; margin-bottom:8px;">🎯</div>
+        <div style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:12px;">3 Aylık</div>
+        <ul style="font-size:11px; color:#666; line-height:1.7; list-style:none; padding:0;">
+          <li>• Marka sağlığı araştırması</li>
+          <li>• Content audit</li>
+          <li>• Bütçe realokasyonu</li>
+        </ul>
+      </div>
+
+      <div style="padding:24px; background:white; border-radius:12px; border:2px solid var(--green); border-top:4px solid var(--green); text-align:center;">
+        <div style="font-size:20px; font-weight:700; color:var(--green); font-family:'Playfair Display',serif; margin-bottom:8px;">🔄</div>
+        <div style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:12px;">6 Aylık</div>
+        <ul style="font-size:11px; color:#666; line-height:1.7; list-style:none; padding:0;">
+          <li>• Strateji revizyonu</li>
+          <li>• ROI hesaplaması</li>
+          <li>• 2. yarı planı güncelle</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:2fr 1fr; gap:28px; align-items:start;">
+      <div style="padding:32px; background:linear-gradient(135deg, rgba(74,124,89,0.1) 0%, rgba(74,124,89,0.04) 100%); border-radius:14px; border:2px solid rgba(74,124,89,0.2); border-left:4px solid var(--green);">
+        <h4 style="font-size:16px; font-weight:700; color:var(--navy); margin-bottom:16px;">Bütçe Felsefesi</h4>
+        <p style="font-size:13px; line-height:1.7; color:#444; margin-bottom:0;"><strong>"Az yere çok"</strong> yaklaşımı. Film prodüksiyonu + dijital medya = toplam bütçenin ~%49. Neden? Marka filminin <strong>kalitesi ve erişimi</strong> tüm stratejinin omurgası. İçerik kalitesinden ödün vermek, bütçenin geri kalanını da boşa harcamak demek.</p>
+      </div>
+
+      <div style="padding:24px; background:rgba(201,169,98,0.12); border-radius:12px; border:1px solid rgba(201,169,98,0.25); text-align:center;">
+        <div style="font-family:'Playfair Display',serif; font-size:36px; font-weight:800; color:var(--gold-dark); margin-bottom:4px;">1M+</div>
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--gold-dark); font-weight:700;">TL Bütçe</div>
+        <p style="font-size:11px; color:#666; margin-top:12px; line-height:1.6;">Toplam stratejik yatırım 1 yıl (tam dönem) için.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p><strong>BONNA PREMIUM PORCELAIN — Çatı İletişim Stratejisi</strong><br>
+    v2.0 — Gizli & Sadece İç Kullanım İçin<br>
+    Hazırlayan: [Ajans Adı] — Nisan 2026</p>
+  </div>
+
+</div>
+
+<script>
+  const secs = document.querySelectorAll('.sec[id]');
+  const links = document.querySelectorAll('.sb-nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.sb-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -85% 0px' });
+  secs.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

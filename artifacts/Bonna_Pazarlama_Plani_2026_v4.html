@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonna — Pazarlama Yol Haritası 2026-2027</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#f8f7f4;color:#1a1a1a;line-height:1.65;overflow-x:hidden;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);color:#fff;padding:48px 40px 40px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(192,163,121,.08),transparent 60%);}
+.hero h1{font-size:2.8rem;font-weight:900;letter-spacing:-1.5px;position:relative;}
+.hero .sub{font-size:1.05rem;font-weight:300;color:#c0a379;margin-top:5px;position:relative;}
+.hero .meta{margin-top:14px;font-size:.78rem;color:rgba(255,255,255,.35);position:relative;}
+.container{max-width:1300px;margin:0 auto;padding:32px 20px;}
+
+/* MAIN TABS */
+.main-nav{display:flex;gap:3px;background:#fff;border-radius:14px;padding:5px;box-shadow:0 2px 16px rgba(0,0,0,.06);margin-bottom:28px;overflow-x:auto;position:sticky;top:0;z-index:200;}
+.main-btn{flex:1;padding:11px 14px;border:none;background:transparent;border-radius:10px;cursor:pointer;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:500;color:#777;transition:.3s;white-space:nowrap;}
+.main-btn:hover{background:#f0f0f0;color:#333;}
+.main-btn.active{background:#1a1a2e;color:#fff;font-weight:600;}
+.main-tab{display:none;}.main-tab.active{display:block;}
+
+/* SUB TABS */
+.sub-nav{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap;}
+.sub-btn{padding:9px 18px;border:1.5px solid #ddd;background:#fff;border-radius:24px;cursor:pointer;font-family:'Inter',sans-serif;font-size:.75rem;font-weight:500;color:#888;transition:.25s;}
+.sub-btn:hover{border-color:#c0a379;color:#c0a379;}
+.sub-btn.active{background:#1a1a2e;color:#fff;border-color:#1a1a2e;}
+.sub-tab{display:none;}.sub-tab.active{display:block;}
+
+/* SECTION HEADER */
+.sh{margin-bottom:22px;}
+.sh h2{font-size:1.45rem;font-weight:700;color:#1a1a2e;margin-bottom:3px;}
+.sh p{color:#999;font-size:.85rem;}
+
+/* VISUAL CARDS */
+.g{display:grid;gap:14px;margin-bottom:20px;}
+.g2{grid-template-columns:1fr 1fr;}
+.g3{grid-template-columns:1fr 1fr 1fr;}
+.g4{grid-template-columns:1fr 1fr 1fr 1fr;}
+.g1{grid-template-columns:1fr;}
+
+.v{background:#fff;border-radius:14px;padding:22px;box-shadow:0 1px 5px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.03);transition:.25s;position:relative;overflow:hidden;}
+.v:hover{box-shadow:0 4px 20px rgba(0,0,0,.07);transform:translateY(-1px);}
+.v-icon{font-size:1.6rem;margin-bottom:10px;}
+.v-title{font-size:.88rem;font-weight:700;color:#1a1a2e;margin-bottom:6px;}
+.v-desc{font-size:.8rem;color:#666;line-height:1.6;}
+.v-list{list-style:none;padding:0;}
+.v-list li{font-size:.79rem;color:#555;padding:4px 0 4px 16px;position:relative;line-height:1.55;}
+.v-list li::before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;background:#c0a379;border-radius:50%;}
+
+/* ACCENT CARDS */
+.v-dark{background:#1a1a2e;border-color:#1a1a2e;}
+.v-dark .v-title{color:#fff;}
+.v-dark .v-desc,.v-dark .v-list li{color:rgba(255,255,255,.8);}
+.v-dark .v-list li::before{background:#c0a379;}
+.v-gold{border-left:4px solid #c0a379;}
+.v-gradient{background:linear-gradient(135deg,#f9f7f3,#fff);border:1px solid #ebe5d8;}
+
+/* FLOW CHART */
+.flow{display:flex;align-items:center;gap:0;margin:20px 0;flex-wrap:wrap;justify-content:center;}
+.flow-step{background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:14px 18px;text-align:center;min-width:140px;max-width:180px;position:relative;transition:.3s;}
+.flow-step:hover{border-color:#c0a379;box-shadow:0 3px 12px rgba(192,163,121,.15);}
+.flow-step .fs-icon{font-size:1.3rem;margin-bottom:5px;}
+.flow-step .fs-title{font-size:.75rem;font-weight:700;color:#1a1a2e;}
+.flow-step .fs-desc{font-size:.68rem;color:#888;margin-top:3px;}
+.flow-arrow{font-size:1.2rem;color:#c0a379;padding:0 6px;flex-shrink:0;}
+.flow-step.highlight{border-color:#c0a379;background:#fffdf5;}
+
+/* PHASE BADGES */
+.phase{display:inline-block;padding:4px 14px;border-radius:8px;font-size:.7rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
+.ph1{background:#c0a379;}.ph2{background:#2980b9;}.ph3{background:#8e44ad;}
+
+/* COMPETITOR CARDS */
+.comp{background:#fff;border-radius:14px;padding:20px;box-shadow:0 1px 5px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.03);transition:.25s;}
+.comp:hover{box-shadow:0 4px 20px rgba(0,0,0,.07);transform:translateY(-1px);}
+.comp-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.comp-logo{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem;color:#fff;flex-shrink:0;}
+.comp-name{font-size:1rem;font-weight:700;color:#1a1a2e;}
+.comp-origin{font-size:.72rem;color:#999;font-weight:500;}
+.comp-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.comp-tag{padding:2px 9px;border-radius:14px;font-size:.67rem;font-weight:600;}
+.ct-seg{background:#e8f4fd;color:#1a73e8;}.ct-geo{background:#fef3e2;color:#e67e22;}.ct-str{background:#f0e6f6;color:#8e44ad;}.ct-thr{background:#fce4ec;color:#c0392b;}
+.comp-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.comp-stat{background:#f8f7f4;border-radius:8px;padding:8px 10px;text-align:center;}
+.comp-stat .cs-val{font-size:.85rem;font-weight:700;color:#1a1a2e;}
+.comp-stat .cs-lbl{font-size:.65rem;color:#999;text-transform:uppercase;letter-spacing:.3px;}
+.comp-insight{font-size:.78rem;color:#555;line-height:1.55;padding-top:8px;border-top:1px solid #f0f0f0;}
+
+/* METER BAR */
+.meter{height:8px;background:#eee;border-radius:4px;overflow:hidden;margin-top:6px;}
+.meter-fill{height:100%;border-radius:4px;transition:.5s;}
+
+/* OPS PAGE */
+.ops-wrap{max-width:800px;margin:0 auto;}
+.ops-block{background:#fff;border-radius:14px;padding:24px 28px;margin-bottom:16px;box-shadow:0 1px 5px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.03);}
+.ops-heading{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f2f1ee;}
+.ops-ico{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:#fff;flex-shrink:0;}
+.ops-htxt{font-size:.88rem;font-weight:700;color:#1a1a2e;}
+.ops-items{display:flex;flex-direction:column;gap:0;}
+.ops-card{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f8f7f4;}
+.ops-card:last-child{border-bottom:none;padding-bottom:0;}
+.ops-card:first-child{padding-top:0;}
+.ops-cd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.ops-ct{font-size:.8rem;color:#555;line-height:1.5;}
+
+/* CALENDAR TABLE */
+.cal{width:100%;border-collapse:separate;border-spacing:0;border-radius:14px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.04);}
+.cal th{background:#1a1a2e;color:#fff;padding:10px 12px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;text-align:left;}
+.cal td{background:#fff;padding:10px 12px;font-size:.78rem;color:#444;border-bottom:1px solid #f5f5f5;vertical-align:top;}
+.cal tr:last-child td{border-bottom:none;}
+.cal .cal-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:600;margin:1px 2px;}
+.cal .t-lead{background:#e8f4fd;color:#1a73e8;}.cal .t-brand{background:#f0e6f6;color:#8e44ad;}
+.cal .t-launch{background:#fef3e2;color:#e67e22;}.cal .t-event{background:#e8f8e8;color:#27ae60;}
+.cal .t-special{background:#fce4ec;color:#c0392b;}
+
+/* NOTE */
+.note{background:#fffdf5;border:1px dashed #c0a379;border-radius:10px;padding:14px 18px;font-size:.8rem;color:#8b7355;margin-top:14px;}
+.note strong{color:#c0a379;}
+
+.footer{text-align:center;padding:28px;color:#ccc;font-size:.74rem;}
+
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr;}.flow{flex-direction:column;}.flow-arrow{transform:rotate(90deg);}}
+@media(max-width:600px){.hero h1{font-size:1.5rem;}.main-btn{font-size:.68rem;padding:9px 8px;}.sub-btn{font-size:.68rem;padding:7px 12px;}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>BONNA</h1>
+  <div class="sub">1 Yıllık Pazarlama Yol Haritası</div>
+  <div class="meta">Nisan 2026 – Mart 2027 · CMO Briefing</div>
+</div>
+
+<div class="container">
+
+<nav class="main-nav">
+  <button class="main-btn active" onclick="mainTab('overview')">Genel Bakış</button>
+  <button class="main-btn" onclick="mainTab('competitors')">Rakip Analizi</button>
+  <button class="main-btn" onclick="mainTab('channels')">Kanal Stratejileri</button>
+  <button class="main-btn" onclick="mainTab('tr')">Türkiye İletişimi</button>
+  <button class="main-btn" onclick="mainTab('global')">Global İletişim</button>
+  <button class="main-btn" onclick="mainTab('site')">Site & SEO/GEO</button>
+  <button class="main-btn" onclick="mainTab('ops')">Aylık Operasyon</button>
+</nav>
+
+<!-- ═══════════ GENEL BAKIŞ ═══════════ -->
+<div class="main-tab active" id="overview">
+  <div class="sh"><h2>Stratejik Yönelimler</h2><p>Bonna'nın 1 yıllık pazarlama vizyonunun 6 temel ekseni</p></div>
+
+  <div class="g g3">
+    <div class="v v-dark">
+      <div class="v-icon">🎯</div>
+      <div class="v-title">Mikro Segmentasyon</div>
+      <div class="v-desc">Persona × fırsat anı matrisi ile 50+ benzersiz kitle segmenti. Bağlamsal hedefleme, 365 gün kesintisiz iletişim.</div>
+    </div>
+    <div class="v v-dark">
+      <div class="v-icon">⚡</div>
+      <div class="v-title">Lead Otomasyonu</div>
+      <div class="v-desc">Meta → Zapier → Salesforce → Satış ekibi. Uçtan uca otomatik lead yönetimi, AI sesli yanıt entegrasyonu.</div>
+    </div>
+    <div class="v v-dark">
+      <div class="v-icon">🔄</div>
+      <div class="v-title">Always-On İletişim</div>
+      <div class="v-desc">5 katmanlı sürekli iletişim yapısı. Özel günler ve lansmanlar burst olarak eklenir, temel akış hiç durmaz.</div>
+    </div>
+    <div class="v v-gold">
+      <div class="v-icon">🌐</div>
+      <div class="v-title">Site Dönüşümü & SEO/GEO</div>
+      <div class="v-desc">bonna.com.tr'yi marka vitrininden lead generation makinesine dönüştürme. AI arama görünürlüğünde erken hareket.</div>
+    </div>
+    <div class="v v-gold">
+      <div class="v-icon">🤝</div>
+      <div class="v-title">Global Bayi Co-Marketing</div>
+      <div class="v-desc">Distribütörlerle ortak kampanya, kreatif ve lead paylaşım modeli. 3 fazlı global büyüme planı.</div>
+    </div>
+    <div class="v v-gold">
+      <div class="v-icon">🎪</div>
+      <div class="v-title">Fuar Ekosistemi 360°</div>
+      <div class="v-desc">Pre/during/post dijital akışla fuarları tam kapsamlı lead üretim mekanizmasına dönüştürme.</div>
+    </div>
+  </div>
+
+  <div class="g g2">
+    <div class="v v-gradient">
+      <div class="v-title">Marka Kaldıraçları</div>
+      <ul class="v-list">
+        <li><strong>FusionTech</strong> — Seri üretimde mat-parlak kontrast, sektörde benzersiz</li>
+        <li><strong>Bocuse d'Or</strong> — Platinum Partner, gastronomi dünyası prestiji</li>
+        <li><strong>Ömür Boyu Garanti</strong> — Kenar çıtlama garantisi, sektörde ilk</li>
+        <li><strong>Design Awards</strong> — German Design Awards validasyonu</li>
+        <li><strong>Bölgesel Üretim</strong> — Mısır (MENA) + Özbekistan (CIS) avantajı</li>
+      </ul>
+    </div>
+    <div class="v v-gradient">
+      <div class="v-title">Plan Modülleri</div>
+      <ul class="v-list">
+        <li><strong>Rakip Analizi</strong> — 6 rakibin derinlemesine profili</li>
+        <li><strong>Kanal Stratejileri</strong> — Fuar, Lead Ads, Sosyal, Mailing, İçerik, Şef iş birlikleri</li>
+        <li><strong>TR İletişimi</strong> — Always-on, koleksiyonlar, özel günler, sponsorluklar</li>
+        <li><strong>Global İletişim</strong> — Bayi modeli, bölgesel stratejiler, faz planı</li>
+        <li><strong>Site & SEO/GEO</strong> — Site dönüşümü vizyonu, 3 stratejik eksen</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ RAKİP ANALİZİ ═══════════ -->
+<div class="main-tab" id="competitors">
+  <div class="sh"><h2>Detaylı Rakip Analizi</h2><p>6 ana rakibin stratejik profili, güçlü/zayıf yönleri ve Bonna'ya etkisi</p></div>
+
+  <nav class="sub-nav" data-group="comp">
+    <button class="sub-btn active" onclick="subTab('comp','comp-rak')">RAK Porcelain</button>
+    <button class="sub-btn" onclick="subTab('comp','comp-steelite')">Steelite</button>
+    <button class="sub-btn" onclick="subTab('comp','comp-churchill')">Churchill</button>
+    <button class="sub-btn" onclick="subTab('comp','comp-kutahya')">Kütahya Porselen</button>
+    <button class="sub-btn" onclick="subTab('comp','comp-porland')">Porland</button>
+    <button class="sub-btn" onclick="subTab('comp','comp-idfine')">ID Fine</button>
+    <button class="sub-btn" onclick="subTab('comp','comp-digital')" style="border-color:#c0a379;color:#c0a379;">📊 Dijital Analiz</button>
+  </nav>
+
+  <!-- RAK -->
+  <div class="sub-tab active" id="comp-rak" data-group="comp">
+    <div class="g g2">
+      <div class="comp">
+        <div class="comp-header">
+          <div class="comp-logo" style="background:linear-gradient(135deg,#1a73e8,#0d47a1);">RAK</div>
+          <div><div class="comp-name">RAK Porcelain</div><div class="comp-origin">BAE · Ras Al Khaimah</div></div>
+        </div>
+        <div class="comp-tags">
+          <span class="comp-tag ct-seg">Global HoReCa</span>
+          <span class="comp-tag ct-geo">165+ Ülke</span>
+          <span class="comp-tag ct-thr">En Yüksek Tehdit</span>
+        </div>
+        <div class="comp-stats">
+          <div class="comp-stat"><div class="cs-val">36M</div><div class="cs-lbl">Yıllık Üretim</div></div>
+          <div class="comp-stat"><div class="cs-val">24</div><div class="cs-lbl">Üretim Tesisi</div></div>
+          <div class="comp-stat"><div class="cs-val">165+</div><div class="cs-lbl">Ülke Erişimi</div></div>
+          <div class="comp-stat"><div class="cs-val">#1</div><div class="cs-lbl">HoReCa Algısı</div></div>
+        </div>
+      </div>
+      <div class="v">
+        <div class="v-title">Güçlü Yönleri</div>
+        <ul class="v-list">
+          <li>Havayolu catering ve premium otel segmentinde "undisputed leader" algısı</li>
+          <li>Global dağıtım ağının genişliği ve derinliği (165+ ülke)</li>
+          <li>Yüksek alüminyum oksit içeriği — teknik üstünlük mesajı</li>
+          <li>Orta Doğu'daki lüks otelcilik sektörüyle organik yakınlık</li>
+          <li>Mega proje otelciliği deneyimi (yeni açılan lüks oteller)</li>
+        </ul>
+        <div class="v-title" style="margin-top:14px;">Zayıf Yönleri & Bonna Fırsatları</div>
+        <ul class="v-list">
+          <li>Fiyat pozisyonu yüksek — Bonna fiyat/kalite avantajıyla rekabet edebilir</li>
+          <li>Tasarım odaklı inovasyon (FusionTech gibi) daha az öne çıkıyor</li>
+          <li>Avrupa pazarında marka algısı "Avrupa markaları" kadar güçlü değil</li>
+          <li>Q2-Q3 2025'te tableware gelir düşüşü (-7.9%) — pazar payı baskısı</li>
+        </ul>
+        <div style="margin-top:14px;">
+          <div class="v-title">Tehdit Seviyesi</div>
+          <div class="meter"><div class="meter-fill" style="width:95%;background:linear-gradient(90deg,#e74c3c,#c0392b);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEELITE -->
+  <div class="sub-tab" id="comp-steelite" data-group="comp">
+    <div class="g g2">
+      <div class="comp">
+        <div class="comp-header">
+          <div class="comp-logo" style="background:linear-gradient(135deg,#2c3e50,#34495e);">ST</div>
+          <div><div class="comp-name">Steelite International</div><div class="comp-origin">UK · Stoke-on-Trent</div></div>
+        </div>
+        <div class="comp-tags">
+          <span class="comp-tag ct-seg">%100 HoReCa</span>
+          <span class="comp-tag ct-geo">140 Ülke</span>
+          <span class="comp-tag ct-thr">En Yüksek Tehdit</span>
+        </div>
+        <div class="comp-stats">
+          <div class="comp-stat"><div class="cs-val">30K+</div><div class="cs-lbl">Son Kullanıcı</div></div>
+          <div class="comp-stat"><div class="cs-val">3</div><div class="cs-lbl">Fabrika (UK/US/MX)</div></div>
+          <div class="comp-stat"><div class="cs-val">17</div><div class="cs-lbl">Kaynak Ülke</div></div>
+          <div class="comp-stat"><div class="cs-val">140</div><div class="cs-lbl">Dağıtım Ülkesi</div></div>
+        </div>
+      </div>
+      <div class="v">
+        <div class="v-title">Güçlü Yönleri</div>
+        <ul class="v-list">
+          <li>Yalnızca HoReCa — tam odaklı marka, B2C ile dilüe olmuyor</li>
+          <li>Utopia Tableware satın alımıyla portföy genişlemesi (2024)</li>
+          <li>ABD'de güçlü üretim ve dağıtım altyapısı (Manlius, NY)</li>
+          <li>Cruise line sektöründe güçlü pozisyon</li>
+          <li>Dayanıklılık teknolojisinde lider algısı</li>
+        </ul>
+        <div class="v-title" style="margin-top:14px;">Zayıf Yönleri & Bonna Fırsatları</div>
+        <ul class="v-list">
+          <li>Tasarım vizyonu daha konservatif — Bonna'nın ödüllü tasarım dili avantaj</li>
+          <li>Premium fiyat segmenti — gelişen pazarlarda Bonna fiyat avantajı</li>
+          <li>Orta Doğu ve CIS pazarlarında Bonna'nın lojistik avantajı (bölgesel fabrikalar)</li>
+        </ul>
+        <div style="margin-top:14px;">
+          <div class="v-title">Tehdit Seviyesi</div>
+          <div class="meter"><div class="meter-fill" style="width:92%;background:linear-gradient(90deg,#e74c3c,#c0392b);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHURCHILL -->
+  <div class="sub-tab" id="comp-churchill" data-group="comp">
+    <div class="g g2">
+      <div class="comp">
+        <div class="comp-header">
+          <div class="comp-logo" style="background:linear-gradient(135deg,#8e44ad,#9b59b6);">CH</div>
+          <div><div class="comp-name">Churchill China</div><div class="comp-origin">UK · Stoke-on-Trent · 1795</div></div>
+        </div>
+        <div class="comp-tags">
+          <span class="comp-tag ct-seg">Premium HoReCa</span>
+          <span class="comp-tag ct-geo">UK #1</span>
+          <span class="comp-tag ct-str">230 Yıllık Miras</span>
+        </div>
+        <div class="comp-stats">
+          <div class="comp-stat"><div class="cs-val">#1</div><div class="cs-lbl">UK Seramik</div></div>
+          <div class="comp-stat"><div class="cs-val">230+</div><div class="cs-lbl">Yıl Marka Mirası</div></div>
+          <div class="comp-stat"><div class="cs-val">40%+</div><div class="cs-lbl">UK Pazar (4'lü)</div></div>
+          <div class="comp-stat"><div class="cs-val">£440M</div><div class="cs-lbl">Sektör Geliri</div></div>
+        </div>
+      </div>
+      <div class="v">
+        <div class="v-title">Güçlü Yönleri</div>
+        <ul class="v-list">
+          <li>230 yılı aşkın marka mirası — heritage marketing gücü</li>
+          <li>UK HoReCa pazarında mutlak lider</li>
+          <li>"Britishness" algısı ile premium konumlandırma</li>
+          <li>Şef topluluğuyla güçlü ilişki ağı</li>
+        </ul>
+        <div class="v-title" style="margin-top:14px;">Zayıf Yönleri & Bonna Fırsatları</div>
+        <ul class="v-list">
+          <li>UK dışındaki pazarlarda nispeten daha dar dağıtım</li>
+          <li>Fiyat pozisyonu yüksek — gelişen pazarlarda Bonna avantajlı</li>
+          <li>Teknoloji inovasyonu anlatısı daha zayıf (FusionTech gibi bir USP yok)</li>
+          <li>MENA ve CIS pazarlarında Bonna'nın bölgesel üretim avantajı</li>
+        </ul>
+        <div style="margin-top:14px;">
+          <div class="v-title">Tehdit Seviyesi</div>
+          <div class="meter"><div class="meter-fill" style="width:78%;background:linear-gradient(90deg,#e67e22,#f39c12);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KÜTAHYA -->
+  <div class="sub-tab" id="comp-kutahya" data-group="comp">
+    <div class="g g2">
+      <div class="comp">
+        <div class="comp-header">
+          <div class="comp-logo" style="background:linear-gradient(135deg,#e67e22,#f39c12);">KP</div>
+          <div><div class="comp-name">Kütahya Porselen</div><div class="comp-origin">Türkiye · Kütahya</div></div>
+        </div>
+        <div class="comp-tags">
+          <span class="comp-tag ct-seg">B2B + B2C</span>
+          <span class="comp-tag ct-geo">70+ Ülke</span>
+          <span class="comp-tag ct-str">2024 İhracat Ödülü</span>
+        </div>
+        <div class="comp-stats">
+          <div class="comp-stat"><div class="cs-val">30M</div><div class="cs-lbl">Yıllık Üretim</div></div>
+          <div class="comp-stat"><div class="cs-val">$400M</div><div class="cs-lbl">Yıllık Ciro</div></div>
+          <div class="comp-stat"><div class="cs-val">70+</div><div class="cs-lbl">İhracat Ülkesi</div></div>
+          <div class="comp-stat"><div class="cs-val">6</div><div class="cs-lbl">Kıta</div></div>
+        </div>
+      </div>
+      <div class="v">
+        <div class="v-title">Güçlü Yönleri</div>
+        <ul class="v-list">
+          <li>TR'de en köklü porselen markalarından — güçlü B2C bilinirliği</li>
+          <li>$400M ciro ile Bonna'nın ~8x büyüklüğünde</li>
+          <li>2024 ihracat şampiyonu ödülleri (en çok ihracat + en yüksek artış)</li>
+          <li>Almanya, İspanya, İtalya ana ihracat pazarları — Avrupa'da yerleşik</li>
+          <li>Hem ev kullanımı hem HoReCa segmentinde geniş portföy</li>
+        </ul>
+        <div class="v-title" style="margin-top:14px;">Zayıf Yönleri & Bonna Fırsatları</div>
+        <ul class="v-list">
+          <li>B2C ağırlığı HoReCa odağını dağıtıyor — Bonna %100 HoReCa odaklı mesaj verebilir</li>
+          <li>Tasarım ödülü ve prestij ortaklığı (Bocuse d'Or) anlatısında Bonna daha güçlü</li>
+          <li>FusionTech gibi farklılaştırıcı teknoloji hikayesi yok</li>
+          <li>MENA ve CIS'te Bonna'nın bölgesel fabrika avantajı</li>
+        </ul>
+        <div style="margin-top:14px;">
+          <div class="v-title">Tehdit Seviyesi</div>
+          <div class="meter"><div class="meter-fill" style="width:80%;background:linear-gradient(90deg,#e67e22,#f39c12);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PORLAND -->
+  <div class="sub-tab" id="comp-porland" data-group="comp">
+    <div class="g g2">
+      <div class="comp">
+        <div class="comp-header">
+          <div class="comp-logo" style="background:linear-gradient(135deg,#27ae60,#2ecc71);">PL</div>
+          <div><div class="comp-name">Porland</div><div class="comp-origin">Türkiye · İstanbul</div></div>
+        </div>
+        <div class="comp-tags">
+          <span class="comp-tag ct-seg">B2B + B2C + HoReCa (Pioli)</span>
+          <span class="comp-tag ct-geo">80+ Ülke</span>
+        </div>
+        <div class="comp-stats">
+          <div class="comp-stat"><div class="cs-val">70M</div><div class="cs-lbl">Yıllık Üretim</div></div>
+          <div class="comp-stat"><div class="cs-val">65%</div><div class="cs-lbl">İhracat Oranı</div></div>
+          <div class="comp-stat"><div class="cs-val">80+</div><div class="cs-lbl">Ülke Erişimi</div></div>
+          <div class="comp-stat"><div class="cs-val">Pioli</div><div class="cs-lbl">HoReCa Markası</div></div>
+        </div>
+      </div>
+      <div class="v">
+        <div class="v-title">Güçlü Yönleri</div>
+        <ul class="v-list">
+          <li>70M adet/yıl üretim — Bonna'nın 1.75x kapasitesi</li>
+          <li>Pioli markasıyla HoReCa'ya özel stratejik hamle</li>
+          <li>E-ticaret ve dijital kanallara yatırım — e-ihracat odağı</li>
+          <li>Afrika, Avustralya, ABD gibi yeni pazarlara açılım stratejisi</li>
+          <li>Turizm sektörü ve HoReCa kanalını stratejik öncelik olarak konumlandırıyor</li>
+        </ul>
+        <div class="v-title" style="margin-top:14px;">Zayıf Yönleri & Bonna Fırsatları</div>
+        <ul class="v-list">
+          <li>Pioli markası henüz Bonna kadar tanınmış değil — global HoReCa'da Bonna avantajlı</li>
+          <li>Bocuse d'Or ve international design awards gibi prestij ortaklıkları yok</li>
+          <li>FusionTech benzeri farklılaştırıcı teknoloji hikayesi yok</li>
+          <li>B2C + B2B + HoReCa çoklu odak mesajı bulanıklaştırabilir</li>
+        </ul>
+        <div style="margin-top:14px;">
+          <div class="v-title">Tehdit Seviyesi</div>
+          <div class="meter"><div class="meter-fill" style="width:75%;background:linear-gradient(90deg,#e67e22,#f39c12);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ID FINE -->
+  <div class="sub-tab" id="comp-idfine" data-group="comp">
+    <div class="g g2">
+      <div class="comp">
+        <div class="comp-header">
+          <div class="comp-logo" style="background:linear-gradient(135deg,#16a085,#1abc9c);">ID</div>
+          <div><div class="comp-name">ID Fine Porcelain</div><div class="comp-origin">Türkiye · 1972</div></div>
+        </div>
+        <div class="comp-tags">
+          <span class="comp-tag ct-seg">Niş Premium HoReCa</span>
+          <span class="comp-tag ct-str">Aile Şirketi</span>
+        </div>
+        <div class="comp-stats">
+          <div class="comp-stat"><div class="cs-val">50+</div><div class="cs-lbl">Yıl Deneyim</div></div>
+          <div class="comp-stat"><div class="cs-val">Niş</div><div class="cs-lbl">Premium Segment</div></div>
+        </div>
+      </div>
+      <div class="v">
+        <div class="v-title">Güçlü Yönleri</div>
+        <ul class="v-list">
+          <li>Endüstriyel bulaşık makinesine yüksek direnç — pratik USP</li>
+          <li>Termal şok direnci — profesyonel mutfak koşullarına uyum</li>
+          <li>Çizilme direncinde öne çıkan glazür teknolojisi</li>
+          <li>Niş premium pozisyon — küçük ama sadık müşteri tabanı</li>
+        </ul>
+        <div class="v-title" style="margin-top:14px;">Zayıf Yönleri & Bonna Fırsatları</div>
+        <ul class="v-list">
+          <li>Ölçek ve global erişimde Bonna çok daha büyük</li>
+          <li>Marka bilinirliği ve prestij ortaklıkları sınırlı</li>
+          <li>Dijital pazarlama ve sosyal medya varlığı düşük</li>
+          <li>Tasarım çeşitliliği ve koleksiyon genişliğinde Bonna avantajlı</li>
+        </ul>
+        <div style="margin-top:14px;">
+          <div class="v-title">Tehdit Seviyesi</div>
+          <div class="meter"><div class="meter-fill" style="width:45%;background:linear-gradient(90deg,#27ae60,#2ecc71);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DİJİTAL ANALİZ -->
+  <div class="sub-tab" id="comp-digital" data-group="comp">
+
+    <!-- BÖLÜM: Instagram Karşılaştırma -->
+    <div class="sh"><h2>📊 Dijital Varlık Karşılaştırması</h2><p>Instagram, LinkedIn, web site ve içerik stratejisi bazında rekabet haritası — Kaynak: Instagram & LinkedIn Profilleri, Nisan 2026</p></div>
+
+    <!-- INSTAGRAM TABLOSU -->
+    <div class="v" style="margin-bottom:20px;overflow-x:auto;">
+      <div class="v-title" style="font-size:1rem;margin-bottom:16px;">📸 Instagram Ekosistemi</div>
+      <table class="cal" style="min-width:900px;">
+        <tr>
+          <th style="width:150px;">Marka</th>
+          <th>Ana Hesap</th>
+          <th>Takipçi</th>
+          <th>Gönderi</th>
+          <th>Bölgesel Hesaplar</th>
+          <th>İçerik Karakteri</th>
+          <th>Stratejik Not</th>
+        </tr>
+        <tr>
+          <td><strong style="color:#c0a379;">Bonna</strong></td>
+          <td>@bonna.tr</td>
+          <td><strong>26K</strong></td>
+          <td>561</td>
+          <td>@bonna.global</td>
+          <td><span class="cal-tag" style="background:#e8f4fd;color:#1a73e8;">Koleksiyon / Şef</span></td>
+          <td style="font-size:.72rem;color:#888;">Global hesap henüz küçük. Şef iş birliği içerikleri güçlü diferansiyatör</td>
+        </tr>
+        <tr>
+          <td><strong>RAK Porcelain</strong></td>
+          <td>@rakporcelain</td>
+          <td><strong>31K</strong></td>
+          <td>—</td>
+          <td>@rakporcelaineurope (9.2K) · @rakporcelainusa (2.6K) · @rakporcelainhome (6K)</td>
+          <td><span class="cal-tag" style="background:#fef3e2;color:#e67e22;">Profesyonel / Kurumsal</span></td>
+          <td style="font-size:.72rem;color:#888;">4 bölgesel hesap ile geniş coğrafya. Kurumsal ton ağırlıklı, şef kolabı az</td>
+        </tr>
+        <tr>
+          <td><strong>Steelite</strong></td>
+          <td>@steeliteusa</td>
+          <td><strong>19K</strong></td>
+          <td>4,960</td>
+          <td>@steelite_emea (1.7K) · @steelitecanada (1.4K) · @steeliteint (AU)</td>
+          <td><span class="cal-tag" style="background:#f0e6f6;color:#8e44ad;">Hospitality Lifestyle</span></td>
+          <td style="font-size:.72rem;color:#888;">ABD-ağırlıklı. EMEA zayıf. Post hacmi yüksek ama engagement düşük</td>
+        </tr>
+        <tr>
+          <td><strong>Churchill</strong></td>
+          <td>@churchill_1795</td>
+          <td><strong>28K</strong></td>
+          <td>3,642</td>
+          <td>@churchillhomeuk (1.3K)</td>
+          <td><span class="cal-tag" style="background:#e8f8f5;color:#16a085;">Miras / Sürdürülebilirlik</span></td>
+          <td style="font-size:.72rem;color:#888;">Heritage storytelling güçlü. 1795 mirası markalaşmada aktif kullanılıyor</td>
+        </tr>
+        <tr style="background:#fffdf5;">
+          <td><strong>Kütahya Porselen</strong></td>
+          <td>@kutahyaporselen</td>
+          <td><strong style="color:#c0392b;">797K</strong></td>
+          <td>3,041</td>
+          <td>@kutahyaporselengastronomi (23K)</td>
+          <td><span class="cal-tag" style="background:#fce4ec;color:#c0392b;">B2C Dominant</span></td>
+          <td style="font-size:.72rem;color:#888;">B2C odaklı dev kitle. HoReCa ayrı hesap ama küçük. Bonna ile doğrudan kıyaslanmaz</td>
+        </tr>
+        <tr style="background:#fffdf5;">
+          <td><strong>Porland</strong></td>
+          <td>@porland</td>
+          <td><strong style="color:#c0392b;">523K</strong></td>
+          <td>3,510</td>
+          <td>@porlandusa</td>
+          <td><span class="cal-tag" style="background:#fce4ec;color:#c0392b;">B2C Lifestyle</span></td>
+          <td style="font-size:.72rem;color:#888;">B2C perakende odaklı. HoReCa içeriği düşük. Mağaza ağı ile fiziksel deneyim güçlü</td>
+        </tr>
+        <tr>
+          <td><strong>ID Fine</strong></td>
+          <td>@idfineporcelain</td>
+          <td><strong>8.5K</strong></td>
+          <td>627</td>
+          <td>—</td>
+          <td><span class="cal-tag" style="background:#e8f4fd;color:#1a73e8;">Ürün Odaklı / Minimal</span></td>
+          <td style="font-size:.72rem;color:#888;">Dijital varlık çok düşük. Minimal içerik üretimi, profesyonel olmayan görseller</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- GÖRSEL: Takipçi bar chart -->
+    <div class="g g2" style="margin-bottom:20px;">
+      <div class="v">
+        <div class="v-title">Instagram Takipçi Ölçeği (HoReCa Hesapları)</div>
+        <p style="font-size:.7rem;color:#aaa;margin-bottom:14px;">B2C ağırlıklı Kütahya (797K) ve Porland (523K) ayrı kategori — HoReCa karşılaştırması aşağıda</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:.75rem;font-weight:600;width:90px;text-align:right;color:#1a73e8;">RAK</span>
+            <div style="flex:1;background:#eee;border-radius:6px;height:26px;position:relative;overflow:hidden;">
+              <div style="width:100%;height:100%;background:linear-gradient(90deg,#1a73e8,#4285f4);border-radius:6px;display:flex;align-items:center;padding-left:8px;"><span style="font-size:.7rem;color:#fff;font-weight:700;">31K</span></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:.75rem;font-weight:600;width:90px;text-align:right;color:#e67e22;">Churchill</span>
+            <div style="flex:1;background:#eee;border-radius:6px;height:26px;position:relative;overflow:hidden;">
+              <div style="width:90%;height:100%;background:linear-gradient(90deg,#e67e22,#f39c12);border-radius:6px;display:flex;align-items:center;padding-left:8px;"><span style="font-size:.7rem;color:#fff;font-weight:700;">28K</span></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:.75rem;font-weight:600;width:90px;text-align:right;color:#c0a379;">Bonna</span>
+            <div style="flex:1;background:#eee;border-radius:6px;height:26px;position:relative;overflow:hidden;">
+              <div style="width:84%;height:100%;background:linear-gradient(90deg,#c0a379,#d4b896);border-radius:6px;display:flex;align-items:center;padding-left:8px;"><span style="font-size:.7rem;color:#fff;font-weight:700;">26K</span></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:.75rem;font-weight:600;width:90px;text-align:right;color:#8e44ad;">Steelite</span>
+            <div style="flex:1;background:#eee;border-radius:6px;height:26px;position:relative;overflow:hidden;">
+              <div style="width:61%;height:100%;background:linear-gradient(90deg,#8e44ad,#a569bd);border-radius:6px;display:flex;align-items:center;padding-left:8px;"><span style="font-size:.7rem;color:#fff;font-weight:700;">19K</span></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:.75rem;font-weight:600;width:90px;text-align:right;color:#16a085;">ID Fine</span>
+            <div style="flex:1;background:#eee;border-radius:6px;height:26px;position:relative;overflow:hidden;">
+              <div style="width:27%;height:100%;background:linear-gradient(90deg,#16a085,#1abc9c);border-radius:6px;display:flex;align-items:center;padding-left:8px;"><span style="font-size:.7rem;color:#fff;font-weight:700;">8.5K</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="v">
+        <div class="v-title">LinkedIn B2B Gücü</div>
+        <p style="font-size:.7rem;color:#aaa;margin-bottom:14px;">HoReCa sektöründe B2B karar vericilerine erişim gücü</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:.75rem;font-weight:600;width:90px;text-align:right;color:#c0a379;">Bonna</span>
+            <div style="flex:1;background:#eee;border-radius:6px;height:26px;position:relative;overflow:hidden;">
+              <div style="width:100%;height:100%;background:linear-gradient(90deg,#c0a379,#d4b896);border-radius:6px;display:flex;align-items:center;padding-left:8px;"><span style="font-size:.7rem;color:#fff;font-weight:700;">12K+</span></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:.75rem;font-weight:600;width:90px;text-align:right;color:#1a73e8;">RAK</span>
+            <div style="flex:1;background:#eee;border-radius:6px;height:26px;position:relative;overflow:hidden;">
+              <div style="width:83%;height:100%;background:linear-gradient(90deg,#1a73e8,#4285f4);border-radius:6px;display:flex;align-items:center;padding-left:8px;"><span style="font-size:.7rem;color:#fff;font-weight:700;">10K</span></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:.75rem;font-weight:600;width:90px;text-align:right;color:#e67e22;">Porland</span>
+            <div style="flex:1;background:#eee;border-radius:6px;height:26px;position:relative;overflow:hidden;">
+              <div style="width:53%;height:100%;background:linear-gradient(90deg,#e67e22,#f39c12);border-radius:6px;display:flex;align-items:center;padding-left:8px;"><span style="font-size:.7rem;color:#fff;font-weight:700;">6.3K</span></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:.75rem;font-weight:600;width:90px;text-align:right;color:#8e44ad;">Churchill</span>
+            <div style="flex:1;background:#eee;border-radius:6px;height:26px;position:relative;overflow:hidden;">
+              <div style="width:42%;height:100%;background:linear-gradient(90deg,#8e44ad,#a569bd);border-radius:6px;display:flex;align-items:center;padding-left:8px;"><span style="font-size:.7rem;color:#fff;font-weight:700;">~5K</span></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:.75rem;font-weight:600;width:90px;text-align:right;color:#16a085;">Steelite</span>
+            <div style="flex:1;background:#eee;border-radius:6px;height:26px;position:relative;overflow:hidden;">
+              <div style="width:33%;height:100%;background:linear-gradient(90deg,#16a085,#1abc9c);border-radius:6px;display:flex;align-items:center;padding-left:8px;"><span style="font-size:.7rem;color:#fff;font-weight:700;">~4K</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STRATEJİK İÇGÖRÜLER -->
+    <div class="g g3" style="margin-bottom:20px;">
+      <div class="v v-dark">
+        <div class="v-icon">🎯</div>
+        <div class="v-title">Bonna'nın Dijital Pozisyonu</div>
+        <div class="v-desc">HoReCa segmentinde Instagram'da RAK ile neredeyse eşit (26K vs 31K), LinkedIn'de ise lider konumda (12K+). @bonna.global hesabı henüz yeterince büyütülememiş — global dijital varlığı güçlendirmek için tek bir global hesap stratejisi ve içerik yatırımı gerekiyor.</div>
+      </div>
+      <div class="v v-dark">
+        <div class="v-icon">⚠️</div>
+        <div class="v-title">TR Pazar: B2C vs HoReCa Uçurumu</div>
+        <div class="v-desc">Kütahya Porselen (797K) ve Porland (523K) Instagram'da devasa B2C kitlelere sahip. Bonna'nın 26K'sı onlarla kıyaslanmamalı — çünkü farklı oyun. Ancak perakende tüketiciler HoReCa markası algısını etkiliyor. Bonna'nın "profesyonel premium" konumunu bozmadan farkındalık artırması gerekiyor.</div>
+      </div>
+      <div class="v v-dark">
+        <div class="v-icon">💡</div>
+        <div class="v-title">En Büyük Fırsat: LinkedIn & GEO</div>
+        <div class="v-desc">Hiçbir rakip LinkedIn'de baskın değil — Bonna 12K ile zaten lider. Bu kanalı HoReCa karar vericilerine ulaşmak için agresif kullanan ilk marka olma fırsatı var. GEO (AI arama) tarafında ise hiçbir rakip henüz optimize değil — ilk hamle avantajı mevcut.</div>
+      </div>
+    </div>
+
+    <!-- RAKIP DİJİTAL STRATEJİ KARTLARI -->
+    <div class="sh" style="margin-top:10px;"><h2>Rakip Dijital Strateji Profilleri</h2><p>Her rakibin dijital yaklaşımı, güçlü ve zayıf yönleri</p></div>
+
+    <div class="g g2">
+      <div class="v v-gold">
+        <div class="v-icon">🔵</div>
+        <div class="v-title">RAK Porcelain — Dijital Strateji</div>
+        <ul class="v-list">
+          <li><strong>Çoklu bölgesel hesap modeli:</strong> 4+ Instagram hesabı ile ABD, Avrupa, Ortadoğu ayrı yönetiliyor. Profesyonel ama soğuk kurumsal ton</li>
+          <li><strong>Web & SEO:</strong> Brainvire ile SEO partnerliği, Magento e-ticaret altyapısı. Endüstriyel-seviye dijital yatırım</li>
+          <li><strong>İçerik:</strong> Ürün kataloğu ağırlıklı, şef iş birlikleri sınırlı. Fuar odaklı paylaşımlar (Ambiente, Host Milano)</li>
+          <li><strong>Zayıf:</strong> Bölgesel hesap parçalanması, düşük engagement rate, organik büyüme yavaş</li>
+        </ul>
+        <div class="meter" style="margin-top:10px;"><div class="meter-fill" style="width:72%;background:linear-gradient(90deg,#e74c3c,#c0392b);"></div></div>
+        <div style="font-size:.65rem;color:#999;margin-top:4px;">Dijital Tehdit: Yüksek — Bütçe ve altyapı güçlü</div>
+      </div>
+
+      <div class="v v-gold">
+        <div class="v-icon">🟣</div>
+        <div class="v-title">Steelite — Dijital Strateji</div>
+        <ul class="v-list">
+          <li><strong>ABD-ağırlıklı dijital:</strong> 19K'lık ana hesap ABD pazarı. EMEA (1.7K) çok zayıf — Avrupa'da dijital boşluk</li>
+          <li><strong>İçerik hacmi yüksek:</strong> 4,960 post ile en yüksek paylaşım frekansı. Ama yüksek hacim = düşük kalite riski</li>
+          <li><strong>Meyer Marketing partnerliği:</strong> Profesyonel dijital ajans desteği — kurumsal kampanya yönetimi</li>
+          <li><strong>Zayıf:</strong> Avrupa ve MENA dijitali neredeyse yok. Bonna için EMEA'da doğrudan rakip olmuyor dijitalde</li>
+        </ul>
+        <div class="meter" style="margin-top:10px;"><div class="meter-fill" style="width:55%;background:linear-gradient(90deg,#e67e22,#f39c12);"></div></div>
+        <div style="font-size:.65rem;color:#999;margin-top:4px;">Dijital Tehdit: Orta — ABD dışında etkisiz</div>
+      </div>
+
+      <div class="v v-gold">
+        <div class="v-icon">🟤</div>
+        <div class="v-title">Churchill 1795 — Dijital Strateji</div>
+        <ul class="v-list">
+          <li><strong>Heritage storytelling:</strong> 1795 mirası her içeriğe işlenmiş. "Sustainable tableware" mesajı tutarlı ve güçlü</li>
+          <li><strong>Tek hesap, güçlü marka:</strong> 28K ile parçalanmadan tek hesap stratejisi. Organik büyüme sağlıklı</li>
+          <li><strong>Web analytics:</strong> Google Analytics + DoubleClick entegrasyonu — data-driven pazarlama yaklaşımı</li>
+          <li><strong>Zayıf:</strong> Sosyal medya etkileşimi düşük, yenilikçi format kullanımı (Reels, Stories) sınırlı</li>
+        </ul>
+        <div class="meter" style="margin-top:10px;"><div class="meter-fill" style="width:65%;background:linear-gradient(90deg,#e74c3c,#e67e22);"></div></div>
+        <div style="font-size:.65rem;color:#999;margin-top:4px;">Dijital Tehdit: Orta-Yüksek — Marka tutarlılığı iyi</div>
+      </div>
+
+      <div class="v v-gold">
+        <div class="v-icon">🔴</div>
+        <div class="v-title">Kütahya & Porland — Dijital Strateji</div>
+        <ul class="v-list">
+          <li><strong>B2C devleri:</strong> Kütahya 797K + Porland 523K = toplam 1.3M+ takipçi. Hepsiburada, Trendyol entegrasyonları</li>
+          <li><strong>Mobil uygulama:</strong> Kütahya Porselen'in 100K+ indirilen mobil uygulaması var — perakende odaklı</li>
+          <li><strong>HoReCa ayrımı:</strong> Kütahya'nın ayrı gastronomi hesabı (23K) var ama ana hesaba göre küçük kalıyor</li>
+          <li><strong>Bonna açısından:</strong> Farklı oyun. Bonna'nın B2C kitleyi kovalamaması, HoReCa premium'da derinleşmesi gerekli</li>
+        </ul>
+        <div class="meter" style="margin-top:10px;"><div class="meter-fill" style="width:40%;background:linear-gradient(90deg,#f39c12,#f1c40f);"></div></div>
+        <div style="font-size:.65rem;color:#999;margin-top:4px;">Dijital Tehdit: Düşük-Orta — Farklı segment, dolaylı etki</div>
+      </div>
+    </div>
+
+    <!-- BONNA AKSİYON PLANI -->
+    <div style="margin-top:24px;">
+      <div class="sh"><h2>Bonna Dijital Aksiyon Haritası</h2><p>Rakip analizinden çıkan stratejik dijital aksiyonlar</p></div>
+      <div class="flow">
+        <div class="flow-step highlight"><div class="fs-icon">🌍</div><div class="fs-title">Global Hesap Büyütme</div><div class="fs-desc">@bonna.global'ı güçlü içerik stratejisiyle ana global hesap yap</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="fs-icon">🎬</div><div class="fs-title">Şef İçerik Farkı</div><div class="fs-desc">Rakiplerin zayıf olduğu şef kolabı içeriğinde baskınlık kur</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="fs-icon">💼</div><div class="fs-title">LinkedIn Dominasyonu</div><div class="fs-desc">12K avantajını 25K'ya taşı — thought leadership</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="fs-icon">🤖</div><div class="fs-title">GEO İlk Hamle</div><div class="fs-desc">AI arama optimizasyonunda sektörde ilk ol</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="fs-icon">📊</div><div class="fs-title">Data-Driven Döngü</div><div class="fs-desc">Haftalık engagement analiz, aylık strateji güncelle</div></div>
+      </div>
+    </div>
+
+    <!-- STRATEJİK MATRIS -->
+    <div class="g g2" style="margin-top:20px;">
+      <div class="v v-gradient">
+        <div class="v-title">🟢 Bonna'nın Dijital Avantajları</div>
+        <ul class="v-list">
+          <li><strong>LinkedIn B2B liderliği</strong> — HoReCa sektöründe en güçlü LinkedIn varlığı (12K+)</li>
+          <li><strong>Bocuse d'Or & şef network'ü</strong> — Hiçbir rakipte olmayan otantik şef içerik potansiyeli</li>
+          <li><strong>FusionTech hikayesi</strong> — Teknoloji odaklı diferansiyasyon içeriği üretilebilir</li>
+          <li><strong>Fuar dijital ekosistemi</strong> — Pre/during/post fuar iletişim modeli rakiplerden ileri</li>
+          <li><strong>Lead otomasyon altyapısı</strong> — Meta → Zapier → Salesforce akışı, rakiplerin çoğunda yok</li>
+        </ul>
+      </div>
+      <div class="v" style="border-left:4px solid #e74c3c;">
+        <div class="v-title">🔴 Kapatılması Gereken Açıklar</div>
+        <ul class="v-list">
+          <li><strong>Global IG büyümesi</strong> — @bonna.global henüz küçük, hedef pazarlarda organik büyüme stratejisi gerekli</li>
+          <li><strong>Web SEO altyapısı</strong> — RAK'ın Brainvire ile profesyonel SEO yaptığı yerde Bonna henüz başlangıçta</li>
+          <li><strong>İçerik frekansı</strong> — Steelite'ın 4,960 postuna karşı 561 post. Hacim artmalı (kalite korunarak)</li>
+          <li><strong>Video/Reels oranı</strong> — Tüm sektörde düşük ama büyük fırsat. İlk agresif kullanan kazanır</li>
+          <li><strong>B2C farkındalık</strong> — Kütahya & Porland'ın B2C gücü dolaylı olarak marka algısını etkiliyor</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════ KANAL STRATEJİLERİ ═══════════ -->
+<div class="main-tab" id="channels">
+  <div class="sh"><h2>Kanal Stratejileri</h2><p>Her kanalın rolü, taktik detayları ve akışları</p></div>
+
+  <nav class="sub-nav" data-group="ch">
+    <button class="sub-btn active" onclick="subTab('ch','ch-fairs')">Fuarlar</button>
+    <button class="sub-btn" onclick="subTab('ch','ch-leads')">Lead Reklamları</button>
+    <button class="sub-btn" onclick="subTab('ch','ch-social')">Sosyal Medya</button>
+    <button class="sub-btn" onclick="subTab('ch','ch-mail')">Mailing & CRM</button>
+    <button class="sub-btn" onclick="subTab('ch','ch-content')">İçerik Üretimi</button>
+    <button class="sub-btn" onclick="subTab('ch','ch-chef')">Şef İş Birlikleri</button>
+  </nav>
+
+  <!-- FUARLAR -->
+  <div class="sub-tab active" id="ch-fairs" data-group="ch">
+    <div class="flow">
+      <div class="flow-step"><div class="fs-icon">📩</div><div class="fs-title">Davet Mailing</div><div class="fs-desc">4-6 hafta önce segmentli davet</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-icon">📣</div><div class="fs-title">Lead & Erişim Ads</div><div class="fs-desc">Fuar şehri hedefli kampanya</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight"><div class="fs-icon">🎪</div><div class="fs-title">FUAR</div><div class="fs-desc">Canlı iletişim & lead capture</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-icon">🙏</div><div class="fs-title">Teşekkür Mail</div><div class="fs-desc">Katalog + kişisel mesaj</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-icon">⚡</div><div class="fs-title">CRM & Scoring</div><div class="fs-desc">Salesforce aktarım + task</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-icon">🤝</div><div class="fs-title">Satış Takip</div><div class="fs-desc">3-7 gün follow-up dizisi</div></div>
+    </div>
+    <div class="g g3">
+      <div class="v">
+        <div class="v-icon">📩</div>
+        <div class="v-title">Fuar Öncesi</div>
+        <ul class="v-list">
+          <li>Bölge/sektör bazlı segmentli davet mailingi</li>
+          <li>"Randevu alın" formatında Meta lead ads</li>
+          <li>Fuar şehri çevresinde awareness kampanyası</li>
+          <li>LinkedIn countdown & stand bilgisi paylaşımları</li>
+          <li>Katalog indirme kampanyası</li>
+        </ul>
+      </div>
+      <div class="v">
+        <div class="v-icon">🎪</div>
+        <div class="v-title">Fuar Esnası</div>
+        <ul class="v-list">
+          <li>LinkedIn anlık paylaşımlar (bayi buluşmaları, showcase)</li>
+          <li>Instagram Story & Reels canlı akış</li>
+          <li>QR / tablet bazlı dijital stand lead capture</li>
+          <li>FusionTech & koleksiyon canlı demo</li>
+          <li>Bayi & partner yapılandırılmış toplantılar</li>
+        </ul>
+      </div>
+      <div class="v">
+        <div class="v-icon">📊</div>
+        <div class="v-title">Fuar Sonrası</div>
+        <ul class="v-list">
+          <li>Kişiselleştirilmiş teşekkür + katalog mailing</li>
+          <li>Salesforce lead aktarımı & sıcaklık scoring</li>
+          <li>3 gün → 7 gün otomatik follow-up dizisi</li>
+          <li>Performans raporu (maliyet/lead, segment analizi)</li>
+          <li>Fuar içeriklerinin repurpose'ı (sosyal + blog)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><strong>Yıllık Fuarlar:</strong> Ambiente Frankfurt · FSummit Antalya · Host İstanbul · NRA Chicago · Sirha Lyon · HostMilano · Equip'Hotel Paris · Gulfood Dubai</div>
+  </div>
+
+  <!-- LEAD ADS -->
+  <div class="sub-tab" id="ch-leads" data-group="ch">
+    <div class="g g2">
+      <div class="v v-dark">
+        <div class="v-icon">📣</div>
+        <div class="v-title">Nasıl Çalışıyor?</div>
+        <div class="v-desc">Platform içi form — kullanıcı siteye gitmeden reklama tıklayıp formu doldurur. Bilgiler anlık olarak CRM'e akar.</div>
+        <div class="flow" style="margin-top:16px;justify-content:flex-start;">
+          <div class="flow-step" style="min-width:100px;background:#253052;border-color:#3a4a6b;"><div class="fs-title" style="color:#c0a379;">Reklam</div></div>
+          <div class="flow-arrow" style="color:#fff;">→</div>
+          <div class="flow-step" style="min-width:100px;background:#253052;border-color:#3a4a6b;"><div class="fs-title" style="color:#c0a379;">Anlık Form</div></div>
+          <div class="flow-arrow" style="color:#fff;">→</div>
+          <div class="flow-step" style="min-width:100px;background:#253052;border-color:#3a4a6b;"><div class="fs-title" style="color:#c0a379;">Bilgi Gönderim</div></div>
+          <div class="flow-arrow" style="color:#fff;">→</div>
+          <div class="flow-step" style="min-width:100px;background:#253052;border-color:#c0a379;"><div class="fs-title" style="color:#fff;">LEAD</div></div>
+        </div>
+      </div>
+      <div class="v">
+        <div class="v-icon">🎯</div>
+        <div class="v-title">Hedefleme Matrisi</div>
+        <ul class="v-list">
+          <li><strong>Personalar:</strong> Restoran sahibi · Otel F&B · Catering · Yeni açılış · Satın alma müdürü</li>
+          <li><strong>Fırsat Anları:</strong> Sezon değişimi · Menü yenileme · Yeni açılış · Fuar dönemi · Özel günler</li>
+          <li><strong>Mesaj Farklılaştırma:</strong> Şefe → sunum estetiği · Satın almacıya → dayanıklılık · İşletmeciye → marka algısı</li>
+        </ul>
+      </div>
+    </div>
+    <div class="g g4" style="margin-top:4px;">
+      <div class="v v-gold">
+        <div class="v-icon">🔄</div>
+        <div class="v-title">Always-On</div>
+        <div class="v-desc">Yıl boyu sürekli çalışan temel lead kampanyası</div>
+      </div>
+      <div class="v v-gold">
+        <div class="v-icon">🚀</div>
+        <div class="v-title">Burst</div>
+        <div class="v-desc">Koleksiyon lansmanı, fuar, özel gün burst'leri</div>
+      </div>
+      <div class="v v-gold">
+        <div class="v-icon">🔁</div>
+        <div class="v-title">Retargeting</div>
+        <div class="v-desc">Site ziyaretçisi, katalog indiren, video izleyen</div>
+      </div>
+      <div class="v v-gold">
+        <div class="v-icon">🌍</div>
+        <div class="v-title">Global (Faz 2)</div>
+        <div class="v-desc">Otomasyon hazır olunca bölgesel geo-targeting</div>
+      </div>
+    </div>
+    <div class="v" style="margin-top:14px;">
+      <div class="v-title">Lead Otomasyon Akışı</div>
+      <div class="flow" style="margin-top:12px;">
+        <div class="flow-step"><div class="fs-icon">📱</div><div class="fs-title">Meta Form</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="fs-icon">⚡</div><div class="fs-title">Zapier</div><div class="fs-desc">Anlık webhook</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:#c0a379;"><div class="fs-icon">☁️</div><div class="fs-title">Salesforce</div><div class="fs-desc">Lead kaydı</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="fs-icon">✉️</div><div class="fs-title">Karşılama</div><div class="fs-desc">E-posta + katalog</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="fs-icon">📋</div><div class="fs-title">Satış Task</div><div class="fs-desc">Ekibe bildirim</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="fs-icon">🤝</div><div class="fs-title">Takip Döngüsü</div><div class="fs-desc">3+4+son gün</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOSYAL -->
+  <div class="sub-tab" id="ch-social" data-group="ch">
+    <div class="g g2">
+      <div class="v">
+        <div class="v-icon" style="font-size:2rem;">📸</div>
+        <div class="v-title">Instagram TR (@bonna.tr)</div>
+        <div class="v-desc" style="margin-bottom:8px;">Ana B2B + B2C vitrin — ürün, koleksiyon, şef, özel günler</div>
+        <div class="g g4" style="gap:6px;">
+          <div class="v" style="padding:10px;text-align:center;"><div style="font-size:.68rem;font-weight:700;color:#1a1a2e;">Carousel</div><div style="font-size:.6rem;color:#888;">Koleksiyon hikayeleri</div></div>
+          <div class="v" style="padding:10px;text-align:center;"><div style="font-size:.68rem;font-weight:700;color:#1a1a2e;">Reels</div><div style="font-size:.6rem;color:#888;">Şef plating & üretim</div></div>
+          <div class="v" style="padding:10px;text-align:center;"><div style="font-size:.68rem;font-weight:700;color:#1a1a2e;">Story</div><div style="font-size:.6rem;color:#888;">Günlük akış & anketler</div></div>
+          <div class="v" style="padding:10px;text-align:center;"><div style="font-size:.68rem;font-weight:700;color:#1a1a2e;">Lead Ads</div><div style="font-size:.6rem;color:#888;">Platform içi form</div></div>
+        </div>
+      </div>
+      <div class="v">
+        <div class="v-icon" style="font-size:2rem;">🌍</div>
+        <div class="v-title">Instagram Global (@bonna.global)</div>
+        <div class="v-desc" style="margin-bottom:8px;">Uluslararası marka vitrini — İngilizce içerik</div>
+        <div class="g g4" style="gap:6px;">
+          <div class="v" style="padding:10px;text-align:center;"><div style="font-size:.68rem;font-weight:700;color:#1a1a2e;">Fuar</div><div style="font-size:.6rem;color:#888;">Canlı coverage</div></div>
+          <div class="v" style="padding:10px;text-align:center;"><div style="font-size:.68rem;font-weight:700;color:#1a1a2e;">Bayi</div><div style="font-size:.6rem;color:#888;">Partner spotlight</div></div>
+          <div class="v" style="padding:10px;text-align:center;"><div style="font-size:.68rem;font-weight:700;color:#1a1a2e;">Şef</div><div style="font-size:.6rem;color:#888;">International collabs</div></div>
+          <div class="v" style="padding:10px;text-align:center;"><div style="font-size:.68rem;font-weight:700;color:#1a1a2e;">Growth</div><div style="font-size:.6rem;color:#888;">Takipçi kazanım ads</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="g g3" style="margin-top:4px;">
+      <div class="v">
+        <div class="v-icon">💼</div>
+        <div class="v-title">LinkedIn</div>
+        <div class="v-desc">B2B thought leadership. Fuar, bayi, ödül, sürdürülebilirlik, CEO branding.</div>
+        <ul class="v-list" style="margin-top:8px;">
+          <li>Sponsored Content + Lead Gen Forms</li>
+          <li>Fuar dönemlerinde yoğunlaştırma</li>
+          <li>Global B2B hedefleme (sektör, pozisyon, şirket)</li>
+        </ul>
+      </div>
+      <div class="v">
+        <div class="v-icon">🎬</div>
+        <div class="v-title">YouTube</div>
+        <div class="v-desc">Uzun format deposu. Google arama sonuçlarında video görünürlüğü.</div>
+        <ul class="v-list" style="margin-top:8px;">
+          <li>Üretim belgeseli & FusionTech hikayesi</li>
+          <li>Şef röportajları & plating serisi</li>
+          <li>Fuar recap & koleksiyon filmleri</li>
+        </ul>
+      </div>
+      <div class="v">
+        <div class="v-icon">📌</div>
+        <div class="v-title">Facebook & Pinterest</div>
+        <div class="v-desc">Tamamlayıcı kanallar.</div>
+        <ul class="v-list" style="margin-top:8px;">
+          <li>Facebook: Cross-post + lead ads platformu</li>
+          <li>Pinterest: Table setting, food styling inspirasyonu</li>
+          <li>Pinterest: Uzun ömürlü organik trafik potansiyeli</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAILING -->
+  <div class="sub-tab" id="ch-mail" data-group="ch">
+    <div class="g g2">
+      <div class="v v-dark">
+        <div class="v-icon">💎</div>
+        <div class="v-title">Bonna Data — Premium</div>
+        <div class="v-desc">Mevcut müşteriler, sıcak kontaklar, fuar tanışıklıkları. Küçük ama yüksek kaliteli liste.</div>
+        <ul class="v-list" style="margin-top:10px;">
+          <li>VIP fuar davetleri & özel teklifler</li>
+          <li>Koleksiyon lansmanları erken erişim</li>
+          <li>FusionTech özel duyuruları</li>
+          <li>CEO mesajları & corporate haberler</li>
+        </ul>
+      </div>
+      <div class="v">
+        <div class="v-icon">📊</div>
+        <div class="v-title">Web Data — Geniş</div>
+        <div class="v-desc">Site kayıtları, katalog indirenler, lead form dolduranlar. Büyük hacimli liste.</div>
+        <ul class="v-list" style="margin-top:10px;">
+          <li>Katalog tanıtımları & koleksiyon haberleri</li>
+          <li>Blog içerikleri & fuar duyuruları</li>
+          <li>Sezonsal kampanyalar</li>
+          <li>Sektör, bölge bazlı segmentli gönderimler</li>
+        </ul>
+      </div>
+    </div>
+    <div class="v" style="margin-top:14px;">
+      <div class="v-title">Otomasyon Dizileri</div>
+      <div class="flow" style="margin-top:12px;">
+        <div class="flow-step"><div class="fs-icon">👋</div><div class="fs-title">Karşılama</div><div class="fs-desc">Yeni lead hoş geldin</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="fs-icon">📖</div><div class="fs-title">Katalog</div><div class="fs-desc">Dijital katalog paylaşımı</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="fs-icon">🎨</div><div class="fs-title">Showcase</div><div class="fs-desc">Koleksiyon vitrin</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="fs-icon">📞</div><div class="fs-title">CTA</div><div class="fs-desc">Teklif talebi</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="fs-icon">🔄</div><div class="fs-title">Re-engage</div><div class="fs-desc">Soğuk lead canlandırma</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- İÇERİK -->
+  <div class="sub-tab" id="ch-content" data-group="ch">
+    <div class="g g4">
+      <div class="v v-gradient">
+        <div class="v-icon">🔬</div>
+        <div class="v-title">Zanaat & İnovasyon</div>
+        <ul class="v-list">
+          <li>FusionTech hikayesi</li>
+          <li>Üretim süreçleri</li>
+          <li>Hammadde yolculuğu</li>
+          <li>Sürdürülebilirlik</li>
+        </ul>
+        <div style="margin-top:8px;font-size:.68rem;color:#c0a379;font-weight:600;">Video · Blog · Infografik</div>
+      </div>
+      <div class="v v-gradient">
+        <div class="v-icon">👨‍🍳</div>
+        <div class="v-title">Gastronomi</div>
+        <ul class="v-list">
+          <li>Şef iş birlikleri</li>
+          <li>Plating showcases</li>
+          <li>Bocuse d'Or</li>
+          <li>Restoran hikayeleri</li>
+        </ul>
+        <div style="margin-top:8px;font-size:.68rem;color:#c0a379;font-weight:600;">Reels · Röportaj · Case Study</div>
+      </div>
+      <div class="v v-gradient">
+        <div class="v-icon">📚</div>
+        <div class="v-title">Sektör Bilgisi</div>
+        <ul class="v-list">
+          <li>HoReCa trendleri</li>
+          <li>Porselen seçim rehberi</li>
+          <li>Maliyet karşılaştırma</li>
+          <li>Sezon hazırlık</li>
+        </ul>
+        <div style="margin-top:8px;font-size:.68rem;color:#c0a379;font-weight:600;">Whitepaper · Blog · E-book</div>
+      </div>
+      <div class="v v-gradient">
+        <div class="v-icon">🎨</div>
+        <div class="v-title">Tasarım</div>
+        <ul class="v-list">
+          <li>Koleksiyon lansmanları</li>
+          <li>İlham hikayeleri</li>
+          <li>Renk/doku trendleri</li>
+          <li>Ödül iletişimleri</li>
+        </ul>
+        <div style="margin-top:8px;font-size:.68rem;color:#c0a379;font-weight:600;">Lookbook · Carousel · Video</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ŞEF -->
+  <div class="sub-tab" id="ch-chef" data-group="ch">
+    <div class="g g3">
+      <div class="v v-dark">
+        <div class="v-icon">🏆</div>
+        <div class="v-title">Neden Şefler?</div>
+        <div class="v-desc">HoReCa'da porselen seçim kararını doğrudan etkileyen kişiler — hem karar verici hem influencer. Bocuse d'Or ağı ile organik erişim.</div>
+      </div>
+      <div class="v">
+        <div class="v-icon">🍽️</div>
+        <div class="v-title">Food Plating Showcase</div>
+        <ul class="v-list">
+          <li>Profesyonel fotoğraf/video çekimleri</li>
+          <li>Sosyal medya + mailing + web dağıtımı</li>
+          <li>Koleksiyon bazlı plating serileri</li>
+        </ul>
+      </div>
+      <div class="v">
+        <div class="v-icon">🎓</div>
+        <div class="v-title">Masterclass & Events</div>
+        <ul class="v-list">
+          <li>Showroom veya partner lokasyonlarda</li>
+          <li>Davetli HoReCa karar vericileri</li>
+          <li>Tasting dinners & demo events</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ TÜRKİYE ═══════════ -->
+<div class="main-tab" id="tr">
+  <div class="sh"><h2>Türkiye İletişimi</h2><p>365 gün kesintisiz çok katmanlı iletişim yapısı</p></div>
+
+  <nav class="sub-nav" data-group="tr">
+    <button class="sub-btn active" onclick="subTab('tr','tr-always')">Always-On Yapısı</button>
+    <button class="sub-btn" onclick="subTab('tr','tr-launch')">Koleksiyon Lansmanları</button>
+    <button class="sub-btn" onclick="subTab('tr','tr-calendar')">Özel Günler & Sezonlar</button>
+    <button class="sub-btn" onclick="subTab('tr','tr-sponsor')">Sponsorluk & Etkinlik</button>
+  </nav>
+
+  <!-- ALWAYS ON -->
+  <div class="sub-tab active" id="tr-always" data-group="tr">
+    <div class="g g1">
+      <div class="v v-dark" style="text-align:center;">
+        <div class="v-title" style="font-size:1rem;">5 Katmanlı Always-On İletişim</div>
+        <div class="v-desc">Kampanya açıp kapama modeli yerine sürekli çalışan katmanlar. Özel günler ve lansmanlar burst olarak üste eklenir.</div>
+      </div>
+    </div>
+    <div class="g" style="grid-template-columns:repeat(5,1fr);">
+      <div class="v" style="border-top:4px solid #e74c3c;text-align:center;">
+        <div class="v-icon">📣</div>
+        <div class="v-title" style="font-size:.78rem;">Katman 1</div>
+        <div class="v-desc"><strong>Lead Ads</strong><br>Sürekli HoReCa lead toplama</div>
+      </div>
+      <div class="v" style="border-top:4px solid #e67e22;text-align:center;">
+        <div class="v-icon">👁️</div>
+        <div class="v-title" style="font-size:.78rem;">Katman 2</div>
+        <div class="v-desc"><strong>Bilinirlik</strong><br>Erişim & profil ziyareti</div>
+      </div>
+      <div class="v" style="border-top:4px solid #f1c40f;text-align:center;">
+        <div class="v-icon">🔁</div>
+        <div class="v-title" style="font-size:.78rem;">Katman 3</div>
+        <div class="v-desc"><strong>Retargeting</strong><br>Site, katalog, video izleyen</div>
+      </div>
+      <div class="v" style="border-top:4px solid #27ae60;text-align:center;">
+        <div class="v-icon">📱</div>
+        <div class="v-title" style="font-size:.78rem;">Katman 4</div>
+        <div class="v-desc"><strong>Organik Sosyal</strong><br>Haftalık içerik akışı</div>
+      </div>
+      <div class="v" style="border-top:4px solid #2980b9;text-align:center;">
+        <div class="v-icon">📧</div>
+        <div class="v-title" style="font-size:.78rem;">Katman 5</div>
+        <div class="v-desc"><strong>Mailing</strong><br>Aylık segmentli kampanya</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LANSMANLAR -->
+  <div class="sub-tab" id="tr-launch" data-group="tr">
+    <div class="flow">
+      <div class="flow-step"><div class="fs-icon">👀</div><div class="fs-title">Teaser</div><div class="fs-desc">1-2 hafta önce merak</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight"><div class="fs-icon">🚀</div><div class="fs-title">Lansman</div><div class="fs-desc">Tüm kanallarda eş zamanlı</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-icon">🔍</div><div class="fs-title">Derinleştirme</div><div class="fs-desc">1-4 hafta hikaye anlatımı</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-icon">♻️</div><div class="fs-title">Yaşatma</div><div class="fs-desc">İçerik rotasyonuna girer</div></div>
+    </div>
+    <div class="g g2" style="margin-top:16px;">
+      <div class="v">
+        <div class="v-icon">🎨</div>
+        <div class="v-title">Koleksiyon Lansman Kanalları</div>
+        <ul class="v-list">
+          <li>Carousel + Reels + Story (tüm platformlar eş zamanlı)</li>
+          <li>Mailing blast (Bonna Data + Web Data)</li>
+          <li>Web banner + koleksiyon sayfası güncellemesi</li>
+          <li>Lead ads'te yeni kreatifler devreye girer</li>
+          <li>Blog yazısı (SEO odaklı tasarım hikayesi)</li>
+          <li>Şef plating showcase (derinleştirme fazı)</li>
+        </ul>
+      </div>
+      <div class="v">
+        <div class="v-icon">⚡</div>
+        <div class="v-title">FusionTech & Katalog</div>
+        <ul class="v-list">
+          <li><strong>FusionTech:</strong> Koleksiyon değil "inovasyon" hikayesi — ayrı iletişim aksı</li>
+          <li>Carousel + mailing + web banner + video açıklama</li>
+          <li>Fuar demolarıyla desteklenen fiziksel deneyim</li>
+          <li><strong>Katalog:</strong> Yıllık lansman (TR + EN), indirme kampanyası</li>
+          <li>Lead capture aracı olarak da kullanılır</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÖZEL GÜNLER -->
+  <div class="sub-tab" id="tr-calendar" data-group="tr">
+    <table class="cal">
+      <thead><tr><th>Dönem</th><th>Özel Gün / Sezon</th><th>İletişim Yaklaşımı</th><th>Kanallar</th></tr></thead>
+      <tbody>
+        <tr><td>Oca-Şub</td><td>Fuar Sezonu</td><td>Ambiente + FSummit — 3 fazlı tam dijital akış</td><td><span class="cal-tag t-event">Fuar</span><span class="cal-tag t-lead">Lead</span></td></tr>
+        <tr><td>Şubat</td><td>Valentine's Day</td><td>Romantik sofra temalı, restoran segmentine özel kampanya</td><td><span class="cal-tag t-special">Özel Gün</span><span class="cal-tag t-brand">Sosyal</span></td></tr>
+        <tr><td>Mar-Nis</td><td>Ramazan & Bayram</td><td>İftar sofrası temalı koleksiyon, otel/catering toplu alım lead</td><td><span class="cal-tag t-lead">Lead</span><span class="cal-tag t-special">Özel Gün</span></td></tr>
+        <tr><td>Mart</td><td>Host İstanbul</td><td>TR'nin en büyük HoReCa fuarı — tam akış</td><td><span class="cal-tag t-event">Fuar</span><span class="cal-tag t-lead">Lead</span></td></tr>
+        <tr><td>Mayıs</td><td>Anneler Günü</td><td>B2C dokunuşu — hediye seti promosyon, sosyal etkileşim</td><td><span class="cal-tag t-special">Özel Gün</span><span class="cal-tag t-brand">B2C</span></td></tr>
+        <tr><td>Haz-Ağu</td><td>Yaz Turizm</td><td>Otel zincirleri, sahil restoranları, beach club burst kampanya</td><td><span class="cal-tag t-lead">Lead</span><span class="cal-tag t-brand">Geo-target</span></td></tr>
+        <tr><td>Ekim</td><td>Dünya Şefler Günü</td><td>Şef iş birlikleri serisi, Bocuse d'Or PR, plating showcase</td><td><span class="cal-tag t-brand">Sosyal</span><span class="cal-tag t-event">Etkinlik</span></td></tr>
+        <tr><td>Kasım</td><td>Black Friday</td><td>B2C promo + B2B "2027 erken sipariş avantajı"</td><td><span class="cal-tag t-lead">Lead</span><span class="cal-tag t-brand">B2C</span></td></tr>
+        <tr><td>Aralık</td><td>Yılbaşı</td><td>Şenlikli sofra temalı, kurumsal hediye setleri</td><td><span class="cal-tag t-special">Özel Gün</span><span class="cal-tag t-launch">Lansman</span></td></tr>
+        <tr><td>Çeyreklik</td><td>Koleksiyon Lansmanları</td><td>Her yeni koleksiyon → 4 fazlı tam kampanya akışı</td><td><span class="cal-tag t-launch">Lansman</span><span class="cal-tag t-lead">Lead</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SPONSORLUK -->
+  <div class="sub-tab" id="tr-sponsor" data-group="tr">
+    <div class="g g2">
+      <div class="v v-gradient">
+        <div class="v-icon">🏆</div>
+        <div class="v-title">Bocuse d'Or</div>
+        <div class="v-desc">Platinum Partner — yarışma iletişimi, şef ağına erişim, ortak içerik üretimi, global prestij kaldıracı</div>
+      </div>
+      <div class="v v-gradient">
+        <div class="v-icon">🍳</div>
+        <div class="v-title">Culinary Forum</div>
+        <div class="v-desc">Sponsorluk + stand + içerik üretimi — gastronomi dünyasıyla organik temas noktası</div>
+      </div>
+      <div class="v v-gradient">
+        <div class="v-icon">🎓</div>
+        <div class="v-title">Bonna Masterclass</div>
+        <div class="v-desc">Kendi etkinlik formatı — davetli şefler & HoReCa karar vericileri, showroom veya partner lokasyonlarda</div>
+      </div>
+      <div class="v v-gradient">
+        <div class="v-icon">🤝</div>
+        <div class="v-title">Sektör Dernekleri</div>
+        <div class="v-desc">TÜROB, TURYID gibi turizm/HoReCa dernekleriyle ortak etkinlik ve iletişim</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ GLOBAL ═══════════ -->
+<div class="main-tab" id="global">
+  <div class="sh"><h2>Global İletişim</h2><p>Bayi co-marketing, bölgesel stratejiler ve fazlı büyüme planı</p></div>
+
+  <nav class="sub-nav" data-group="gl">
+    <button class="sub-btn active" onclick="subTab('gl','gl-phases')">Faz Planı</button>
+    <button class="sub-btn" onclick="subTab('gl','gl-dealer')">Bayi Co-Marketing</button>
+    <button class="sub-btn" onclick="subTab('gl','gl-regions')">Bölgesel Stratejiler</button>
+    <button class="sub-btn" onclick="subTab('gl','gl-digital')">Global Dijital</button>
+  </nav>
+
+  <!-- FAZ PLANI -->
+  <div class="sub-tab active" id="gl-phases" data-group="gl">
+    <div class="g g3">
+      <div class="v" style="border-top:4px solid #c0a379;">
+        <span class="phase ph1">Faz 1 — Şimdi</span>
+        <div class="v-title">Altyapı & Hazırlık</div>
+        <ul class="v-list">
+          <li>Lead otomasyon tamamlama</li>
+          <li>Bayi co-marketing framework</li>
+          <li>Kreatif adaptasyon kitleri</li>
+          <li>Bölgesel segmentasyon</li>
+          <li>LinkedIn global güçlendirme</li>
+          <li>Ambiente verileriyle optimizasyon</li>
+        </ul>
+      </div>
+      <div class="v" style="border-top:4px solid #2980b9;">
+        <span class="phase ph2">Faz 2 — Q3 2026</span>
+        <div class="v-title">Pilot Bölgeler</div>
+        <ul class="v-list">
+          <li>DACH & UK lead ads pilotu</li>
+          <li>Körfez erişim kampanyaları</li>
+          <li>Pilot bayi co-marketing aktivasyonu</li>
+          <li>Takipçi kazanım genişletme</li>
+          <li>Bölgesel performans ölçümleme</li>
+        </ul>
+      </div>
+      <div class="v" style="border-top:4px solid #8e44ad;">
+        <span class="phase ph3">Faz 3 — Q4 2026+</span>
+        <div class="v-title">Ölçeklendirme</div>
+        <ul class="v-list">
+          <li>ABD (GTC ortaklığı)</li>
+          <li>CIS (Özbekistan fabrika)</li>
+          <li>MENA (Mısır fabrika)</li>
+          <li>Güney Avrupa & Fransa</li>
+          <li>Başarılı modelleri çoğaltma</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAYİ MODEL -->
+  <div class="sub-tab" id="gl-dealer" data-group="gl">
+    <div class="g g3">
+      <div class="v v-gold">
+        <div class="v-icon">📦</div>
+        <div class="v-title">İçerik & Kreatif Destek</div>
+        <ul class="v-list">
+          <li>Koleksiyon tanıtım kitleri (görsel, video, copy)</li>
+          <li>Lokalize edilebilir sosyal medya şablonları</li>
+          <li>Bölgesel katalog versiyonları</li>
+          <li>Trade show booth design kitleri</li>
+          <li>Satış ekibi eğitim materyalleri</li>
+        </ul>
+      </div>
+      <div class="v v-gold">
+        <div class="v-icon">🤝</div>
+        <div class="v-title">Ortak Kampanyalar</div>
+        <ul class="v-list">
+          <li>Fuar co-marketing (stand + paralel dijital)</li>
+          <li>Bayi bölgesine özel paid kampanyalar</li>
+          <li>Ortak webinar & ürün tanıtım</li>
+          <li>Referans proje case study</li>
+          <li>Şef etkinlikleri co-sponsorluk</li>
+        </ul>
+      </div>
+      <div class="v v-gold">
+        <div class="v-icon">📊</div>
+        <div class="v-title">Lead & Pipeline Yönetimi</div>
+        <ul class="v-list">
+          <li>Geo-bazlı otomatik lead routing</li>
+          <li>Bayi CRM erişimi veya aktarım protokolü</li>
+          <li>Aylık lead quality review meetings</li>
+          <li>Bayi performans metrikleri & reporting</li>
+          <li>Saha bilgisi feedback loop</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- BÖLGELER -->
+  <div class="sub-tab" id="gl-regions" data-group="gl">
+    <div class="g g2">
+      <div class="v" style="border-left:4px solid #1a73e8;">
+        <div class="v-icon">🇪🇺</div>
+        <div class="v-title">Avrupa — DACH & UK</div>
+        <ul class="v-list">
+          <li><strong>Kanal:</strong> Ambiente + LinkedIn B2B + Lead ads pilot</li>
+          <li><strong>Mesaj:</strong> Avrupa kalitesi, rekabetçi fiyat, FusionTech & ödüller</li>
+          <li><strong>Segment:</strong> Fine dining, boutique oteller, premium zincirler</li>
+        </ul>
+      </div>
+      <div class="v" style="border-left:4px solid #e67e22;">
+        <div class="v-icon">🇦🇪</div>
+        <div class="v-title">Körfez & MENA</div>
+        <ul class="v-list">
+          <li><strong>Kanal:</strong> Gulfood Dubai + Mısır fabrika PR</li>
+          <li><strong>Mesaj:</strong> Bölgesel üretim, hızlı teslimat</li>
+          <li><strong>Segment:</strong> Lüks oteller, havayolu, mega proje</li>
+          <li><strong>Not:</strong> RAK'ın en güçlü bölgesi — farklılaşma kritik</li>
+        </ul>
+      </div>
+      <div class="v" style="border-left:4px solid #c0392b;">
+        <div class="v-icon">🇺🇸</div>
+        <div class="v-title">ABD</div>
+        <ul class="v-list">
+          <li><strong>Kanal:</strong> NRA Chicago + GTC eksklüzif distribütörlük</li>
+          <li><strong>Mesaj:</strong> Turkish craftsmanship meets global design</li>
+          <li><strong>Segment:</strong> Independent fine dining, boutique hotels, chef-driven</li>
+        </ul>
+      </div>
+      <div class="v" style="border-left:4px solid #8e44ad;">
+        <div class="v-icon">🌍</div>
+        <div class="v-title">CIS & Güney Avrupa</div>
+        <ul class="v-list">
+          <li><strong>CIS:</strong> Özbekistan fabrika avantajı, yerel distribütörler</li>
+          <li><strong>G. Avrupa:</strong> HostMilano + Sirha Lyon + Equip'Hotel fuar üçgeni</li>
+          <li><strong>Fransa:</strong> Bocuse d'Or Platinum Partner = organik marka bilinirliği</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- GLOBAL DİJİTAL -->
+  <div class="sub-tab" id="gl-digital" data-group="gl">
+    <div class="g g2">
+      <div class="v">
+        <div class="v-icon">💼</div>
+        <div class="v-title">LinkedIn — Ana Global B2B Kanalı</div>
+        <ul class="v-list">
+          <li>Thought leadership & corporate iletişim</li>
+          <li>Fuar coverage & bayi buluşmaları</li>
+          <li>CEO/yönetici personal branding</li>
+          <li>Sponsored Content + Lead Gen Forms</li>
+          <li>Ödül, fabrika yatırım, sürdürülebilirlik haberleri</li>
+        </ul>
+      </div>
+      <div class="v">
+        <div class="v-icon">🌐</div>
+        <div class="v-title">Diğer Global Kanallar</div>
+        <ul class="v-list">
+          <li><strong>IG Global:</strong> Koleksiyon showcase, bayi spotlight, şef collabs</li>
+          <li><strong>Mailing:</strong> Dil/bölge bazlı segmentli gönderimler</li>
+          <li><strong>Dijital PR:</strong> Uluslararası HoReCa sektör yayınları</li>
+          <li><strong>SEO/GEO:</strong> Çoklu dil, bölgesel anahtar kelime (site ile paralel)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SİTE & SEO/GEO ═══════════ -->
+<div class="main-tab" id="site">
+  <div class="sh"><h2>Site Dönüşümü & SEO/GEO</h2><p>bonna.com.tr — marka vitrininden dijital satış hunisinin merkezine</p></div>
+
+  <nav class="sub-nav" data-group="st">
+    <button class="sub-btn active" onclick="subTab('st','st-vision')">Stratejik Vizyon</button>
+    <button class="sub-btn" onclick="subTab('st','st-arch')">Site Mimarisi</button>
+    <button class="sub-btn" onclick="subTab('st','st-seo')">SEO Stratejisi</button>
+    <button class="sub-btn" onclick="subTab('st','st-geo')">GEO — AI Arama</button>
+  </nav>
+
+  <!-- VİZYON -->
+  <div class="sub-tab active" id="st-vision" data-group="st">
+    <div class="g g2">
+      <div class="v" style="border:2px solid #e0e0e0;text-align:center;">
+        <div style="font-size:.65rem;font-weight:700;color:#c0392b;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Bugün</div>
+        <div class="v-icon">🏪</div>
+        <div class="v-title">Marka Vitrini</div>
+        <div class="v-desc">Gelen ziyaretçiyi bilgilendirir ama lead'e dönüştürmez. Organik keşif düşük, lead capture sınırlı.</div>
+      </div>
+      <div class="v" style="border:2px solid #c0a379;text-align:center;background:#fffdf5;">
+        <div style="font-size:.65rem;font-weight:700;color:#27ae60;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Hedef</div>
+        <div class="v-icon">🚀</div>
+        <div class="v-title">Lead Generation Makinesi</div>
+        <div class="v-desc">SEO/GEO ile yeni ziyaretçi çekme → bilgilendirme → lead'e dönüştürme → satış ekibine aktarma. Sürekli optimize edilen platform.</div>
+      </div>
+    </div>
+    <div class="flow" style="margin-top:16px;">
+      <div class="flow-step"><div class="fs-icon">🔍</div><div class="fs-title">SEO/GEO</div><div class="fs-desc">Organik trafik çek</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-icon">📄</div><div class="fs-title">İçerik</div><div class="fs-desc">Bilgilendir & güven oluştur</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-icon">📝</div><div class="fs-title">Lead Capture</div><div class="fs-desc">Form, katalog, chatbot</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-icon">⚡</div><div class="fs-title">Otomasyon</div><div class="fs-desc">CRM aktarım & nurturing</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight"><div class="fs-icon">🤝</div><div class="fs-title">Satış</div><div class="fs-desc">Pipeline & teklif</div></div>
+    </div>
+  </div>
+
+  <!-- MİMARİ -->
+  <div class="sub-tab" id="st-arch" data-group="st">
+    <div class="g g3">
+      <div class="v v-gradient">
+        <div class="v-icon">📂</div>
+        <div class="v-title">Koleksiyon Sayfaları</div>
+        <div class="v-desc">Her koleksiyon = pillar page. Ürün detayları, tasarım hikayesi, uygulama görselleri, şef showcases, teknik özellikler.</div>
+      </div>
+      <div class="v v-gradient">
+        <div class="v-icon">🏨</div>
+        <div class="v-title">Sektör Çözüm Sayfaları</div>
+        <div class="v-desc">"Oteller için" · "Restoranlar için" · "Catering için" — segment bazlı landing page + lead capture.</div>
+      </div>
+      <div class="v v-gradient">
+        <div class="v-icon">⚡</div>
+        <div class="v-title">Teknoloji Sayfası</div>
+        <div class="v-desc">FusionTech'e adanmış detaylı sayfa — teknoloji açıklama, avantajlar, karşılaştırma, video.</div>
+      </div>
+      <div class="v v-gradient">
+        <div class="v-icon">📝</div>
+        <div class="v-title">Blog / İçerik Merkezi</div>
+        <div class="v-desc">SEO odaklı blog — sektör trendleri, porselen rehberleri, şef hikayeleri, fuar raporları.</div>
+      </div>
+      <div class="v v-gradient">
+        <div class="v-icon">📋</div>
+        <div class="v-title">Lead Capture Noktaları</div>
+        <div class="v-desc">Katalog indirme (gated), teklif talebi, iletişim formu, newsletter, chatbot/AI asistan.</div>
+      </div>
+      <div class="v v-gradient">
+        <div class="v-icon">⚙️</div>
+        <div class="v-title">Teknik Performans</div>
+        <div class="v-desc">Core Web Vitals, mobile-first, CDN, GA4 event tracking, heat map entegrasyonu.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO -->
+  <div class="sub-tab" id="st-seo" data-group="st">
+    <div class="g g2">
+      <div class="v">
+        <div class="v-icon">🔧</div>
+        <div class="v-title">Teknik SEO</div>
+        <ul class="v-list">
+          <li>Temiz, hiyerarşik URL yapısı</li>
+          <li>Schema markup (Product, Org, FAQ, Article)</li>
+          <li>Sitemap & robots.txt optimizasyonu</li>
+          <li>Canonical tags & duplicate prevention</li>
+          <li>Hreflang (TR/EN + potansiyel çoklu dil)</li>
+          <li>İç linkleme mimarisi</li>
+        </ul>
+      </div>
+      <div class="v">
+        <div class="v-icon">📝</div>
+        <div class="v-title">İçerik SEO</div>
+        <ul class="v-list">
+          <li>Anahtar kelime kümesi haritalama (yüksek niyet + bilgi amaçlı)</li>
+          <li>Pillar page + cluster blog yapısı</li>
+          <li>Ürün sayfası meta & heading optimizasyonu</li>
+          <li>Görsel alt text & optimization</li>
+          <li>Backlink & dijital PR stratejisi</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- GEO -->
+  <div class="sub-tab" id="st-geo" data-group="st">
+    <div class="g g2">
+      <div class="v v-dark">
+        <div class="v-icon">🤖</div>
+        <div class="v-title">GEO Nedir?</div>
+        <div class="v-desc">Generative Engine Optimization — ChatGPT, Gemini, Perplexity gibi AI arama motorlarının yanıtlarında Bonna'nın referans gösterilmesini sağlama stratejisi. Geleneksel SEO'nun ötesinde yeni bir alan.</div>
+      </div>
+      <div class="v">
+        <div class="v-icon">🎯</div>
+        <div class="v-title">GEO Stratejisi</div>
+        <ul class="v-list">
+          <li>Schema markup zenginleştirme (AI motorları için)</li>
+          <li>FAQ içerikleri (AI aramalarında sık sorulan sorulara yanıt)</li>
+          <li>Marka mention & authority building</li>
+          <li>Conversational query hedefleme</li>
+          <li>GEO monitoring araçları kurulumu</li>
+          <li>SEO + GEO entegre içerik yapısı</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><strong>Erken Hareket Avantajı:</strong> GEO henüz erken aşamada — şimdi doğru yapılandırma yapan markalar, AI aramalarında kalıcı avantaj elde edecek.</div>
+  </div>
+</div>
+
+</div>
+
+<!-- ═══════════ AYLIK OPERASYON ═══════════ -->
+<div class="main-tab" id="ops">
+  <div class="sh" style="max-width:800px;margin:0 auto 22px;"><h2>Aylık Operasyon</h2><p>Her ay yürütülmesi gereken iş başlıkları</p></div>
+
+  <div class="ops-wrap">
+  <div class="ops-block">
+    <div class="ops-heading">
+      <div class="ops-ico" style="background:linear-gradient(135deg,#c0a379,#a8895f);">🎯</div>
+      <div class="ops-htxt">Lead Yönetimi & Performans</div>
+    </div>
+    <div class="ops-items">
+      <div class="ops-card"><div class="ops-cd" style="background:#c0a379;"></div><span class="ops-ct">Meta Lead kampanya optimizasyonu</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#c0a379;"></div><span class="ops-ct">Salesforce pipeline — MQL → SQL dönüşüm</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#c0a379;"></div><span class="ops-ct">CPL raporu (TR + Global)</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#c0a379;"></div><span class="ops-ct">Cold lead işaretleme & nurturing güncelle</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#c0a379;"></div><span class="ops-ct">Zapier webhook & otomasyon kontrolü</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#c0a379;"></div><span class="ops-ct">Gelecek ay lead hedefi & bütçe dağılımı</span></div>
+    </div>
+  </div>
+
+  <div class="ops-block">
+    <div class="ops-heading">
+      <div class="ops-ico" style="background:linear-gradient(135deg,#1a73e8,#1557b0);">📱</div>
+      <div class="ops-htxt">Sosyal Medya</div>
+    </div>
+    <div class="ops-items">
+      <div class="ops-card"><div class="ops-cd" style="background:#1a73e8;"></div><span class="ops-ct">Gelecek ay içerik takvimi (IG, LinkedIn, TikTok)</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#1a73e8;"></div><span class="ops-ct">Reels / video üretim planı</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#1a73e8;"></div><span class="ops-ct">Engagement raporu — reach, ER, growth</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#1a73e8;"></div><span class="ops-ct">LinkedIn thought leadership taslakları</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#1a73e8;"></div><span class="ops-ct">Şef iş birliği koordinasyonu & brief</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#1a73e8;"></div><span class="ops-ct">Rakip sosyal medya taraması</span></div>
+    </div>
+  </div>
+
+  <div class="ops-block">
+    <div class="ops-heading">
+      <div class="ops-ico" style="background:linear-gradient(135deg,#8e44ad,#6c3483);">✉️</div>
+      <div class="ops-htxt">Mailing & CRM</div>
+    </div>
+    <div class="ops-items">
+      <div class="ops-card"><div class="ops-cd" style="background:#8e44ad;"></div><span class="ops-ct">Aylık newsletter hazırla & gönder</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#8e44ad;"></div><span class="ops-ct">Open rate & CTR raporu (hedef %30+)</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#8e44ad;"></div><span class="ops-ct">Liste temizliği — bounce, inaktif çıkar</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#8e44ad;"></div><span class="ops-ct">Segmentasyon güncelle — yeni lead ataması</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#8e44ad;"></div><span class="ops-ct">Nurturing flow performans kontrolü</span></div>
+    </div>
+  </div>
+
+  <div class="ops-block">
+    <div class="ops-heading">
+      <div class="ops-ico" style="background:linear-gradient(135deg,#e67e22,#d35400);">🎬</div>
+      <div class="ops-htxt">İçerik Üretimi & Kreatif</div>
+    </div>
+    <div class="ops-items">
+      <div class="ops-card"><div class="ops-cd" style="background:#e67e22;"></div><span class="ops-ct">Koleksiyon çekim takvimi kontrolü</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#e67e22;"></div><span class="ops-ct">Blog / SEO içerik — min. 2 makale yayınla</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#e67e22;"></div><span class="ops-ct">Dijital katalog güncellemesi</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#e67e22;"></div><span class="ops-ct">Video prodüksiyon — Reels, BTS, şef çekimleri</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#e67e22;"></div><span class="ops-ct">Bayi co-marketing materyal güncelle</span></div>
+    </div>
+  </div>
+
+  <div class="ops-block">
+    <div class="ops-heading">
+      <div class="ops-ico" style="background:linear-gradient(135deg,#16a085,#0e6655);">🌐</div>
+      <div class="ops-htxt">Site & SEO / GEO</div>
+    </div>
+    <div class="ops-items">
+      <div class="ops-card"><div class="ops-cd" style="background:#16a085;"></div><span class="ops-ct">GA & Search Console aylık raporu</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#16a085;"></div><span class="ops-ct">Teknik SEO — hız, broken link, indexleme</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#16a085;"></div><span class="ops-ct">Anahtar kelime pozisyon takibi</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#16a085;"></div><span class="ops-ct">GEO görünürlük — ChatGPT, Gemini, Perplexity</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#16a085;"></div><span class="ops-ct">Landing page ihtiyaç analizi</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#16a085;"></div><span class="ops-ct">Form dönüşüm oranları kontrolü</span></div>
+    </div>
+  </div>
+
+  <div class="ops-block">
+    <div class="ops-heading">
+      <div class="ops-ico" style="background:linear-gradient(135deg,#c0392b,#96281b);">🎪</div>
+      <div class="ops-htxt">Fuar & Etkinlik</div>
+    </div>
+    <div class="ops-items">
+      <div class="ops-card"><div class="ops-cd" style="background:#c0392b;"></div><span class="ops-ct">Yaklaşan fuar kontrolü (T-60 gün başlat)</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#c0392b;"></div><span class="ops-ct">Pre-fuar mailing listesi oluştur</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#c0392b;"></div><span class="ops-ct">Fuar dijital kampanyası planla</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#c0392b;"></div><span class="ops-ct">Post-fuar follow-up akışı hazırla</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#c0392b;"></div><span class="ops-ct">Sponsorluk & etkinlik fırsatları değerlendir</span></div>
+    </div>
+  </div>
+
+  <div class="ops-block">
+    <div class="ops-heading">
+      <div class="ops-ico" style="background:linear-gradient(135deg,#2980b9,#1a5276);">🌍</div>
+      <div class="ops-htxt">Global & Bayi Operasyonları</div>
+    </div>
+    <div class="ops-items">
+      <div class="ops-card"><div class="ops-cd" style="background:#2980b9;"></div><span class="ops-ct">Bölgesel bayi lead raporları topla</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#2980b9;"></div><span class="ops-ct">Co-marketing performans değerlendirmesi</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#2980b9;"></div><span class="ops-ct">Bayi içerik kitleri güncelle & dağıt</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#2980b9;"></div><span class="ops-ct">Global lead routing akış kontrolü</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#2980b9;"></div><span class="ops-ct">Bölgesel reklam bütçesi optimizasyonu</span></div>
+    </div>
+  </div>
+
+  <div class="ops-block">
+    <div class="ops-heading">
+      <div class="ops-ico" style="background:linear-gradient(135deg,#1a1a2e,#2c2c54);">📊</div>
+      <div class="ops-htxt">Raporlama & Stratejik Değerlendirme</div>
+    </div>
+    <div class="ops-items">
+      <div class="ops-card"><div class="ops-cd" style="background:#1a1a2e;"></div><span class="ops-ct">CEO briefing performans raporu</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#1a1a2e;"></div><span class="ops-ct">Kanal bazlı ROI analizi</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#1a1a2e;"></div><span class="ops-ct">Rakip hareketleri aylık özet</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#1a1a2e;"></div><span class="ops-ct">Gelecek ay stratejik öncelikler</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#1a1a2e;"></div><span class="ops-ct">Bütçe kullanım — plan vs gerçekleşen</span></div>
+      <div class="ops-card"><div class="ops-cd" style="background:#1a1a2e;"></div><span class="ops-ct">Ekip retro & gelecek ay planlama</span></div>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+<div class="footer">Bonna Premium Porcelain — Pazarlama Yol Haritası · CMO Briefing · 2026</div>
+
+<script>
+function mainTab(id){
+  document.querySelectorAll('.main-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector(`[onclick="mainTab('${id}')"]`).classList.add('active');
+}
+function subTab(group,id){
+  document.querySelectorAll(`.sub-tab[data-group="${group}"]`).forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll(`.sub-nav[data-group="${group}"] .sub-btn`).forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

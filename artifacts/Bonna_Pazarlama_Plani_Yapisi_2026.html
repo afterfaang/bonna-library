@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonna Premium Porcelain — 1 Yıllık Pazarlama Planı Yapısı</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f8f7f4;
+    color: #1a1a1a;
+    line-height: 1.6;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white;
+    padding: 60px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(192,163,121,0.1) 0%, transparent 50%);
+    animation: rotate 20s linear infinite;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    position: relative;
+  }
+
+  .hero .subtitle {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: #c0a379;
+    position: relative;
+  }
+
+  .hero .meta {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    position: relative;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
+  /* Navigation tabs */
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: white;
+    border-radius: 16px;
+    padding: 6px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    margin-bottom: 32px;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.3s;
+    white-space: nowrap;
+    min-width: fit-content;
+  }
+
+  .tab-btn:hover { background: #f5f5f5; color: #333; }
+  .tab-btn.active { background: #1a1a2e; color: white; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Section styling */
+  .section-header {
+    margin-bottom: 28px;
+  }
+
+  .section-header .number {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    background: #c0a379;
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 36px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .section-header h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+  }
+
+  .section-header p {
+    color: #888;
+    font-size: 0.9rem;
+  }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.04);
+    transition: all 0.3s;
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card h3 .icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .card p, .card li {
+    font-size: 0.88rem;
+    color: #555;
+    line-height: 1.7;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #c0a379;
+    font-weight: 600;
+  }
+
+  /* Competitor table */
+  .competitor-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+    margin-bottom: 24px;
+  }
+
+  .competitor-table th {
+    background: #1a1a2e;
+    color: white;
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .competitor-table td {
+    padding: 14px 16px;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #f0f0f0;
+    color: #444;
+  }
+
+  .competitor-table tr:last-child td { border-bottom: none; }
+  .competitor-table tr:hover td { background: #faf9f7; }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  .tag-global { background: #e8f4fd; color: #1a73e8; }
+  .tag-tr { background: #fef3e2; color: #e67e22; }
+  .tag-premium { background: #f0e6f6; color: #8e44ad; }
+  .tag-mid { background: #e8f8e8; color: #27ae60; }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #c0a379, #1a1a2e);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 24px;
+    background: white;
+    border-radius: 14px;
+    padding: 20px 24px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -32px;
+    top: 24px;
+    width: 12px;
+    height: 12px;
+    background: #c0a379;
+    border-radius: 50%;
+    border: 3px solid #f8f7f4;
+  }
+
+  .timeline-item .quarter {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #c0a379;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .timeline-item h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+  }
+
+  .timeline-item p {
+    font-size: 0.85rem;
+    color: #666;
+  }
+
+  /* KPI boxes */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-box {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+    border-left: 4px solid #c0a379;
+  }
+
+  .kpi-box .kpi-label {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .kpi-box .kpi-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+
+  .kpi-box .kpi-note {
+    font-size: 0.72rem;
+    color: #aaa;
+    margin-top: 4px;
+  }
+
+  /* SWOT */
+  .swot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .swot-card {
+    border-radius: 14px;
+    padding: 24px;
+    color: white;
+  }
+
+  .swot-card h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    opacity: 0.9;
+  }
+
+  .swot-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .swot-card li {
+    font-size: 0.82rem;
+    padding: 5px 0;
+    opacity: 0.9;
+    line-height: 1.5;
+  }
+
+  .swot-s { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+  .swot-w { background: linear-gradient(135deg, #e67e22, #f39c12); }
+  .swot-o { background: linear-gradient(135deg, #2980b9, #3498db); }
+  .swot-t { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+
+  /* Channel allocation */
+  .channel-bar {
+    display: flex;
+    height: 40px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .channel-bar div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: white;
+    transition: all 0.3s;
+  }
+
+  .channel-bar div:hover { filter: brightness(1.1); }
+
+  .channel-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .channel-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: #555;
+  }
+
+  .channel-legend-item .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+
+  /* Notes section */
+  .note-box {
+    background: #fffdf5;
+    border: 1px dashed #c0a379;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: #8b7355;
+  }
+
+  .note-box strong { color: #c0a379; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px;
+    color: #bbb;
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 1.6rem; }
+    .tab-nav { flex-wrap: nowrap; }
+    .tab-btn { font-size: 0.7rem; padding: 10px 12px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .swot-grid { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Bonna Premium Porcelain</h1>
+  <div class="subtitle">1 Yıllık Pazarlama Yol Haritası — Ana Yapı</div>
+  <div class="meta">Nisan 2026 – Mart 2027 | Versiyon 1.0 | Taslak</div>
+</div>
+
+<div class="container">
+
+  <nav class="tab-nav" id="tabNav">
+    <button class="tab-btn active" data-tab="overview">Genel Bakış</button>
+    <button class="tab-btn" data-tab="analysis">Durum Analizi</button>
+    <button class="tab-btn" data-tab="competitors">Rakip Analizi</button>
+    <button class="tab-btn" data-tab="goals">Hedefler & KPI</button>
+    <button class="tab-btn" data-tab="channels">Kanal Stratejisi</button>
+    <button class="tab-btn" data-tab="content">İçerik Stratejisi</button>
+    <button class="tab-btn" data-tab="calendar">12 Aylık Takvim</button>
+    <button class="tab-btn" data-tab="measurement">Ölçümleme</button>
+  </nav>
+
+  <!-- TAB 1: OVERVIEW -->
+  <div class="tab-content active" id="overview">
+    <div class="section-header">
+      <div class="number">0</div>
+      <h2>Plan Özeti</h2>
+      <p>Bonna'nın 1 yıllık pazarlama yol haritasının ana çerçevesi</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3><span class="icon" style="background:#e8f4fd;">🎯</span> Ana Hedef</h3>
+        <p>Türkiye'de ve globalde <strong>nitelikli lead elde etmek</strong>. TR odaklı detaylı planlama ile başlayıp, global stratejinin (T1, T2, HoReCa) üst çerçevesini oluşturmak.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#f0e6f6;">🏭</span> Marka Profili</h3>
+        <ul>
+          <li>Kar Porselen bünyesinde 2014'te kurulan HoReCa odaklı premium porselen markası</li>
+          <li>Yıllık 40 milyon ürün, 100+ ülke, 6 kıta</li>
+          <li>~50M€ ciro, %60 ihracat / %40 yurtiçi</li>
+          <li>Türkiye'nin porselen ihracat şampiyonu</li>
+          <li>Bocuse d'Or Platinum Partner (2023-2025)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#fef3e2;">📐</span> Plan Yapısı (8 Modül)</h3>
+        <ul>
+          <li><strong>1.</strong> Durum Analizi & SWOT</li>
+          <li><strong>2.</strong> Rakip Analizi</li>
+          <li><strong>3.</strong> Hedefler & KPI'lar</li>
+          <li><strong>4.</strong> Kanal Stratejisi & Taktikler</li>
+          <li><strong>5.</strong> İçerik Stratejisi</li>
+          <li><strong>6.</strong> 12 Aylık Kampanya Takvimi</li>
+          <li><strong>7.</strong> Bütçe Çerçevesi</li>
+          <li><strong>8.</strong> Ölçümleme & Raporlama</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#e8f8e8;">🔑</span> Kritik Başarı Faktörleri</h3>
+        <ul>
+          <li>B2B lead generation altyapısı (CRM + Marketing Automation)</li>
+          <li>HoReCa karar vericilerine ulaşım (şefler, F&B yöneticileri, satın alma)</li>
+          <li>Marka bilinirliği vs. lead kalitesi dengesi</li>
+          <li>Dijital & fuar/trade kanalları entegrasyonu</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <strong>📌 Not:</strong> Bu yapı bir taslaktır. Her modülü birlikte detaylandıracağız. Global kısım (T1, T2, HoReCa segmentasyonu) şimdilik üst düzey kalacak, öncelik Türkiye pazarındadır.
+    </div>
+  </div>
+
+  <!-- TAB 2: ANALYSIS -->
+  <div class="tab-content" id="analysis">
+    <div class="section-header">
+      <div class="number">1</div>
+      <h2>Durum Analizi</h2>
+      <p>Bonna'nın mevcut konumu, güçlü/zayıf yönleri ve pazar fırsatları</p>
+    </div>
+
+    <h3 style="font-size:1.1rem; margin-bottom:16px; color:#1a1a2e;">SWOT Analizi</h3>
+    <div class="swot-grid">
+      <div class="swot-card swot-s">
+        <h4>💪 Güçlü Yönler (Strengths)</h4>
+        <ul>
+          <li>• Türkiye ihracat şampiyonu — 100+ ülke erişimi</li>
+          <li>• FusionTech gibi inovatif üretim teknolojileri</li>
+          <li>• Bocuse d'Or Platinum Partner prestiji</li>
+          <li>• German Design Awards ödüllü tasarımlar</li>
+          <li>• Ömür boyu kenar çıtlama garantisi (sektörde ilk)</li>
+          <li>• Yıllık 40M ürün kapasitesi, güçlü üretim altyapısı</li>
+          <li>• Mısır & Özbekistan yatırımlarıyla global footprint</li>
+        </ul>
+      </div>
+      <div class="swot-card swot-w">
+        <h4>⚠️ Zayıf Yönler (Weaknesses)</h4>
+        <ul>
+          <li>• TR'de B2C marka bilinirliği düşük olabilir (HoReCa odak)</li>
+          <li>• Dijital pazarlama olgunluğu geliştirilmeli</li>
+          <li>• Lead generation altyapısı (CRM/MA) henüz olgunlaşmamış olabilir</li>
+          <li>• Global marka algısı Avrupa kökenli rakiplere kıyasla gelişim aşamasında</li>
+          <li>• E-ticaret kanalı rakiplere kıyasla sınırlı</li>
+        </ul>
+      </div>
+      <div class="swot-card swot-o">
+        <h4>🚀 Fırsatlar (Opportunities)</h4>
+        <ul>
+          <li>• TR turizm sektörünün büyümesi → HoReCa talebi artışı</li>
+          <li>• Şef/restoran influencer pazarlaması yükselişte</li>
+          <li>• Sürdürülebilirlik trendine uygun üretim avantajı</li>
+          <li>• GEO/SEO ile dijital lead generation potansiyeli</li>
+          <li>• ABD pazarı (Global Tableware Collective distribütörlüğü)</li>
+          <li>• AI destekli tasarım & kişiselleştirme trendi</li>
+        </ul>
+      </div>
+      <div class="swot-card swot-t">
+        <h4>🔴 Tehditler (Threats)</h4>
+        <ul>
+          <li>• Güçlü Avrupa rakipleri (Villeroy & Boch, Steelite, Churchill)</li>
+          <li>• Düşük maliyetli Asya üreticilerin baskısı</li>
+          <li>• Döviz kuru dalgalanmaları (ihracat odaklı yapıda risk)</li>
+          <li>• Enerji maliyetlerindeki artış (seramik üretimi)</li>
+          <li>• Yerli rakiplerin (Kütahya, Porland, Güral) agresif büyümesi</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3><span class="icon" style="background:#f0e6f6;">👥</span> Hedef Kitle Segmentleri — TR</h3>
+        <ul>
+          <li><strong>Segment A:</strong> Otel zincirleri F&B & satın alma yöneticileri</li>
+          <li><strong>Segment B:</strong> Fine dining & premium restoran şefleri/sahipleri</li>
+          <li><strong>Segment C:</strong> Cafe & casual dining işletmecileri</li>
+          <li><strong>Segment D:</strong> Catering şirketleri</li>
+          <li><strong>Segment E:</strong> HoReCa distribütörleri</li>
+          <li><strong>Segment F:</strong> Bireysel tüketici (B2C — ikincil)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#e8f4fd;">🌍</span> Hedef Kitle Segmentleri — Global (Üst Düzey)</h3>
+        <ul>
+          <li><strong>T1 (Tier 1):</strong> Premium/lüks otel zincirleri & fine dining</li>
+          <li><strong>T2 (Tier 2):</strong> Mid-premium HoReCa & zincir restoranlar</li>
+          <li><strong>HoReCa Genel:</strong> Distribütörler & toplu satın alma</li>
+        </ul>
+        <div class="note-box" style="margin-top:12px; padding:12px;">
+          <strong>📌</strong> Global segmentasyon detaylandırılacak
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: COMPETITORS -->
+  <div class="tab-content" id="competitors">
+    <div class="section-header">
+      <div class="number">2</div>
+      <h2>Rakip Analizi</h2>
+      <p>Bonna'nın 6 ana rakibinin karşılaştırmalı profili</p>
+    </div>
+
+    <table class="competitor-table">
+      <thead>
+        <tr>
+          <th>Rakip</th>
+          <th>Menşei</th>
+          <th>Segment</th>
+          <th>Kapasite / Erişim</th>
+          <th>Öne Çıkan Özellik</th>
+          <th>Tehdit Seviyesi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>RAK Porcelain</strong></td>
+          <td>BAE 🇦🇪</td>
+          <td><span class="tag tag-global">Global HoReCa</span></td>
+          <td>36M adet/yıl, 165+ ülke</td>
+          <td>Havayolu & premium otel sektöründe güçlü; HoReCa'da "undisputed leader" algısı</td>
+          <td>⭐⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>Churchill China</strong></td>
+          <td>İngiltere 🇬🇧</td>
+          <td><span class="tag tag-premium">Premium</span></td>
+          <td>UK #1 seramik üreticisi, global dağıtım</td>
+          <td>1795'ten beri marka mirası; UK HoReCa'da pazar lideri</td>
+          <td>⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>Steelite International</strong></td>
+          <td>İngiltere 🇬🇧</td>
+          <td><span class="tag tag-global">Global HoReCa</span></td>
+          <td>30.000+ son kullanıcı, 140 ülke, 3 fabrika</td>
+          <td>Yalnızca HoReCa odaklı; Utopia Tableware satın alımıyla genişleme</td>
+          <td>⭐⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>ID Fine</strong></td>
+          <td>Türkiye 🇹🇷</td>
+          <td><span class="tag tag-premium">Premium HoReCa</span></td>
+          <td>1972'den beri aile şirketi</td>
+          <td>Yüksek çizilme direnci, endüstriyel bulaşık makinesine uyum, niş premium</td>
+          <td>⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>Kütahya Porselen</strong></td>
+          <td>Türkiye 🇹🇷</td>
+          <td><span class="tag tag-tr">TR + İhracat</span></td>
+          <td>30M adet/yıl, 70+ ülke, 400M$ ciro</td>
+          <td>2024 ihracat ödülü; hem B2C hem B2B; köklü marka bilinirliği</td>
+          <td>⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>Porland</strong></td>
+          <td>Türkiye 🇹🇷</td>
+          <td><span class="tag tag-tr">TR + İhracat</span></td>
+          <td>70M adet/yıl, 80+ ülke, %65 ihracat</td>
+          <td>Pioli HoReCa alt markası; e-ticaret ve dijitale yatırım; yüksek üretim kapasitesi</td>
+          <td>⭐⭐⭐⭐</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3><span class="icon" style="background:#e8f4fd;">📊</span> Bonna vs Rakipler — Kapasite Karşılaştırması</h3>
+        <ul>
+          <li><strong>Bonna:</strong> 40M adet/yıl → 100+ ülke → ~50M€ ciro</li>
+          <li><strong>RAK:</strong> 36M adet/yıl → 165+ ülke → ~$6.6M (sadece porcelain HQ)</li>
+          <li><strong>Kütahya:</strong> 30M adet/yıl → 70+ ülke → ~400M$ ciro (tüm segmentler)</li>
+          <li><strong>Porland:</strong> 70M adet/yıl → 80+ ülke → ihracat odaklı büyüme</li>
+          <li><strong>Steelite:</strong> Üretim + kaynak = 17 ülke → 140 ülke dağıtım</li>
+          <li><strong>Churchill:</strong> UK bazlı → global premium dağıtım</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#fef3e2;">🎯</span> Bonna'nın Rekabet Avantajları</h3>
+        <ul>
+          <li><strong>FusionTech:</strong> Seri üretimde mat-parlak kontrast — rakiplerde yok</li>
+          <li><strong>Ömür boyu kenar garantisi:</strong> Sektörde benzersiz güven mesajı</li>
+          <li><strong>Bocuse d'Or ortaklığı:</strong> Gastronomi dünyasında prestij</li>
+          <li><strong>Fiyat/kalite dengesi:</strong> Avrupa kalitesi, rekabetçi fiyat</li>
+          <li><strong>Mısır & Özbekistan fabrikaları:</strong> Lojistik avantaj, bölgesel üretim</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <strong>📌 Detaylandırılacak:</strong> Her rakibin dijital varlığı (SEO, sosyal medya metrikleri, içerik stratejisi), fiyatlandırma karşılaştırması, müşteri algısı araştırması
+    </div>
+  </div>
+
+  <!-- TAB 4: GOALS -->
+  <div class="tab-content" id="goals">
+    <div class="section-header">
+      <div class="number">3</div>
+      <h2>Hedefler & KPI'lar</h2>
+      <p>Ölçülebilir, zamana bağlı pazarlama hedefleri</p>
+    </div>
+
+    <h3 style="font-size:1rem; margin-bottom:16px; color:#1a1a2e;">Ana KPI Çerçevesi (Placeholder — birlikte netleştirilecek)</h3>
+
+    <div class="kpi-grid">
+      <div class="kpi-box">
+        <div class="kpi-label">TR Aylık MQL Hedefi</div>
+        <div class="kpi-value">Belirlenecek</div>
+        <div class="kpi-note">Marketing Qualified Lead</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">TR Aylık SQL Hedefi</div>
+        <div class="kpi-value">Belirlenecek</div>
+        <div class="kpi-note">Sales Qualified Lead</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Web Sitesi Organik Trafik</div>
+        <div class="kpi-value">Belirlenecek</div>
+        <div class="kpi-note">Aylık benzersiz ziyaretçi</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Lead Başı Maliyet (CPL)</div>
+        <div class="kpi-value">Belirlenecek</div>
+        <div class="kpi-note">Kanal bazlı optimize</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Marka Bilinirliği</div>
+        <div class="kpi-value">Belirlenecek</div>
+        <div class="kpi-note">HoReCa karar vericileri arasında</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Sosyal Medya Büyüme</div>
+        <div class="kpi-value">Belirlenecek</div>
+        <div class="kpi-note">Engagement rate & takipçi</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3><span class="icon" style="background:#e8f8e8;">🇹🇷</span> TR Pazarı Hedefleri</h3>
+        <ul>
+          <li><strong>Lead Gen:</strong> HoReCa karar vericilerinden nitelikli lead akışı oluşturmak</li>
+          <li><strong>Awareness:</strong> Sektör profesyonelleri arasında ilk akla gelen marka olmak</li>
+          <li><strong>Engagement:</strong> Şef & restoran topluluğuyla güçlü ilişki kurmak</li>
+          <li><strong>Dijital:</strong> Organik trafik ve SEO/GEO görünürlüğünü artırmak</li>
+          <li><strong>Satış:</strong> Pazarlama → satış pipeline dönüşüm oranını optimize etmek</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#e8f4fd;">🌍</span> Global Hedefler (Üst Düzey)</h3>
+        <ul>
+          <li><strong>T1:</strong> Premium otel/fine dining segmentinde marka pozisyonunu güçlendirmek</li>
+          <li><strong>T2:</strong> Mid-premium pazarda hacim odaklı büyüme</li>
+          <li><strong>HoReCa:</strong> Distribütör ağını genişletmek, yeni pazar girişleri</li>
+          <li><strong>ABD:</strong> Global Tableware Collective ortaklığını maksimize etmek</li>
+        </ul>
+        <div class="note-box" style="margin-top:12px; padding:12px;">
+          <strong>📌</strong> Global hedefler ayrı bir oturumda detaylandırılacak
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 5: CHANNELS -->
+  <div class="tab-content" id="channels">
+    <div class="section-header">
+      <div class="number">4</div>
+      <h2>Kanal Stratejisi & Taktikler</h2>
+      <p>Lead elde etmek için hangi kanallar, nasıl kullanılacak</p>
+    </div>
+
+    <h3 style="font-size:1rem; margin-bottom:12px; color:#1a1a2e;">Önerilen Bütçe Dağılımı (Taslak)</h3>
+    <div class="channel-bar">
+      <div style="width:25%; background:#2980b9;">SEO/GEO %25</div>
+      <div style="width:20%; background:#8e44ad;">SEM/PPC %20</div>
+      <div style="width:15%; background:#27ae60;">Sosyal %15</div>
+      <div style="width:15%; background:#e67e22;">Fuar/Event %15</div>
+      <div style="width:10%; background:#c0392b;">E-mail/CRM %10</div>
+      <div style="width:10%; background:#1a1a2e;">İçerik %10</div>
+      <div style="width:5%; background:#7f8c8d;">Diğer %5</div>
+    </div>
+    <div class="channel-legend">
+      <span class="channel-legend-item"><span class="dot" style="background:#2980b9;"></span> SEO/GEO</span>
+      <span class="channel-legend-item"><span class="dot" style="background:#8e44ad;"></span> SEM/PPC</span>
+      <span class="channel-legend-item"><span class="dot" style="background:#27ae60;"></span> Sosyal Medya</span>
+      <span class="channel-legend-item"><span class="dot" style="background:#e67e22;"></span> Fuar & Etkinlik</span>
+      <span class="channel-legend-item"><span class="dot" style="background:#c0392b;"></span> E-mail & CRM</span>
+      <span class="channel-legend-item"><span class="dot" style="background:#1a1a2e;"></span> İçerik Üretimi</span>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3><span class="icon" style="background:#e8f4fd;">🔍</span> SEO / GEO (Arama & AI Görünürlüğü)</h3>
+        <ul>
+          <li>HoReCa porselen anahtar kelime kümesi optimizasyonu</li>
+          <li>GEO (Generative Engine Optimization) — AI arama sonuçlarında görünürlük</li>
+          <li>Teknik SEO iyileştirmeleri (bonna.com.tr)</li>
+          <li>Blog & kaynak içerik üretimi (pillar pages)</li>
+          <li>Backlink & dijital PR stratejisi</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#f0e6f6;">💰</span> SEM / Paid (Google Ads & LinkedIn)</h3>
+        <ul>
+          <li>Google Ads: HoReCa porselen arama kampanyaları</li>
+          <li>LinkedIn Ads: Otel/restoran F&B karar vericileri hedefleme</li>
+          <li>Retargeting: Web sitesi ziyaretçilerine yeniden pazarlama</li>
+          <li>Landing page optimizasyonu (A/B test)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#e8f8e8;">📱</span> Sosyal Medya</h3>
+        <ul>
+          <li><strong>Instagram (@bonna.tr):</strong> Ürün vitrin, şef iş birlikleri, behind-the-scenes</li>
+          <li><strong>LinkedIn:</strong> B2B thought leadership, sektör paylaşımları</li>
+          <li><strong>YouTube:</strong> Üretim süreçleri, şef röportajları, koleksiyon tanıtımları</li>
+          <li><strong>Pinterest:</strong> Food styling & table setting inspirasyonu</li>
+          <li>Influencer iş birlikleri (şefler, food bloggers, otel reviewers)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#fef3e2;">🎪</span> Fuar & Etkinlikler</h3>
+        <ul>
+          <li>Host İstanbul, Anfaş, F-Summit katılımları</li>
+          <li>Ambiente Frankfurt, HostMilano gibi global fuarlar</li>
+          <li>Bonna şef etkinlikleri & masterclass'lar</li>
+          <li>Özel showroom davetleri & tasting events</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#fce4ec;">📧</span> E-mail Marketing & CRM</h3>
+        <ul>
+          <li>Segmentli e-mail nurturing dizileri (sektör/pozisyon bazlı)</li>
+          <li>Yeni koleksiyon lansmanları & özel davetler</li>
+          <li>Lead scoring & otomatik satış handoff</li>
+          <li>Müşteri sadakat programı iletişimi</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#e8eaf6;">📝</span> İçerik & Thought Leadership</h3>
+        <ul>
+          <li>HoReCa sektör trendleri blog yazıları</li>
+          <li>Whitepaper: "Porselen seçim rehberi" gibi gated content</li>
+          <li>Başarı hikayeleri (case study: otel/restoran projeleri)</li>
+          <li>Video içerik: FusionTech hikayesi, üretim belgeseli</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 6: CONTENT -->
+  <div class="tab-content" id="content">
+    <div class="section-header">
+      <div class="number">5</div>
+      <h2>İçerik Stratejisi</h2>
+      <p>İçerik sütunları, format karması ve editoryal çerçeve</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3><span class="icon" style="background:#e8f4fd;">🏛️</span> İçerik Sütunu 1: Zanaat & İnovasyon</h3>
+        <ul>
+          <li>FusionTech teknolojisinin hikayesi</li>
+          <li>Üretim süreçleri & kalite standartları</li>
+          <li>Hammadde seçiminden final ürüne yolculuk</li>
+          <li>Sürdürülebilirlik & çevresel sorumluluk</li>
+        </ul>
+        <p style="margin-top:8px;"><strong>Format:</strong> Video belgesel, blog, infografik</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#f0e6f6;">👨‍🍳</span> İçerik Sütunu 2: Gastronomi & Şef Dünyası</h3>
+        <ul>
+          <li>Şef iş birlikleri & food plating showcases</li>
+          <li>Bocuse d'Or içerikleri & gastronomi etkinlikleri</li>
+          <li>Restoran başarı hikayeleri (case studies)</li>
+          <li>Tabak-yemek uyumu & sunum sanatı</li>
+        </ul>
+        <p style="margin-top:8px;"><strong>Format:</strong> Instagram Reels, şef röportajları, podcast</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#fef3e2;">📚</span> İçerik Sütunu 3: Sektör Bilgisi & Rehberler</h3>
+        <ul>
+          <li>HoReCa trendleri & pazar analizleri</li>
+          <li>"Doğru porselen nasıl seçilir?" rehberleri</li>
+          <li>Maliyet-performans karşılaştırmaları</li>
+          <li>Turizm sezonu hazırlık checklists</li>
+        </ul>
+        <p style="margin-top:8px;"><strong>Format:</strong> Whitepaper, blog serisi, e-book (gated)</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#e8f8e8;">🎨</span> İçerik Sütunu 4: Tasarım & Koleksiyon</h3>
+        <ul>
+          <li>Yeni koleksiyon lansmanları</li>
+          <li>Tasarım ilham hikayeleri</li>
+          <li>Renk & doku trendleri</li>
+          <li>German Design Awards & ödül içerikleri</li>
+        </ul>
+        <p style="margin-top:8px;"><strong>Format:</strong> Lookbook, sosyal medya carousel, video</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon" style="background:#fce4ec;">📅</span> Format Karması (Aylık Önerilen Dağılım)</h3>
+      <ul>
+        <li><strong>Blog yazıları:</strong> 4-6 adet/ay (SEO odaklı + thought leadership)</li>
+        <li><strong>Sosyal medya gönderi:</strong> 12-16 adet/ay (Instagram, LinkedIn)</li>
+        <li><strong>Video içerik:</strong> 2-4 adet/ay (Reels + YouTube)</li>
+        <li><strong>E-mail kampanya:</strong> 2-3 adet/ay (nurturing + lansman)</li>
+        <li><strong>Gated content:</strong> 1 adet/çeyrek (whitepaper, e-book, rehber)</li>
+        <li><strong>Case study:</strong> 1-2 adet/çeyrek</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- TAB 7: CALENDAR -->
+  <div class="tab-content" id="calendar">
+    <div class="section-header">
+      <div class="number">6</div>
+      <h2>12 Aylık Yol Haritası</h2>
+      <p>Çeyreklik ana temalar ve kampanya akışı</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="quarter">Q2 2026 — Nisan / Mayıs / Haziran</div>
+        <h4>🔧 Altyapı & Lansman Hazırlığı</h4>
+        <p>
+          CRM & marketing automation kurulumu, lead scoring tanımı, web sitesi SEO/GEO optimizasyonu,
+          içerik takvimi oluşturma, persona & mesaj doğrulama, sosyal medya stratejisi revizyonu.
+          İlk gated content (whitepaper) hazırlığı. Yaz sezonu için turizm/HoReCa kampanya planlaması.
+        </p>
+      </div>
+      <div class="timeline-item">
+        <div class="quarter">Q3 2026 — Temmuz / Ağustos / Eylül</div>
+        <h4>🚀 Yaz Sezonu & Turizm Kampanyası</h4>
+        <p>
+          Turizm sezonuna özel HoReCa kampanyası, otel zincirleri & tatil bölgesi restoranlarına hedefli outreach,
+          şef iş birlikleri başlangıcı, LinkedIn Ads & Google Ads kampanyaları aktif, ilk lead nurturing dizisi
+          canlıya alınır. Instagram içerik yoğunluğu artışı. Özbekistan fabrika açılış PR'ı.
+        </p>
+      </div>
+      <div class="timeline-item">
+        <div class="quarter">Q4 2026 — Ekim / Kasım / Aralık</div>
+        <h4>🎪 Fuar Sezonu & Marka Güçlendirme</h4>
+        <p>
+          Host İstanbul, HostMilano, Ambiente gibi ana fuarlar. Yeni koleksiyon lansmanları,
+          FusionTech içerik kampanyası, case study yayınları, yılsonu performans değerlendirmesi.
+          Q1 2027 bütçe & strateji revizyonu. Dijital PR yoğunlaştırma.
+        </p>
+      </div>
+      <div class="timeline-item">
+        <div class="quarter">Q1 2027 — Ocak / Şubat / Mart</div>
+        <h4>📈 Optimizasyon & Ölçeklendirme</h4>
+        <p>
+          İlk 6 ayın verilerine göre kanal optimizasyonu, en performanslı lead kanallarına bütçe kaydırma,
+          2027 yaz sezonu hazırlığı, yeni pazar girişleri (ABD focus), ikinci yıl stratejisi taslağı.
+          Sürdürülebilirlik kampanyası, ödül başvuruları (German Design Awards vb.).
+        </p>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <strong>📌 Her çeyrek detayı:</strong> Kampanya briefleri, bütçe dağılımı, sorumlu ekipler ve milestone'lar ayrı ayrı çalışılacak.
+    </div>
+  </div>
+
+  <!-- TAB 8: MEASUREMENT -->
+  <div class="tab-content" id="measurement">
+    <div class="section-header">
+      <div class="number">7</div>
+      <h2>Ölçümleme & Raporlama</h2>
+      <p>Performans takibi, dashboard yapısı ve review döngüsü</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3><span class="icon" style="background:#e8f4fd;">📊</span> Dashboard Metrikleri</h3>
+        <ul>
+          <li><strong>Lead metrikleri:</strong> MQL sayısı, SQL sayısı, MQL→SQL dönüşüm oranı</li>
+          <li><strong>Pipeline:</strong> Pazarlama kaynaklı pipeline değeri, win rate</li>
+          <li><strong>Dijital:</strong> Organik trafik, bounce rate, sayfa/oturum, form doldurma</li>
+          <li><strong>Paid:</strong> CTR, CPC, CPL, ROAS (kanal bazlı)</li>
+          <li><strong>Sosyal:</strong> Takipçi büyümesi, engagement rate, reach</li>
+          <li><strong>E-mail:</strong> Açılma oranı, tıklama oranı, unsubscribe rate</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#f0e6f6;">🔄</span> Review Döngüsü</h3>
+        <ul>
+          <li><strong>Haftalık:</strong> Kampanya performans kontrolü, quick wins</li>
+          <li><strong>Aylık:</strong> KPI dashboard review, kanal optimizasyonu, A/B test sonuçları</li>
+          <li><strong>Çeyreklik:</strong> Stratejik review, bütçe rebalancing, yol haritası güncelleme</li>
+          <li><strong>6 Aylık:</strong> Büyük strateji revizyonu, yıllık planla karşılaştırma</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#e8f8e8;">🛠️</span> Önerilen Araç Seti</h3>
+        <ul>
+          <li><strong>CRM:</strong> HubSpot / Salesforce (lead yönetimi & pipeline)</li>
+          <li><strong>Marketing Automation:</strong> HubSpot / ActiveCampaign</li>
+          <li><strong>Analytics:</strong> GA4, Google Search Console, Hotjar</li>
+          <li><strong>SEO:</strong> Ahrefs / SEMrush + GEO tracking</li>
+          <li><strong>Sosyal Medya:</strong> Hootsuite / Later + native analytics</li>
+          <li><strong>Raporlama:</strong> Looker Studio / Google Data Studio dashboard</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon" style="background:#fef3e2;">🧪</span> Test & Optimizasyon Planı</h3>
+        <ul>
+          <li>Landing page A/B testleri (form uzunluğu, CTA, görsel)</li>
+          <li>E-mail konu satırı & gönderim zamanı testleri</li>
+          <li>Reklam kreatif & hedefleme testleri</li>
+          <li>İçerik format performans karşılaştırması</li>
+          <li>Lead magnet etkinlik testleri (whitepaper vs. webinar vs. demo)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Bonna Premium Porcelain — Pazarlama Yol Haritası Taslağı v1.0 — Mart 2026
+</div>
+
+<script>
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

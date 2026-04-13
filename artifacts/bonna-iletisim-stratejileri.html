@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonna — İletişim Stratejileri</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap');
+  :root {
+    --navy:#0f1629; --navy-mid:#1a2140; --gold:#c9a962; --gold-dark:#a08338;
+    --cream:#faf8f4; --white:#fff;
+    --g100:#f0f0ee; --g200:#e2e0dc; --g300:#c8c5be; --g400:#9e9a91;
+    --g500:#76726a; --g600:#555249; --g700:#3a3832; --text:#1e1d1a;
+    --blue:#2e5e8e; --green:#3a6b45; --red:#8e2e2e; --purple:#5e3a8e;
+    --teal:#2e7e7e; --orange:#b8722d;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',-apple-system,sans-serif;background:var(--cream);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased;}
+
+  .header{background:var(--navy);color:white;padding:56px 56px 48px;position:relative;overflow:hidden;}
+  .header::before{content:'';position:absolute;top:-30%;right:-8%;width:500px;height:500px;background:radial-gradient(circle,rgba(201,169,98,0.1),transparent 65%);border-radius:50%;}
+  .header .tag{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:3px;color:var(--gold);border:1px solid rgba(201,169,98,0.3);padding:4px 14px;border-radius:20px;margin-bottom:20px;font-weight:600;}
+  .header h1{font-family:'Playfair Display',serif;font-size:44px;font-weight:800;margin-bottom:12px;line-height:1.15;}
+  .header h1 em{color:var(--gold);font-style:italic;}
+  .header p{font-size:16px;color:rgba(255,255,255,0.5);max-width:700px;line-height:1.75;}
+
+  .intro{padding:40px 56px;background:white;border-bottom:1px solid var(--g200);font-size:15px;color:var(--g600);line-height:1.85;max-width:800px;}
+  .intro strong{color:var(--navy);}
+
+  /* Strategy card */
+  .strat{padding:48px 56px;border-bottom:1px solid var(--g200);display:grid;grid-template-columns:72px 1fr;gap:28px;transition:background 0.2s;}
+  .strat:hover{background:rgba(201,169,98,0.02);}
+  .strat-num{font-family:'Playfair Display',serif;font-size:56px;font-weight:800;color:var(--g200);line-height:1;}
+  .strat-body{}
+  .strat-cats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .cat{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;padding:3px 10px;border-radius:20px;font-weight:700;}
+  .cat-msg{background:rgba(201,169,98,0.12);color:var(--gold-dark);}
+  .cat-tone{background:rgba(94,58,142,0.1);color:var(--purple);}
+  .cat-media{background:rgba(46,94,142,0.1);color:var(--blue);}
+  .cat-timing{background:rgba(58,107,69,0.1);color:var(--green);}
+  .cat-audience{background:rgba(142,46,46,0.1);color:var(--red);}
+  .cat-pos{background:rgba(46,126,126,0.1);color:var(--teal);}
+  .cat-creative{background:rgba(184,114,45,0.1);color:var(--orange);}
+
+  .strat h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--navy);margin-bottom:4px;line-height:1.25;}
+  .strat .tagline{font-size:15px;color:var(--gold-dark);font-style:italic;margin-bottom:18px;font-weight:500;}
+  .strat p{font-size:14.5px;color:var(--g600);line-height:1.85;margin-bottom:12px;}
+  .strat strong{color:var(--navy);}
+  .strat h4{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--g400);font-weight:700;margin:22px 0 10px;}
+  .strat ul{list-style:none;padding:0;}
+  .strat li{font-size:14px;color:var(--g600);padding:4px 0 4px 20px;position:relative;line-height:1.75;}
+  .strat li::before{content:'→';position:absolute;left:0;color:var(--gold);font-weight:700;}
+
+  .strat .example{background:var(--navy);color:white;border-radius:12px;padding:28px 32px;margin:20px 0;position:relative;overflow:hidden;}
+  .strat .example::after{content:'';position:absolute;top:0;right:0;width:120px;height:100%;background:linear-gradient(135deg,transparent,rgba(201,169,98,0.06));}
+  .strat .example .ex-label{font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--gold);font-weight:700;margin-bottom:8px;display:block;}
+  .strat .example p{color:rgba(255,255,255,0.8);margin-bottom:8px;}
+  .strat .example em{color:var(--gold);font-style:italic;}
+
+  .strat .vs{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:16px 0;}
+  .strat .vs-box{border-radius:10px;padding:20px 24px;font-size:13.5px;line-height:1.7;}
+  .strat .vs-bad{background:rgba(142,46,46,0.06);border:1px solid rgba(142,46,46,0.12);color:var(--g600);}
+  .strat .vs-good{background:rgba(58,107,69,0.06);border:1px solid rgba(58,107,69,0.12);color:var(--g600);}
+  .strat .vs-box strong{display:block;margin-bottom:6px;font-size:11px;text-transform:uppercase;letter-spacing:1px;}
+  .strat .vs-bad strong{color:var(--red);}
+  .strat .vs-good strong{color:var(--green);}
+
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0;}
+
+  .footer{padding:40px 56px;text-align:center;color:var(--g400);font-size:12.5px;line-height:1.8;}
+  .footer strong{color:var(--g600);}
+
+  @media(max-width:900px){
+    .header,.strat,.intro{padding-left:24px;padding-right:24px;}
+    .strat{grid-template-columns:1fr;gap:8px;}
+    .strat-num{font-size:36px;}
+    .strat .vs{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="tag">İletişim Stratejileri — Yaklaşım Alternatifleri</div>
+  <h1>Nasıl <em>Konuşalım?</em></h1>
+  <p>Proje ve aktivasyon fikirlerinden farklı olarak — bunlar iletişim yaklaşımları: Bonna hangi dili kullansın, mesajını nasıl kurgulasın, hedef kitleyle hangi tonda buluşsun, hikayesini hangi açıdan anlatsın?</p>
+</div>
+
+<div class="intro">
+  <strong>Önceki fikir havuzu "ne yapalım?" sorusuna cevap veriyordu.</strong> Bu sayfa "nasıl konuşalım?" sorusuna cevap veriyor. Her bir strateji, farklı bir iletişim felsefesi — birbirini dışlamıyor, birleştirilebilir. Hangilerini beğenirsen, ana çatı stratejiye o yaklaşımları entegre ederiz.
+</div>
+
+<!-- ═══════════════════════════ STRATEJİ 1 ═══════════════════════════ -->
+<div class="strat">
+  <div class="strat-num">01</div>
+  <div class="strat-body">
+    <div class="strat-cats">
+      <span class="cat cat-msg">Mesaj Stratejisi</span>
+      <span class="cat cat-tone">Ton</span>
+    </div>
+    <h2>"Söyleme, Göster" — Kanıt Odaklı İletişim</h2>
+    <div class="tagline">İddia etmek yerine kanıtla. Her mesaj bir test sonucu, bir rakam, bir gerçek.</div>
+    <p>Porselen sektöründe herkes "kaliteli", "dayanıklı", "şık" diyor. Bu sıfatlar enflasyona uğramış durumda. Bonna'nın avantajı: <strong>iddialarını kanıtlayabilmesi.</strong> "Ömür boyu garanti" bir sıfat değil, bir taahhüt. Bu strateji, tüm iletişimi "claim → proof" yapısına oturtmayı öneriyor.</p>
+    <p>Hiçbir reklamda "en dayanıklı porseleniz" demiyoruz. Bunun yerine testi gösteriyoruz, rakamı söylüyoruz, şefin deneyimini dinletiyoruz. İzleyici sonucu kendisi çıkarıyor — ve kendi çıkardığı sonuç, ona söylenen mesajdan her zaman daha güçlü.</p>
+
+    <div class="vs">
+      <div class="vs-box vs-bad">
+        <strong>❌ Klasik Yaklaşım</strong>
+        "Bonna, dünyanın en dayanıklı porseleni."<br>
+        "Premium kalite, eşsiz tasarım."<br>
+        "Şeflerin tercihi Bonna."
+      </div>
+      <div class="vs-box vs-good">
+        <strong>✓ Kanıt Odaklı</strong>
+        "1.247 yıkama döngüsü. Sıfır çizik."<br>
+        "Bu tabak 3 yıldır Nusret'te. İlk günkü gibi."<br>
+        "327 milyon servis. 0 kenar çıtlaması."
+      </div>
+    </div>
+
+    <div class="example">
+      <span class="ex-label">Uygulama Örneği — Instagram Post</span>
+      <p>Görsel: Makro çekim, Bonna tabak kenarı. Tertemiz. Altında küçük yazı: <em>"Bu tabak 2 yıldır günde 3 servis yapıyor."</em></p>
+      <p>Caption: Hiç yorum yok. Sadece rakam. "847 gün. 2.541 servis. 0 çıtlama." — Bonna.</p>
+    </div>
+
+    <h4>Hangi Mecralarda Güçlü</h4>
+    <ul>
+      <li><strong>LinkedIn:</strong> Data-driven infografikler, TCO hesaplamaları, sektörel benchmark'lar</li>
+      <li><strong>YouTube:</strong> Test videoları, before/after, şef testimonial (söyleme, yaşananı göster)</li>
+      <li><strong>Outdoor:</strong> Tek rakam, tek görsel, sıfır süs. "40 milyon tabak. 0 çıtlama."</li>
+      <li><strong>Satış sunumları:</strong> Her slayt bir kanıt, her toplantı bir demo</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ STRATEJİ 2 ═══════════════════════════ -->
+<div class="strat">
+  <div class="strat-num">02</div>
+  <div class="strat-body">
+    <div class="strat-cats">
+      <span class="cat cat-pos">Konumlandırma</span>
+      <span class="cat cat-msg">Mesaj</span>
+    </div>
+    <h2>"Gelecek vs. Geçmiş" — Anti-Heritage Konumlandırma</h2>
+    <div class="tagline">Churchill 1795'e yaslanıyor. Biz 2035'e yaslanıyoruz.</div>
+    <p>Rakiplerin en büyük avantajı tarihsel miras — Churchill 230 yıl, Villeroy & Boch 275 yıl. Bu yarışa girersek kaybederiz çünkü 40 yıl vs. 230 yıl her zaman kaybeder. Ama <strong>soruyu değiştirirsek kazanırız:</strong> "En eski olan mı daha iyi, yoksa en yenilikçi olan mı?"</p>
+    <p>Bu strateji, Bonna'yı bilinçli olarak "gelenek" değil "gelecek" tarafına konumlandırıyor. FusionTech, çıtlamazlık teknolojisi, sürdürülebilir üretim — bunlar "eski" bir markanın yapamayacağı şeyler. Bonna'nın gençliği bir zayıflık değil, avantaj.</p>
+
+    <div class="example">
+      <span class="ex-label">Mesaj Çerçevesi</span>
+      <p><em>"Bazı markalar tarihe yaslanır. Biz teknolojiye."</em></p>
+      <p><em>"1795'te porselen yapımı zanaattı. 2026'da mühendisliktir."</em></p>
+      <p><em>"Heritage güzel bir hikaye anlatır. Garanti güzel bir sonuç verir."</em></p>
+    </div>
+
+    <h4>Ne Zaman Kullanılır</h4>
+    <ul>
+      <li><strong>Tender / teklif süreçlerinde:</strong> Rakibin "köklü marka" argümanına karşı "kanıtlanmış teknoloji" argümanı</li>
+      <li><strong>Ambiente / Host gibi fuarlarda:</strong> Stand tasarımı gelecek odaklı, lab estetiği, "porselen Ar-Ge merkezi" hissi</li>
+      <li><strong>LinkedIn thought leadership:</strong> "HoReCa'nın geleceği" serisi — Bonna = sektörün gelecek vizyoneri</li>
+      <li><strong>Ama dikkat:</strong> Rakipleri doğrudan aşağılamıyoruz. "Onlar eski" demiyoruz, "biz yeniyiz" diyoruz. Fark ince ama kritik.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ STRATEJİ 3 ═══════════════════════════ -->
+<div class="strat">
+  <div class="strat-num">03</div>
+  <div class="strat-body">
+    <div class="strat-cats">
+      <span class="cat cat-audience">Hedef Kitle</span>
+      <span class="cat cat-tone">Ton</span>
+    </div>
+    <h2>"Şef Merkezli Anlatı" — Bonna Arka Planda</h2>
+    <div class="tagline">Bonna hakkında konuşmuyoruz. Şeflerin dünyası hakkında konuşuyoruz. Bonna zaten orada.</div>
+    <p>Çoğu marka iletişimi "biz biz biz" der. Bu strateji tam tersini öneriyor: <strong>Bonna adını neredeyse hiç söyleme.</strong> Şefin hayatını, tutkusunu, zorluklarını, başarılarını anlat. Bonna her karede görünsün ama hiç konuşulmasın. İzleyici "bu şef harika" desin — ve altbilinçte "bu şef Bonna kullanıyor" kalsın.</p>
+    <p>Red Bull bunu mükemmel yapıyor: spor içeriği üretiyor, enerji içeceğinden neredeyse hiç bahsetmiyor. Ama herkes Red Bull'u "sınırları zorlayan" markayla eşleştiriyor. Bonna, HoReCa'nın Red Bull'u olabilir.</p>
+
+    <div class="vs">
+      <div class="vs-box vs-bad">
+        <strong>❌ Marka Merkezli</strong>
+        "Bonna'nın yeni koleksiyonu Kymen ile tanışın."<br>
+        "FusionTech teknolojisi ile üretilen tabaklar."<br>
+        "Bonna, şeflerin tercihidir."
+      </div>
+      <div class="vs-box vs-good">
+        <strong>✓ Şef Merkezli</strong>
+        "Şef Ayla her sabah 4'te mutfağa girer. Neden?"<br>
+        "Bu tabağın üzerindeki yemek 3 yıl süren bir arayışın sonucu."<br>
+        "Bir gecelik servis. 247 tabak. Sıfır hata."
+      </div>
+    </div>
+
+    <div class="example">
+      <span class="ex-label">Uygulama — YouTube İçerik</span>
+      <p>"<em>Çıtlamazlar</em>" serisini düşün: Her bölüm bir şefin hikayesi. Bonna kelimenin kendisi 10 dakikalık videoda belki 1 kez geçiyor — ama her karede tabak Bonna. İzleyici bir şefin dünyasına dalıyor, Bonna ise o dünyanın sessiz partneri.</p>
+      <p>Bu yaklaşım <strong>reklam yorgunluğunu</strong> bypass ediyor. İnsanlar reklamı atlar, hikayeyi izler.</p>
+    </div>
+
+    <h4>Risk & Denge</h4>
+    <ul>
+      <li>Marka görünürlüğü düşer mi? → Hayır, eğer görsel dil tutarlıysa. Logo su damgası, tabak detayları, end card yeterli</li>
+      <li>Satışa etkisi nasıl ölçülür? → Dolaylı: marka bilinirliği araştırması + "Bonna'yı nerede gördünüz?" anketi</li>
+      <li>Bu yaklaşım tüm mecralarda mı uygulanmalı? → Hayır. YouTube ve Instagram'da şef merkezli, LinkedIn ve fuar'da ürün merkezli. Dengeyi koru</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ STRATEJİ 4 ═══════════════════════════ -->
+<div class="strat">
+  <div class="strat-num">04</div>
+  <div class="strat-body">
+    <div class="strat-cats">
+      <span class="cat cat-creative">Kreatif Yaklaşım</span>
+      <span class="cat cat-msg">Mesaj</span>
+    </div>
+    <h2>"Provokasyon" — Konfor Alanının Dışına Çık</h2>
+    <div class="tagline">Porselen markası böyle konuşmaz. İşte bu yüzden konuşmalı.</div>
+    <p>HoReCa porselen iletişimi "güvenli"dir: beyaz arka plan, güzel tabak, zarif font, "premium quality." Herkes aynı şeyi söylüyor, kimse hatırlanmıyor. Bu strateji, <strong>Bonna'yı kategori kalıplarını kıran bir dille konuşturmayı</strong> öneriyor.</p>
+    <p>Provokatif demek kaba demek değil — <strong>beklenmedik demek.</strong> Porselen markasından beklemeyeceğin cesaret, netlik ve doğrudanlık. "Sınırları Zorla" sadece bir slogan değil, iletişim anlayışımız da olmalı.</p>
+
+    <div class="example">
+      <span class="ex-label">Provokatif Mesaj Örnekleri</span>
+      <p><em>"Tabağınız sizden önce emekli oluyorsa, yanlış tabağı seçtiniz."</em></p>
+      <p><em>"Ucuz tabak 3 ayda çıtlar. Pahalı tabak 6 ayda. Bonna? Hiç."</em></p>
+      <p><em>"Rakiplerimiz 5 yıl garanti veriyor. Biz ömür boyu. Farkı siz bulun."</em></p>
+      <p><em>"Kırılgan olan porselen değil. Kırılgan olan güveniniz."</em></p>
+    </div>
+
+    <h4>Nerede / Nasıl Kullanılır</h4>
+    <ul>
+      <li><strong>Outdoor:</strong> Tek cümle, büyük punto, cesur. Havalimanında F&B yöneticisinin gözüne çarpan, "vay be" dedirten</li>
+      <li><strong>Sosyal medya:</strong> Carousel formatında "myth vs. fact" serileri. "Herkes şunu sanıyor, gerçek bu"</li>
+      <li><strong>Fuar standı:</strong> Rakiplerin beyaz/zarif standlarının arasında koyu, dramatik, cesur bir stand — "sektörün isyancısı" estetiği</li>
+      <li><strong>Dikkat:</strong> Provokatif ≠ kibirli. Ton kendinden emin ama saygılı olmalı. Rakibi aşağılamak değil, kendi standardını yükseltmek</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ STRATEJİ 5 ═══════════════════════════ -->
+<div class="strat">
+  <div class="strat-num">05</div>
+  <div class="strat-body">
+    <div class="strat-cats">
+      <span class="cat cat-media">Mecra Stratejisi</span>
+      <span class="cat cat-timing">Zamanlama</span>
+    </div>
+    <h2>"Dalga Etkisi" — Konsantrik İletişim Modeli</h2>
+    <div class="tagline">Herkese aynı anda konuşma. Merkezden dışarıya doğru yayıl.</div>
+    <p>Çoğu lansman "herkese aynı anda büyük patlama" mantığıyla çalışır. Bu strateji tam tersini öneriyor: <strong>önce en yakın çevreden başla, dalgayı genişlet.</strong></p>
+    <p>Neden? Çünkü B2B'de "ağızdan ağıza" her şeyin önünde gelir. Bir otel F&B direktörü YouTube reklamına değil, güvendiği şefin tavsiyesine inanır. O şef de kendi deneyimine inanır. Dolayısıyla önce deneyimi yaratalım, sonra anlatımı.</p>
+
+    <h4>Dalga Sıralaması</h4>
+    <ul>
+      <li><strong>Dalga 1 — İç Çember (Hafta 1-4):</strong> 20-30 kilit şef ve F&B yöneticisine Bonna numune seti gönder. Deneyimlesinler. Kişisel not: "Sınırları zorlayanlara." Hiç paylaşım beklentisi yok — sadece ürün deneyimi. Sessiz seeding.</li>
+      <li><strong>Dalga 2 — Fısıltı (Hafta 5-6):</strong> İç çemberden gelen doğal reaksiyonlar başlar. Bazı şefler kendi sosyal medyalarında paylaşır. Bonna hâlâ resmi olarak hiçbir şey söylemedi. Merak büyüyor.</li>
+      <li><strong>Dalga 3 — Teaser (Hafta 7-8):</strong> Kırlangıç kampanyası başlar. "Çıtlamaz mısın?" sorusu sosyal medyada, marka adı olmadan. Şeflerden gelen organik paylaşımlarla teaser birleşiyor. "Bu ne?" sorusu büyüyor.</li>
+      <li><strong>Dalga 4 — Lansman (Hafta 9):</strong> Marka filmi yayında. Bonna ilk kez resmi olarak konuşuyor. Ama mesaj zaten doğalmış, şefler zaten tanıyor, sektör zaten merak ediyor. Film "duyuru" değil "onay" gibi hissediliyor.</li>
+      <li><strong>Dalga 5 — Amplifikasyon (Hafta 10+):</strong> Paid media, outdoor, sponsorluklar — ama organik zemin çoktan hazır. Her paid gösterim, zaten var olan organik algıyı güçlendiriyor.</li>
+    </ul>
+
+    <div class="example">
+      <span class="ex-label">Neden Bu Çalışır</span>
+      <p>Apple ürünlerini seçili gazetecilere erken gönderiyor. Tesla hiç reklam yapmadan "ağızdan ağıza" büyüdü. Lüks markalar "herkes bilsin" değil "<em>doğru insanlar bilsin</em>" der. Bonna B2B markası — 50 doğru insanın bilmesi, 5 milyon yanlış insanın görmesinden değerli.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ STRATEJİ 6 ═══════════════════════════ -->
+<div class="strat">
+  <div class="strat-num">06</div>
+  <div class="strat-body">
+    <div class="strat-cats">
+      <span class="cat cat-msg">Mesaj Stratejisi</span>
+      <span class="cat cat-audience">Hedef Kitle</span>
+    </div>
+    <h2>"İki Dil" — Hedef Kitleye Göre Mesaj Çatallanması</h2>
+    <div class="tagline">Şefe başka konuş, CFO'ya başka. Aynı marka, iki farklı dil.</div>
+    <p>Şu ana kadar tek bir mesaj hiyerarşisi kurduk. Ama gerçekte <strong>şef ve satın almacı tamamen farklı dillerden anlıyor.</strong> Şef duyguyla karar verir (tutku, estetik, gurur). Satın almacı rasyonelle karar verir (maliyet, ömür, garanti). İkisine aynı dille konuşmak, birini kaybetmek demek.</p>
+
+    <h4>Duygusal Dil — Şeflere</h4>
+    <ul>
+      <li>"Yemeğin tuvalini seç, gerisini bırak."</li>
+      <li>"Sınırları zorladığın her gece, yanında olan tabak."</li>
+      <li>"Çıtlamayan tek şey — standardın."</li>
+      <li>Mecralar: Instagram, YouTube, podcast, etkinlik</li>
+      <li>Ton: İlham verici, tutku dolu, sinematik</li>
+    </ul>
+
+    <h4>Rasyonel Dil — Satın Almacılara</h4>
+    <ul>
+      <li>"Yıllık tabak yenileme maliyetinizi %80 azaltın."</li>
+      <li>"Ömür boyu kenar garantisi. Sektörde tek."</li>
+      <li>"5 yıllık TCO'da en düşük maliyet: Bonna."</li>
+      <li>Mecralar: LinkedIn, trade medya, fuar, satış sunumu</li>
+      <li>Ton: Net, kanıta dayalı, profesyonel</li>
+    </ul>
+
+    <div class="example">
+      <span class="ex-label">Aynı Ürün, İki Reklam</span>
+      <p><strong>Instagram (şefe):</strong> Karanlık mutfak. Bir tabağın üzerinde mükemmel sunum. <em>"Bu tabak üzerindeki yemek 6 ay süren bir Ar-Ge'nin sonucu. Tabak? 40 yıllık."</em></p>
+      <p><strong>LinkedIn (satın almacıya):</strong> Infografik. "Ortalama restoran yılda porseleninin %20'sini yeniler. Bonna ile bu oran: %0. İşte fark budur." → CTA: "TCO hesaplayıcıyı deneyin."</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ STRATEJİ 7 ═══════════════════════════ -->
+<div class="strat">
+  <div class="strat-num">07</div>
+  <div class="strat-body">
+    <div class="strat-cats">
+      <span class="cat cat-pos">Konumlandırma</span>
+      <span class="cat cat-creative">Kreatif</span>
+    </div>
+    <h2>"Yalnız Sahiplen" — Kategori Yaratma Stratejisi</h2>
+    <div class="tagline">"Çıtlamazlık" kelimesini Bonna'nın mülkü yap. Google'da arayan, Bonna'yı bulsun.</div>
+    <p>En güçlü marka stratejisi: mevcut kategoride rekabet etmek değil, <strong>yeni bir kategori yaratıp sahiplenmek.</strong> "Çıtlamazlık" kelimesi şu an porselen sektöründe teknik jargon. Biz bunu <strong>Bonna'nın patentli kavramına</strong> dönüştürmek istiyoruz. Tıpkı "Kleenex"in mendil, "Selpak"ın peçete olması gibi — "çıtlamazlık" = Bonna olmalı.</p>
+
+    <h4>Nasıl Sahiplenilir</h4>
+    <ul>
+      <li><strong>SEO baskınlığı:</strong> "Çıtlamazlık", "çıtlamaz porselen", "kenar çıtlama garantisi" aramalarında Google 1. sayfa — Bonna'nın içerikleri</li>
+      <li><strong>Hashtag:</strong> #Çıtlamazlık → her Bonna paylaşımında, her şef içeriğinde, her etkinlikte</li>
+      <li><strong>Sektörel dil:</strong> Trade dergilerde "çıtlamazlık standardı" kavramını Bonna referansıyla kullanarak yerleştir</li>
+      <li><strong>Wikipedia / Glossary:</strong> "Çıtlamazlık" için sektörel sözlük girişi oluştur — Bonna referanslı</li>
+      <li><strong>Yıllık "Çıtlamazlık Raporu":</strong> Bonna'nın sponsorluğunda yayınlanan sektörel dayanıklılık raporu. Otoriteyi referans kaynağı olmakla kurarsın</li>
+    </ul>
+
+    <div class="example">
+      <span class="ex-label">Hedef</span>
+      <p>12 ay sonra, HoReCa sektöründe biri "çıtlamazlık" dediğinde akla ilk Bonna gelsin. Google'da "çıtlamazlık" arandığında ilk 5 sonuç Bonna'nın olsun. Fuar standına "çıtlamazlık" alanı diye tabelayla girilsin. <em>Kavramı sahiplen, kategoriyi yarat, sektörü yeniden tanımla.</em></p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ STRATEJİ 8 ═══════════════════════════ -->
+<div class="strat">
+  <div class="strat-num">08</div>
+  <div class="strat-body">
+    <div class="strat-cats">
+      <span class="cat cat-media">Mecra Stratejisi</span>
+      <span class="cat cat-creative">Kreatif</span>
+    </div>
+    <h2>"Earned First" — Haber Değeri Yaratan İletişim</h2>
+    <div class="tagline">Reklam alanı satın alma yerine, haber olan şeyler yap.</div>
+    <p>1M+ TL bütçenin önemli bir kısmını medya satın almaya harcayabilirsin. Ama <strong>earned media (kazanılmış medya) her zaman paid media'dan güçlüdür</strong> — çünkü güvenilirlik daha yüksek, erişim daha organik, maliyet daha düşük. Bu strateji, "reklam verelim" yerine "haber olalım" diyor.</p>
+
+    <h4>Haber Değeri Yaratma Yolları</h4>
+    <ul>
+      <li><strong>Sektörde ilk:</strong> "Ömür boyu kenar garantisi veren ilk porselen markası" — bu tek başına bir basın bülteni. Ama hiç duyurulmadıysa, tekrar duyur. Sektörel basın bunu yazar</li>
+      <li><strong>Absürt test:</strong> Bonna tabağı uçağın bagaj bölmesine koy, bir sezon boyunca taşı, sonra çıkar — çıtlamış mı? Bu tarz "stunt test"ler medyanın ilgisini çeker. Maliyeti neredeyse sıfır, haber değeri yüksek</li>
+      <li><strong>Açık veri:</strong> "Türkiye restoranlarının yıllık tabak israfı X ton" gibi sektörel veriyi Bonna duyursun. Veri haberlerde referans olarak kullanılır → Bonna = kaynak</li>
+      <li><strong>Sektörel rapor:</strong> Yıllık "HoReCa Porselen Durum Raporu" — Bonna sponsorluğunda bağımsız araştırma. Trade medya ana referans olarak kullanır</li>
+      <li><strong>Rekortmen girişimi:</strong> "Bir Bonna tabak üzerinde en uzun süre kesintisiz servis" — Guinness tarzı, ama daha sofistike. Bir restoranda 365 gün boyunca aynı tabak, her serviste fotoğraflanarak belgeleniyor</li>
+    </ul>
+
+    <div class="example">
+      <span class="ex-label">Bütçe Mantığı</span>
+      <p>Paid media'ya yatırdığın her 1 TL, 1 TL'lik etki yaratır. Earned media'ya yatırdığın her 1 TL, <em>10-50 TL'lik medya değeri</em> yaratabilir. "Earned first" stratejisi, bütçenin %15-20'sini PR ve stunt aktivasyonlara ayırarak, paid media bütçesini 3-5× leverage etmeyi hedefler.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ STRATEJİ 9 ═══════════════════════════ -->
+<div class="strat">
+  <div class="strat-num">09</div>
+  <div class="strat-body">
+    <div class="strat-cats">
+      <span class="cat cat-tone">Ton</span>
+      <span class="cat cat-pos">Konumlandırma</span>
+    </div>
+    <h2>"Türk Gururu" — Köken Avantajına Çevirme</h2>
+    <div class="tagline">"Made in Turkey" bir dezavantaj değil. Doğru anlatırsan, en büyük avantaj.</div>
+    <p>"Türk malı" önyargısını iki şekilde ele alabilirsin: ya saklarsın (Bonna adı zaten Türk kökenini gizliyor), ya da sahiplenirsin ve dönüştürürsün. Bu strateji sahiplenmeyi öneriyor — ama <strong>"ucuz Türk malı" anlatısıyla değil, "Türk mühendisliği" anlatısıyla.</strong></p>
+    <p>Türkiye dünyanın en büyük seramik/porselen üreticilerinden biri. Bilecik ve Kütahya'nın yüzlerce yıllık çini mirası var. Bonna, bu mirası modern teknolojiyle birleştiren marka. "Osmanlı çini geleneğinden endüstri 4.0 porselenine" — bu hikaye sadece Bonna'nın.</p>
+
+    <h4>Ne Zaman / Nerede Kullanılır</h4>
+    <ul>
+      <li><strong>Uluslararası fuarlarda:</strong> "Turkish Excellence in Porcelain" — İhracat Şampiyonu başlığı ile birlikte</li>
+      <li><strong>Global dijital içerikte:</strong> "From Bilecik to 110+ countries" — üretim hikayesi videosu</li>
+      <li><strong>Türk pazarında:</strong> "Türkiye'nin ihracat şampiyonu mutfağınızda" — yerel gurur faktörü</li>
+      <li><strong>Dikkat:</strong> Bu strateji bazı uluslararası pazarlarda güçlü, bazılarında riskli. Pazar bazlı değerlendirme şart. Türkiye, Orta Doğu, Afrika → güçlü. Batı Avrupa → seçici kullan.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ STRATEJİ 10 ═══════════════════════════ -->
+<div class="strat">
+  <div class="strat-num">10</div>
+  <div class="strat-body">
+    <div class="strat-cats">
+      <span class="cat cat-timing">Zamanlama</span>
+      <span class="cat cat-media">Mecra</span>
+      <span class="cat cat-msg">Mesaj</span>
+    </div>
+    <h2>"Sıfır Büyük Patlama" — Always-On İletişim</h2>
+    <div class="tagline">Lansman günü değil, her gün. Her hafta biraz daha güçlü.</div>
+    <p>Klasik yaklaşım: büyük lansman, büyük bütçe, büyük etki — sonra sessizlik. 3 ay sonra herkes unutmuş, tekrar "büyük patlama" lazım. Pahalı ve sürdürülemez.</p>
+    <p>Alternatif: <strong>Lansman yok, büyük patlama yok. İlk günden "always-on" (her zaman açık) bir iletişim makinesi kur.</strong> Her hafta yeni bir içerik, her ay yeni bir temas noktası, her çeyrekte küçük bir zirve (etkinlik, yeni film, sponsor aktivasyonu). Tempo hiç düşmüyor, bütçe eşit dağılıyor, etki birikerek büyüyor.</p>
+
+    <div class="vs">
+      <div class="vs-box vs-bad">
+        <strong>❌ Büyük Patlama Modeli</strong>
+        Ay 1-2: Bütçenin %60'ı → büyük lansman, outdoor, film premiere<br>
+        Ay 3-6: Bütçenin %30'u → sürdürme<br>
+        Ay 7-12: Bütçenin %10'u → neredeyse sessizlik
+      </div>
+      <div class="vs-box vs-good">
+        <strong>✓ Always-On Modeli</strong>
+        Her ay: Bütçenin ~%8'i → sürekli içerik + küçük aktivasyonlar<br>
+        Her çeyrek: Ek %5 → çeyrek zirvesi (film, etkinlik, sponsorluk)<br>
+        Yıl sonu: Eşit dağılım → kümülatif etki → "Bonna her yerde" algısı
+      </div>
+    </div>
+
+    <h4>Bu İkisi Birleştirilebilir mi?</h4>
+    <ul>
+      <li>Evet. "Dalga Etkisi" (Strateji 05) ile "Always-On"u birleştir: İlk 8-10 haftada konsantrik lansman, sonra always-on geçiş</li>
+      <li>Böylece hem başlangıç etkisi var hem de sürdürülebilirlik</li>
+      <li>Bütçe: %35 lansman dönemi (ilk 10 hafta) + %65 yıllık always-on</li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>BONNA — İletişim Stratejileri Ek Dokümanı</strong><br>
+  Bu stratejiler birbirini dışlamaz — en güçlü kombinasyonu birlikte belirleyelim.<br>
+  Beğendiklerini söyle, ana çatı stratejiye entegre edelim.</p>
+</div>
+
+</body>
+</html>

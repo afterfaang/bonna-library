@@ -234,17 +234,79 @@ app.delete('/api/users/:id', requireAdmin, (req, res) => {
 function seedIfEmpty() {
   const artifacts = database.getAllArtifacts();
   if (artifacts.length === 0) {
-    const seedPath = path.join(__dirname, 'artifacts', 'erp-projeksiyon-2026.html');
-    if (fs.existsSync(seedPath)) {
-      const html = fs.readFileSync(seedPath, 'utf-8');
-      database.createArtifact(
-        'ERP Alan Projeksiyon Raporu 2026',
-        'bonna.com.tr SEO/GEO uyumlu ERP donusum projeksiyon raporu',
-        html,
-        'ERP'
-      );
-      console.log('Seeded initial artifact: ERP Projeksiyon 2026');
+    const seedData = [
+      {
+        file: 'Bonna_ERP_Projeksiyon_2026.html',
+        title: 'ERP Alan Projeksiyon Raporu 2026',
+        description: 'bonna.com.tr SEO/GEO uyumlu ERP dönüşüm projeksiyon raporu',
+        category: 'ERP'
+      },
+      {
+        file: 'bonna-cati-iletisim-stratejisi.html',
+        title: 'Çatı İletişim Stratejisi',
+        description: 'Bonna markası için bütünleşik çatı iletişim stratejisi',
+        category: 'İletişim'
+      },
+      {
+        file: 'bonna-iletisim-stratejileri.html',
+        title: 'İletişim Stratejileri',
+        description: 'Bonna iletişim kanalları ve mesaj stratejileri',
+        category: 'İletişim'
+      },
+      {
+        file: 'bonna-fikir-havuzu.html',
+        title: 'Fikir Havuzu',
+        description: 'Pazarlama ve iletişim fikir havuzu',
+        category: 'Strateji'
+      },
+      {
+        file: 'Bonna_AI_Content_Mimarisi_2026.html',
+        title: 'AI İçerik Mimarisi 2026',
+        description: 'AI destekli içerik üretim ve yönetim mimarisi',
+        category: 'AI'
+      },
+      {
+        file: 'Bonna_Mikro_Hedefleme_2026_v4.html',
+        title: 'Mikro Hedefleme 2026',
+        description: 'Segmentasyon bazlı mikro hedefleme stratejisi',
+        category: 'Pazarlama'
+      },
+      {
+        file: 'Bonna_Pazarlama_Plani_2026_v4.html',
+        title: 'Pazarlama Planı 2026',
+        description: '2026 yılı kapsamlı pazarlama planı',
+        category: 'Pazarlama'
+      },
+      {
+        file: 'Bonna_Pazarlama_Plani_Yapisi_2026.html',
+        title: 'Pazarlama Planı Yapısı 2026',
+        description: 'Pazarlama planı çerçeve yapısı ve organizasyonu',
+        category: 'Pazarlama'
+      },
+      {
+        file: 'Bonna_SEO_GEO_Strateji_2026.html',
+        title: 'SEO/GEO Strateji 2026',
+        description: 'Arama motoru ve coğrafi optimizasyon stratejisi',
+        category: 'SEO'
+      },
+      {
+        file: 'pazarlama-yol-haritasi-2026.html',
+        title: 'Pazarlama Yol Haritası 2026-2027',
+        description: 'HubSpot metrikleri ve mailing performans dashboard',
+        category: 'Performans'
+      }
+    ];
+
+    let seeded = 0;
+    for (const item of seedData) {
+      const seedPath = path.join(__dirname, 'artifacts', item.file);
+      if (fs.existsSync(seedPath)) {
+        const html = fs.readFileSync(seedPath, 'utf-8');
+        database.createArtifact(item.title, item.description, html, item.category);
+        seeded++;
+      }
     }
+    console.log(`Seeded ${seeded} artifacts`);
   }
 }
 

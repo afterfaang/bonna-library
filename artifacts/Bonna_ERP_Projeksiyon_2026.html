@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonna · ERP Alan Projeksiyon Raporu — SEO/GEO 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a1a;--sand:#C9A96E;--sand-light:#f4eed9;--sand-pale:#faf7f0;--bg:#fefdfb;--gray:#94918a;--light:#f5f3ef;--border:#e8e4dc;--sidebar:#faf8f5;--red:#b04040;--green:#3a7d44;--blue:#3a6b9f;--purple:#6b4fa0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);display:flex;height:100vh;overflow:hidden}
+.sidebar{width:260px;min-width:260px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh}
+.sb-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border)}
+.sb-logo .brand{font-family:'DM Serif Display',serif;font-size:28px;letter-spacing:4px}
+.sb-logo .sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--sand);margin-top:4px}
+.sb-nav{flex:1;overflow-y:auto;padding:12px 0}
+.sb-section-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);padding:12px 24px 6px;font-weight:600}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 8px;border-radius:8px;cursor:pointer;transition:all .15s;font-size:13px;font-weight:500;border:none;background:none;width:calc(100% - 16px);text-align:left;font-family:inherit;color:var(--ink)}
+.sb-item:hover{background:var(--sand-light)}
+.sb-item.active{background:var(--ink);color:#fff}
+.sb-item .em{width:28px;height:28px;border-radius:6px;background:var(--light);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.sb-item.active .em{background:var(--sand)}
+.sb-item .cnt{font-size:10px;font-weight:700;background:var(--light);color:var(--gray);padding:2px 8px;border-radius:10px;margin-left:auto}
+.sb-item.active .cnt{background:var(--sand);color:#fff}
+.sb-footer{padding:16px 24px;border-top:1px solid var(--border);font-size:10px;color:var(--gray);line-height:1.6}
+.main{flex:1;overflow-y:auto;height:100vh}
+.main-inner{padding:40px 48px;max-width:1100px}
+.page{display:none}.page.visible{display:block}
+.pt{font-family:'DM Serif Display',serif;font-size:32px;margin-bottom:6px}
+.pd{font-size:14px;color:var(--gray);margin-bottom:32px;line-height:1.7}
+.st{font-family:'DM Serif Display',serif;font-size:20px;margin:40px 0 8px}
+.st:first-child{margin-top:0}
+.dv{width:32px;height:2px;background:var(--sand);margin-bottom:20px}
+.card{border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.card-head{padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background .15s}
+.card-head:hover{background:var(--sand-pale)}
+.card-head.open{background:var(--sand-pale)}
+.card-head .arrow{margin-left:auto;color:var(--border);transition:transform .2s;font-size:18px;flex-shrink:0}
+.card-head.open .arrow{transform:rotate(90deg);color:var(--sand)}
+.card-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border)}
+.card-head.open+.card-body{display:block}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding-top:16px}
+.lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:2px}
+.val{font-size:13px;font-weight:500;line-height:1.5}
+.chip{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;margin:2px;border:1px solid var(--border)}
+.chip-dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip-gold{background:var(--sand-light);color:var(--sand);border-color:var(--sand-light)}
+.chip-red{background:#fde8e8;color:var(--red);border-color:#fde8e8}
+.chip-green{background:#e8f5e9;color:var(--green);border-color:#e8f5e9}
+.chip-blue{background:#e3edf7;color:var(--blue);border-color:#e3edf7}
+.chip-purple{background:#f0ebf7;color:var(--purple);border-color:#f0ebf7}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:12px}
+.tbl th{text-align:left;padding:10px 12px;background:var(--light);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gray);font-weight:600;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-weight:500;vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover{background:var(--sand-pale)}
+.pri{display:inline-block;padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700}
+.pri-h{background:var(--ink);color:#fff}
+.pri-m{background:var(--sand);color:#fff}
+.pri-l{background:var(--light);color:var(--gray)}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.kpi{text-align:center;padding:24px 16px;border:1px solid var(--border);border-radius:12px}
+.kpi-num{font-family:'DM Serif Display',serif;font-size:32px}
+.kpi-lab{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-top:2px}
+.ai-box{background:var(--sand-pale);border:1px solid var(--sand-light);border-radius:8px;padding:14px 16px;margin-bottom:12px}
+.ai-box-title{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sand);font-weight:700;margin-bottom:6px}
+.ai-box-content{font-size:13px;line-height:1.7}
+.warn-box{background:#fff3e0;border:1px solid #ffe0b2;border-radius:8px;padding:14px 16px;margin-bottom:12px}
+.warn-box-title{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#e65100;font-weight:700;margin-bottom:6px}
+.warn-box-content{font-size:13px;line-height:1.7}
+.new-box{background:#e8f5e9;border:1px solid #c8e6c9;border-radius:8px;padding:14px 16px;margin-bottom:12px}
+.new-box-title{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:6px}
+.new-box-content{font-size:13px;line-height:1.7}
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:16px 0}
+.flow-node{padding:10px 16px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid var(--border);background:#fff}
+.flow-node.highlight{background:var(--ink);color:#fff;border-color:var(--ink)}
+.flow-node.erp{background:var(--sand-light);color:var(--ink);border-color:var(--sand)}
+.flow-arrow{color:var(--sand);font-size:18px;font-weight:700}
+.counter{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;border-radius:10px;font-size:10px;font-weight:700;padding:0 6px}
+.counter-green{background:#e8f5e9;color:var(--green)}
+.counter-red{background:#fde8e8;color:var(--red)}
+.counter-gold{background:var(--sand-light);color:var(--sand)}
+.field-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.field-icon.exists{background:var(--light);color:var(--gray)}
+.field-icon.new{background:#e8f5e9;color:var(--green)}
+.field-icon.critical{background:#fde8e8;color:var(--red)}
+.field-row{display:flex;align-items:flex-start;gap:12px;padding:6px 0;border:none}
+.entity-card{border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.entity-title{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:4px}
+.entity-url{font-size:11px;color:var(--sand);font-family:monospace;margin-bottom:12px}
+.note{font-size:12px;color:var(--gray);font-style:italic;margin-top:4px}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sb-logo">
+    <div class="brand">bonna</div>
+    <div class="sub">ERP Projeksiyon 2026</div>
+  </div>
+  <div class="sb-nav" id="sbnav"></div>
+  <div class="sb-footer">bonna.com.tr<br>SEO/GEO Uyumlu ERP Dönüşümü</div>
+</div>
+
+<div class="main"><div class="main-inner">
+
+<!-- PAGE 1: ÖZET -->
+<div class="page visible" id="pg-overview">
+  <div class="pt">Durum & Özet</div>
+  <div class="pd">bonna.com.tr'deki tüm veriler ERP'den geliyor. Sitede gösterilemeyen bir veri = ERP'de olmayan bir alan. Bu rapor, yeni SEO/GEO stratejisinin çalışması için ERP'ye eklenmesi gereken alanları tek seferde tanımlar.</div>
+
+  <div class="kpi-row" id="kpi-overview"></div>
+
+  <div class="warn-box">
+    <div class="warn-box-title">Ana Sorun</div>
+    <div class="warn-box-content">Ürün açıklamaları sadece ürün adının tekrarı ("Vago Düz Tabak 19 cm" → Açıklama: "Vago Düz Tabak 19 cm"). Koleksiyon açıklamaları 1-2 cümle. AI motorları ve Google bunu "thin content" olarak algılıyor.</div>
+  </div>
+
+  <div class="st">Veri Akışı: Şimdi vs. Hedef</div><div class="dv"></div>
+  <div class="lbl" style="margin-bottom:4px">Şimdi</div>
+  <div class="flow">
+    <div class="flow-node erp">ERP<br><span style="font-size:10px;opacity:.7">Temel veriler</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">API</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Site<br><span style="font-size:10px;opacity:.7">Sığ içerik</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="border-color:var(--red);color:var(--red)">Google / AI<br><span style="font-size:10px">Düşük otorite</span></div>
+  </div>
+  <div class="lbl" style="margin-bottom:4px;color:var(--green)">Hedef</div>
+  <div class="flow">
+    <div class="flow-node erp" style="border-color:var(--green)">ERP (Zengin)<br><span style="font-size:10px;opacity:.7">Hikaye + SEO + FAQ + Spec</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">API</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node highlight">Site<br><span style="font-size:10px">AI-ready, derin içerik</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="border-color:var(--green);color:var(--green)">Google / AI<br><span style="font-size:10px">Yüksek otorite + citation</span></div>
+  </div>
+
+  <div class="st">Toplam Projeksiyon</div><div class="dv"></div>
+  <div id="summary-table"></div>
+</div>
+
+<!-- PAGE 2: MEVCUT ALANLAR -->
+<div class="page" id="pg-current">
+  <div class="pt">Sitede Şu An Ne Var?</div>
+  <div class="pd">Chrome'dan reverse-engineer edilerek tespit edilen, ERP'den gelen mevcut alanlar.</div>
+
+  <div class="st" style="margin-top:0">Koleksiyon Kartı (5 alan)</div><div class="dv"></div>
+  <div id="current-collection"></div>
+
+  <div class="st">Ürün Kartı (17 alan)</div><div class="dv"></div>
+  <div id="current-product"></div>
+
+</div>
+
+<!-- PAGE 3: FİLTRELER & KATEGORİLER -->
+<div class="page" id="pg-filters">
+  <div class="pt">Filtreler & Kategoriler</div>
+  <div class="pd">Sitedeki tüm filtre parametreleri ve değerleri. Bu verilerin tamamı ERP'den geliyor ve sitede filtreleme/faceted search olarak kullanılıyor.</div>
+  <div id="filters-detail"></div>
+</div>
+
+<!-- PAGE 4: SAYFA ANALİZİ -->
+<div class="page" id="pg-pages">
+  <div class="pt">Sayfa Yapıları: Mevcut vs. Eksik</div>
+  <div class="pd">Her sayfa tipinde şu an ne var, ne eksik — tek bakışta.</div>
+  <div id="page-analysis"></div>
+</div>
+
+<!-- PAGE 4: EKLENMESİ GEREKEN ALANLAR -->
+<div class="page" id="pg-newfields">
+  <div class="pt">ERP'ye Eklenecek Alanlar</div>
+  <div class="pd">Koleksiyon ve ürün kartlarına eklenecek yeni alanlar. Her alan TR+EN olarak girilecek (aşağıda tek satır, ikisi de yapılacak).</div>
+
+  <div class="ai-box" style="margin-bottom:20px">
+    <div class="ai-box-title">Dil Notu</div>
+    <div class="ai-box-content">Aşağıdaki her metin alanı <strong>hem TR hem EN olarak girilecektir</strong>. Tablo'da ayrı satır olarak gösterilmemiştir — her metin alanının iki dilde karşılığı olduğu varsayılır.</div>
+  </div>
+
+  <div class="st" style="margin-top:0">Koleksiyon Kartına Eklenecekler</div><div class="dv"></div>
+  <div id="new-collection"></div>
+
+  <div class="st">Ürün Kartına Eklenecekler</div><div class="dv"></div>
+  <div id="new-product"></div>
+</div>
+
+<!-- PAGE 5: YENİ ENTITY'LER -->
+<div class="page" id="pg-entities">
+  <div class="pt">Yeni ERP Tabloları</div>
+  <div class="pd">Sitede şu an hiç olmayan ama yeni stratejinin gerektirdiği tamamen yeni veri yapıları.</div>
+  <div id="new-entities"></div>
+</div>
+
+<!-- PAGE 6: ERP DIŞI: SİTE & İÇERİK -->
+<div class="page" id="pg-site">
+  <div class="pt">ERP Dışı: Site & İçerik</div>
+  <div class="pd">ERP'ye bağlı olmadan, site geliştirme ve içerik ekibi tarafından yapılabilecek aksiyonlar. Blog, URL yapısı değişikliği, yeni sayfa tipleri.</div>
+
+  <div class="ai-box" style="margin-bottom:24px">
+    <div class="ai-box-title">Neden Ayrı?</div>
+    <div class="ai-box-content">Aşağıdaki aksiyonlar ERP'den veri beklemeden başlanabilir. Blog içerikleri CMS'ten girilebilir, URL yapısı site geliştirme ekibinin işi, yeni sayfa şablonları frontend tarafında oluşturulur.</div>
+  </div>
+
+  <div id="site-content"></div>
+</div>
+
+<!-- PAGE 7: TEKNİK SEO & GEO -->
+<div class="page" id="pg-technical">
+  <div class="pt">Teknik SEO & GEO</div>
+  <div class="pd">robots.txt, schema markup, hreflang, sitemap, AI crawler izinleri, internal linking — geliştirme ekibinin yapacağı teknik işler.</div>
+  <div id="technical-content"></div>
+</div>
+
+<!-- PAGE 8: ÜRÜN EKİBİ BRIEF -->
+<div class="page" id="pg-brief">
+  <div class="pt">Ürün Ekibi Teknik Brief</div>
+  <div class="pd">ERP ekibine iletilecek tam alan listesi: alan adı, veri tipi, zorunluluk, validasyon, örnek değer.</div>
+
+  <div class="warn-box" style="margin-bottom:24px">
+    <div class="warn-box-title">Ölçek & İçerik Üretim Notu</div>
+    <div class="warn-box-content">
+      <strong>100+ koleksiyon × 8 yeni alan + 2900+ ürün × 7 yeni alan = ~25.000+ veri noktası.</strong><br><br>
+      Manuel giriş pratik değil. Önerilen:<br>
+      • <strong>AI-Assisted Bulk Generation:</strong> Mevcut ERP verileri (renk, boyut, materyal, segment) girdi olarak kullanılıp Claude/GPT API ile toplu açıklama, FAQ ve meta text üretilir.<br>
+      • <strong>Önceliklendirme:</strong> İlk etapta en çok trafik alan 50 koleksiyon + 500 ürünle başlanır, kalanlar iteratif tamamlanır.
+    </div>
+  </div>
+
+  <div class="st" style="margin-top:0">Koleksiyon Kartı — Tam Alan Listesi</div><div class="dv"></div>
+  <div id="brief-collection"></div>
+
+  <div class="st">Ürün Kartı — Tam Alan Listesi</div><div class="dv"></div>
+  <div id="brief-product"></div>
+
+  <div class="st">Yeni Tablolar — Tam Alan Listesi</div><div class="dv"></div>
+  <div id="brief-entities"></div>
+</div>
+
+</div></div>
+
+<script>
+// NAV
+const pages=[
+  {id:'overview',label:'Durum & Özet',em:'📊'},
+  {id:'current',label:'Mevcut ERP Alanları',em:'🗄️'},
+  {id:'filters',label:'Filtreler & Kategoriler',em:'🏷️'},
+  {id:'pages',label:'Sayfa Yapıları',em:'🌐'},
+  {id:'newfields',label:'Eklenecek Alanlar',em:'➕'},
+  {id:'entities',label:'Yeni ERP Tabloları',em:'🆕'},
+  {id:'site',label:'ERP Dışı: Site & İçerik',em:'🌍'},
+  {id:'technical',label:'Teknik SEO & GEO',em:'⚙️'},
+  {id:'brief',label:'Ürün Ekibi Brief',em:'📋'}
+];
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('visible'));
+  document.getElementById('pg-'+id).classList.add('visible');
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.sb-item[data-pg="${id}"]`).classList.add('active');
+  document.querySelector('.main').scrollTop=0;
+}
+document.getElementById('sbnav').innerHTML=
+  '<div class="sb-section-label">Analiz</div>'+pages.slice(0,4).map(p=>`<button class="sb-item${p.id==='overview'?' active':''}" data-pg="${p.id}" onclick="goPage('${p.id}')"><span class="em">${p.em}</span>${p.label}</button>`).join('')+
+  '<div class="sb-section-label">Projeksiyon</div>'+pages.slice(4,7).map(p=>`<button class="sb-item" data-pg="${p.id}" onclick="goPage('${p.id}')"><span class="em">${p.em}</span>${p.label}</button>`).join('')+
+  '<div class="sb-section-label">Teknik & Aksiyon</div>'+pages.slice(7).map(p=>`<button class="sb-item" data-pg="${p.id}" onclick="goPage('${p.id}')"><span class="em">${p.em}</span>${p.label}</button>`).join('');
+
+function tog(el){el.classList.toggle('open')}
+
+// === PAGE 1: OVERVIEW ===
+document.getElementById('kpi-overview').innerHTML=`
+  <div class="kpi"><div class="kpi-num" style="color:var(--green)">22</div><div class="kpi-lab">Mevcut Alan</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--red)">15</div><div class="kpi-lab">Eklenecek Alan</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--purple)">5</div><div class="kpi-lab">Yeni Tablo</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--sand)">~25K</div><div class="kpi-lab">Veri Noktası</div></div>`;
+
+const summary=[
+  {area:'Koleksiyon Kartı',existing:5,newF:8,impact:'Koleksiyon sayfalarına hikaye, FAQ, kullanım önerileri gibi zengin içerik eklenecek'},
+  {area:'Ürün Kartı',existing:17,newF:7,impact:'Şu an boş olan ürün açıklamaları doldurulacak, ağırlık ve teknik bilgiler eklenecek'},
+  {area:'Çözüm/Segment (yeni tablo)',existing:0,newF:8,impact:'"Fine dining için en iyi tabak" gibi sorulara cevap veren segment sayfaları oluşturulacak'},
+  {area:'Teknoloji (yeni tablo)',existing:0,newF:6,impact:'FUSIONtech, Vitrified gibi teknolojilerin ne olduğunu anlatan ayrı sayfalar açılacak'},
+  {area:'Blog/İçerik (yeni tablo)',existing:0,newF:7,impact:'Restoran tabak rehberi, sunum trendleri gibi blog yazılarıyla Google\'da görünürlük artacak'},
+  {area:'Sürdürülebilirlik (yeni tablo)',existing:0,newF:5,impact:'EPD sertifikaları ve çevre verileri yapılandırılmış şekilde gösterilecek'},
+  {area:'Şef/Referans (yeni tablo)',existing:0,newF:5,impact:'Şeflerin Bonna hakkındaki yorumları ve kullandıkları ürünler gösterilecek'}
+];
+document.getElementById('summary-table').innerHTML=`<table class="tbl"><thead><tr><th>Alan</th><th>Mevcut</th><th>Eklenecek</th><th>Etki</th></tr></thead><tbody>${summary.map(s=>`<tr><td><strong>${s.area}</strong></td><td><span class="counter counter-gold">${s.existing||'—'}</span></td><td><span class="counter counter-green">+${s.newF}</span></td><td style="font-size:12px;color:var(--gray)">${s.impact}</td></tr>`).join('')}</tbody></table>`;
+
+// === PAGE 2: CURRENT ===
+const curCol=[
+  {name:'Koleksiyon Adı',type:'String',ex:'Vago'},
+  {name:'Koleksiyon Açıklaması',type:'Text (kısa)',ex:'1-2 cümle açıklama'},
+  {name:'Kategori',type:'Enum',ex:'Premium Porcelain / Premium Vitrified / Cutlery / Infinityglass / Solida'},
+  {name:'Koleksiyon Görseli',type:'Image URL',ex:'Hero banner'},
+  {name:'Yeni/Mevcut Durumu',type:'Boolean',ex:'Yeni / Mevcut'}
+];
+const curProd=[
+  {name:'Ürün Adı',type:'String',ex:'Vago Düz Tabak 19 cm'},
+  {name:'Ürün Kodu (SKU)',type:'String',ex:'VAO19DZ'},
+  {name:'Koleksiyon',type:'FK',ex:'Vago'},
+  {name:'Ana Ürün Tipi',type:'Enum',ex:'Tabaklar / Kase / Çay & Kahve / Tamamlayıcılar'},
+  {name:'Alt Ürün Tipi',type:'Enum',ex:'Düz Tabak / Çukur Tabak / Oval / Kase / Fincan...'},
+  {name:'Boyut',type:'String',ex:'19 cm'},
+  {name:'Kapasite',type:'Decimal',ex:'900 cc'},
+  {name:'Renk',type:'String',ex:'Beyaz, Antrasit, Bej...'},
+  {name:'Materyal',type:'Enum',ex:'Porcelain / Vitrified'},
+  {name:'Mutfak Tipi',type:'Multi-Enum',ex:'Dünya Mutfağı / Asya / Akdeniz / Nordik...'},
+  {name:'Dekorasyon Tekniği',type:'Enum',ex:'Parlak Beyaz / Reaktif Renkli / El Dekorlu / Mat...'},
+  {name:'Segment',type:'Multi-Enum',ex:'Fine Dining / Casual Dining / Banquet / Kahve-Çay'},
+  {name:'Kenar Çıtlama Garantisi',type:'Boolean',ex:'Yes / No'},
+  {name:'Bulaşık Makinesi',type:'Boolean',ex:'Evet'},
+  {name:'Ürün Durumu',type:'Enum',ex:'Yeni / Mevcut'},
+  {name:'Ürün Görselleri',type:'Image URL[]',ex:'Çoklu fotoğraf'},
+  {name:'Açıklama',type:'Text',ex:'(Sadece ürün adı tekrarı — fiilen boş!)'}
+];
+function renderFieldTable(fields,targetId){
+  document.getElementById(targetId).innerHTML=`<table class="tbl"><thead><tr><th>#</th><th>Alan</th><th>Tip</th><th>Örnek</th></tr></thead><tbody>${fields.map((f,i)=>`<tr><td>${i+1}</td><td><strong>${f.name}</strong></td><td><span class="chip">${f.type}</span></td><td style="font-size:11px;color:var(--gray)">${f.ex}</td></tr>`).join('')}</tbody></table>`;
+}
+renderFieldTable(curCol,'current-collection');
+renderFieldTable(curProd,'current-product');
+
+// === PAGE 3: FILTERS ===
+const filterGroups=[
+  {name:'Kategori (Ana Sınıf)',field:'category',type:'Enum',where:'Koleksiyon + Ürün kartı',
+   values:[
+     {val:'Premium Porcelain',count:null,desc:'Geleneksel premium porselen üretim hattı'},
+     {val:'Premium Vitrified',count:152,desc:'Vitrifiye teknolojisiyle üretilen dayanıklı seri'},
+     {val:'Cutlery',count:186,desc:'Çatal-kaşık-bıçak ürün grubu'},
+     {val:'Infinityglass',count:57,desc:'Kırılmaz cam ürün serisi'},
+     {val:'Solida',count:36,desc:'Paslanmaz çelik sunum ekipmanları'}
+   ]},
+  {name:'Ana Ürün Tipi',field:'main_product_type',type:'Enum',where:'Ürün kartı → Kategoriler sayfası filtresi',
+   values:[
+     {val:'Tabaklar',count:1,desc:'Ana tabak kategorisi (alt tiplere ayrılır)'},
+     {val:'Kase',count:1747,desc:'Kase ürün grubu'},
+     {val:'Çay ve Kahve Köşesi',count:391,desc:'Fincan, kupa ve aksesuarlar'},
+     {val:'Tamamlayıcılar',count:91,desc:'Menaj, servis aksesuarları'},
+     {val:'ÇKB (Çatal Kaşık Bıçak)',count:186,desc:'Cutlery ana tipi'},
+     {val:'Infinityglass',count:57,desc:'Cam ürünler'},
+     {val:'Fırından Sofraya',count:24,desc:'Fırın uyumlu özel ürünler'},
+     {val:'Premium Vitrified',count:152,desc:'Vitrifiye özel grup'},
+     {val:'Gastronom Küvetler',count:21,desc:'Gastronorm kaplar'},
+     {val:'Solida',count:36,desc:'Paslanmaz çelik'},
+     {val:'Ahşap Ürünler',count:10,desc:'Ahşap sunum aksesuarları'}
+   ]},
+  {name:'Alt Ürün Tipi',field:'sub_product_type',type:'Enum',where:'Ürün kartı → Koleksiyon + Kategoriler filtresi',
+   values:[
+     {val:'Düz Tabak',count:565,desc:'Flat plate — en yüksek hacimli kategori'},
+     {val:'Oval Tabak',count:407,desc:'Oval plate — ikinci büyük kategori'},
+     {val:'Kase',count:379,desc:'Bowl çeşitleri'},
+     {val:'Çukur Tabak',count:309,desc:'Deep plate / Soup plate'},
+     {val:'Fincan Tabakları',count:195,desc:'Saucer — fincan altlıkları'},
+     {val:'Dikdörtgen - Kare Tabak',count:138,desc:'Rectangular / square plate'},
+     {val:'Makarna Tabağı',count:119,desc:'Pasta plate'},
+     {val:'Kahve Fincanı',count:99,desc:'Coffee cup'},
+     {val:'Kaşık',count:80,desc:'Spoon (cutlery)'},
+     {val:'Diğer Çay & Kahve Ürünleri',count:72,desc:'Aksesuar, şekerlik vs.'},
+     {val:'Paslanmaz Sunum Ürünleri',count:59,desc:'Stainless steel serving'},
+     {val:'Çatal',count:56,desc:'Fork (cutlery)'},
+     {val:'Tamamlayıcılar',count:55,desc:'Accessories'},
+     {val:'Kupa',count:52,desc:'Mug'},
+     {val:'Menaj',count:50,desc:'Condiment set'},
+     {val:'Bıçak',count:50,desc:'Knife (cutlery)'},
+     {val:'Pizza Tabağı',count:46,desc:'Pizza plate'},
+     {val:'Kase Tabağı',count:46,desc:'Bowl plate'},
+     {val:'Çay Fincanı',count:40,desc:'Tea cup'},
+     {val:'Polikarbon Tamamlayıcı',count:26,desc:'Polycarbonate accessories'},
+     {val:'Polikarbon Bardak',count:22,desc:'Polycarbonate glass'},
+     {val:'Gastronom Küvetler',count:21,desc:'Gastronorm containers'},
+     {val:'Yükseltici',count:13,desc:'Risers / elevators'}
+   ]},
+  {name:'Renk',field:'color',type:'String / Enum',where:'Ürün kartı',
+   values:[
+     {val:'Beyaz',count:null,desc:'White — en yaygın temel renk'},
+     {val:'Antrasit',count:null,desc:'Anthracite'},
+     {val:'Bej',count:null,desc:'Beige'},
+     {val:'Siyah',count:null,desc:'Black'},
+     {val:'Mavi',count:null,desc:'Blue'},
+     {val:'Turkuaz',count:null,desc:'Aqua / Turquoise'},
+     {val:'Yeşil',count:null,desc:'Green'},
+     {val:'Kırmızı',count:null,desc:'Red'},
+     {val:'Bordo',count:null,desc:'Burgundy'},
+     {val:'Bakır',count:null,desc:'Copper'},
+     {val:'Bronz',count:null,desc:'Bronze'},
+     {val:'Gri',count:null,desc:'Grey'},
+     {val:'Gümüş',count:null,desc:'Silver'},
+     {val:'Metal',count:null,desc:'Metal finish'},
+     {val:'Kahverengi',count:null,desc:'Brown'},
+     {val:'Lacivert',count:null,desc:'Navy blue'},
+     {val:'Mor',count:null,desc:'Purple'},
+     {val:'Sarı',count:null,desc:'Yellow / Gold'},
+     {val:'Turuncu',count:null,desc:'Orange'},
+     {val:'Şeffaf',count:null,desc:'Transparent (cam ürünler)'}
+   ]},
+  {name:'Mutfak Tipi',field:'cuisine_type',type:'Multi-Enum',where:'Ürün kartı',
+   values:[
+     {val:'Dünya Mutfağı',count:2314,desc:'World cuisine — neredeyse tüm ürünler bu etiketi taşıyor'},
+     {val:'Akdeniz Mutfağı',count:257,desc:'Mediterranean'},
+     {val:'Klasik',count:113,desc:'Classic / traditional'},
+     {val:'Asya Mutfağı',count:102,desc:'Asian cuisine'},
+     {val:'Nordik',count:72,desc:'Nordic / Scandinavian'},
+     {val:'Modern',count:28,desc:'Modern / contemporary'},
+     {val:'Orta Doğu Mutfağı',count:19,desc:'Middle Eastern'},
+     {val:'Türk Mutfağı',count:3,desc:'Turkish cuisine — çok az kullanılmış!'}
+   ]},
+  {name:'Dekorasyon Tekniği',field:'decoration_technique',type:'Enum',where:'Ürün kartı',
+   values:[
+     {val:'Parlak Renkli',count:710,desc:'Glossy colored glaze'},
+     {val:'El Dekorlu',count:609,desc:'Hand-decorated'},
+     {val:'Parlak Beyaz',count:474,desc:'Glossy white'},
+     {val:'Mat Renkli',count:442,desc:'Matte colored'},
+     {val:'Reaktif Renkli',count:430,desc:'Reactive glaze — her parça benzersiz desen'},
+     {val:'Parlak & Mat',count:84,desc:'Glossy & matte combination'},
+     {val:'Beyaz Dekorlu',count:77,desc:'White decorated'},
+     {val:'Şeffaf',count:50,desc:'Transparent (cam)'},
+     {val:'Mat Beyaz',count:5,desc:'Matte white'},
+     {val:'Şeffaf Renkli',count:7,desc:'Tinted transparent'}
+   ]},
+  {name:'Segment',field:'segment',type:'Multi-Enum',where:'Ürün kartı → Kategoriler sayfası filtresi',
+   values:[
+     {val:'Casual Dining',count:1583,desc:'Günlük yemek restoranları — en geniş segment'},
+     {val:'Kahve / Çay',count:378,desc:'Cafe & tea house segment'},
+     {val:'Fine Dining',count:351,desc:'Üst segment restoranlar'},
+     {val:'Banquet',count:346,desc:'Ziyafet / etkinlik / açık büfe'},
+     {val:'Açık Büfe',count:41,desc:'Buffet serving'},
+     {val:'Sürdürülebilir Mutfak',count:17,desc:'Sustainability-focused — çok az etiketlenmiş'}
+   ]},
+  {name:'Kenar Çıtlama Garantisi',field:'edge_chip_warranty',type:'Boolean',where:'Ürün kartı',
+   values:[
+     {val:'Yes',count:1317,desc:'Edge chip garantili — genellikle vitrified ürünler'},
+     {val:'No',count:1591,desc:'Garanti kapsamı dışı'}
+   ]},
+  {name:'Ürün Durumu',field:'product_status',type:'Enum',where:'Ürün kartı',
+   values:[
+     {val:'Yeni',count:274,desc:'Yeni lansman ürünler'},
+     {val:'Mevcut',count:2626,desc:'Katalogda devam eden ürünler'}
+   ]}
+];
+
+document.getElementById('filters-detail').innerHTML=`
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-num" style="color:var(--sand)">9</div><div class="kpi-lab">Filtre Grubu</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--green)">2900+</div><div class="kpi-lab">Toplam Ürün</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--blue)">100+</div><div class="kpi-lab">Koleksiyon</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--purple)">20+</div><div class="kpi-lab">Renk Seçeneği</div></div>
+  </div>
+  <div class="ai-box" style="margin-bottom:24px">
+    <div class="ai-box-title">Kullanıldığı Sayfalar</div>
+    <div class="ai-box-content">Bu filtreler <strong>/all-collections</strong> (tüm koleksiyonlar), <strong>/categories</strong> (kategoriler), <strong>/collections/[name]</strong> (tekil koleksiyon) ve <strong>/products</strong> (ürünler) sayfalarında faceted search olarak aktif. Her filtre ERP'deki ilgili alandan besleniyor.</div>
+  </div>
+  ${filterGroups.map(g=>`
+  <div class="card">
+    <div class="card-head" onclick="tog(this)">
+      <strong>${g.name}</strong>
+      <span class="chip">${g.type}</span>
+      <span style="font-size:11px;color:var(--gray);font-family:monospace">${g.field}</span>
+      <span class="counter counter-gold">${g.values.length} değer</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="card-body">
+      <div style="font-size:12px;color:var(--gray);margin:12px 0 8px"><strong>ERP alanı:</strong> ${g.field} &nbsp;|&nbsp; <strong>Tip:</strong> ${g.type} &nbsp;|&nbsp; <strong>Kullanım:</strong> ${g.where}</div>
+      <table class="tbl"><thead><tr><th>Değer</th><th>Ürün Sayısı</th><th>Açıklama</th></tr></thead><tbody>
+      ${g.values.map(v=>`<tr><td><strong>${v.val}</strong></td><td>${v.count!==null?'<span class="counter counter-gold">'+v.count+'</span>':'—'}</td><td style="font-size:12px;color:var(--gray)">${v.desc}</td></tr>`).join('')}
+      </tbody></table>
+    </div>
+  </div>`).join('')}
+`;
+
+// === PAGE 4: PAGES ===
+const pa=[
+  {name:'Koleksiyon Sayfası',url:'/collections/[name]',
+   has:['Koleksiyon adı','Kısa açıklama (1-2 cümle)','Renk & materyal bilgisi','Filtreler (kategori, alt tip, renk, mutfak, dekorasyon, çıtlama)','Ürün grid (ad, SKU, görsel)','Favorilere / Broşüre ekle butonları'],
+   miss:['Koleksiyon hikayesi (800+ kelime)','Kullanım senaryoları','FAQ bölümü','Teknik spec tablosu','İlgili koleksiyonlar','Meta title / description','Schema markup (Product, FAQ)']},
+  {name:'Ürün Detay Sayfası',url:'/urunler/[slug]',
+   has:['Breadcrumb','Ürün adı & kodu','Ürün tipi, renk swatches','Edge Chip / Bulaşık badge\'leri','Boyutlar (cm + cc)','Materyal','İlgili ürünler (aynı koleksiyon)','Get Quote / Favoriler / Karşılaştır'],
+   miss:['Gerçek ürün açıklaması (şu an boş!)','Ağırlık bilgisi','Isı dayanıklılık','Menü eşleştirme önerileri','Ürün FAQ','Meta title / description','Product schema (JSON-LD)','Görsel alt text']},
+  {name:'Ana Sayfa',url:'/',
+   has:['Hero slider (5 kategori + açıklamalar)','Mix & Match bölümü','Öne çıkan ürünler (ad, boyut, SKU)','Şeflerin Seçimi (şef, restoran, ürünler)','Sürdürülebilirlik teaser','Ödüllü koleksiyonlar','Bülten'],
+   miss:['Organization schema','SearchAction schema','SEO meta optimizasyonu']},
+  {name:'Tüm Koleksiyonlar',url:'/all-collections',
+   has:['100+ koleksiyon listeleme','6 filtre seti'],
+   miss:['Kategori açıklamaları','SEO meta','Schema markup']},
+  {name:'Kategoriler',url:'/categories',
+   has:['Ana Ürün Tipi filtresi','Segment filtresi','Tüm filtre kombinasyonları'],
+   miss:['Kategori landing page içeriği','SEO meta','Schema markup']},
+  {name:'Hakkımızda',url:'/page/aboutus',
+   has:['Statik kurumsal metin'],
+   miss:['Yapılandırılmış ödüller/sertifikalar','Tarihçe','Organization schema']},
+  {name:'Sürdürülebilirlik',url:'/page/Sustainability',
+   has:['Statik sürdürülebilirlik metni'],
+   miss:['EPD detayları','Karbon metrikleri','Net zero hedefleri','FAQ']}
+];
+document.getElementById('page-analysis').innerHTML=pa.map(p=>`
+  <div class="card">
+    <div class="card-head" onclick="tog(this)">
+      <strong>${p.name}</strong>
+      <span style="font-family:monospace;font-size:11px;color:var(--sand)">${p.url}</span>
+      <span class="counter counter-gold">${p.has.length} görünen bölüm</span>
+      <span class="counter counter-red">${p.miss.length} eksik bölüm</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="card-body">
+      <div class="g2" style="padding-top:16px">
+        <div>
+          <div class="lbl" style="margin-bottom:8px;color:var(--green)">Mevcut Bölümler</div>
+          ${p.has.map(s=>`<div class="field-row"><div class="field-icon exists">✓</div><div style="font-size:12px">${s}</div></div>`).join('')}
+        </div>
+        <div>
+          <div class="lbl" style="margin-bottom:8px;color:var(--red)">Eksik Bölümler</div>
+          ${p.miss.map(m=>`<div class="field-row"><div class="field-icon critical">!</div><div style="font-size:12px;color:var(--red)">${m}</div></div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>`).join('');
+
+// === PAGE 4: NEW FIELDS ===
+const newCol=[
+  {name:'Koleksiyon Hikayesi',field:'collection_story',type:'RichText',len:'800-1200 kelime',pri:'Kritik',desc:'Tasarım ilhamı, felsefe, hangi mutfak kültürüne hitap ettiği. AI entity bağlamı oluşturur.',ex:'Vago koleksiyonu, İskandinav estetiğiyle Türk mutfak kültürünün minimalist yorumunu sunuyor...'},
+  {name:'Quick Answer',field:'collection_quick_answer',type:'Text',len:'Max 200 kelime',pri:'Kritik',desc:'İlk 200 kelime — AI snippet formatı. "Bu koleksiyon nedir, kime hitap eder" sorusunu doğrudan cevaplar.',ex:'Vago, premium porselen koleksiyonu olup modern fine dining restoranları için tasarlanmıştır...'},
+  {name:'Kullanım Senaryoları',field:'collection_usage_scenarios',type:'JSON Array',len:'3-5 senaryo',pri:'Yüksek',desc:'Hangi restoran tipi, menü, sunum stili. Persona eşleştirmesi.',ex:'[{"segment":"Fine Dining","desc":"Modern Avrupa mutfağı sunumları","menu":"Beef tartare"}]'},
+  {name:'Hedef Persona',field:'collection_target_personas',type:'Multi-Enum',len:'1-3 seçim',pri:'Yüksek',desc:'Vizyoner Şef, F&B Müdürü, Satın Alma Uzmanı gibi persona kodları.'},
+  {name:'Teknoloji Vurgusu',field:'collection_tech',type:'FK → Technology',len:'1-2 teknoloji',pri:'Yüksek',desc:'FUSIONtech, Vitrified, Reaktif Sır gibi proprietary teknoloji bağlantısı.'},
+  {name:'FAQ',field:'collection_faq',type:'JSON Array',len:'Min 5 soru-cevap',pri:'Kritik',desc:'FAQPage schema için. "Bu koleksiyon endüstriyel bulaşık makinesinde yıkanır mı?" gibi.',ex:'[{"q":"Vago bulaşık makinesinde yıkanır mı?","a":"Evet..."}]'},
+  {name:'İlgili Koleksiyonlar',field:'collection_related',type:'FK[] → Collection',len:'3-5 adet',pri:'Orta',desc:'Cross-linking ve topic authority için tamamlayıcı koleksiyonlar.'},
+  {name:'Meta Title + Description',field:'collection_meta',type:'String × 2',len:'Title 60, Desc 160 karakter',pri:'Kritik',desc:'SEO title ve description tag\'leri.',ex:'Vago Koleksiyonu | Modern Fine Dining Porselen | Bonna'}
+];
+
+const newProd=[
+  {name:'Ürün Açıklaması',field:'product_desc',type:'RichText',len:'150-300 kelime',pri:'Kritik',desc:'ŞU AN BOŞ! Tasarım özellikleri, kullanım alanları, farklılaştırıcı noktalar.',ex:'Vago Düz Tabak 19cm, minimalist çizgileriyle modern fine dining sunumlarında öne çıkar...'},
+  {name:'Ağırlık',field:'product_weight',type:'Decimal (gram)',len:'—',pri:'Yüksek',desc:'Lojistik ve karşılaştırma sorguları için. Sitede şu an hiç yok.',ex:'285g'},
+  {name:'Isı Dayanıklılığı',field:'product_temp_resistance',type:'String',len:'Derece aralığı',pri:'Yüksek',desc:'Fırın/mikrodalga uyumu. Teknik sorgularda önemli.',ex:'-20°C — 300°C fırın güvenli'},
+  {name:'İstiflenebilirlik',field:'product_stackability',type:'Boolean + Text',len:'—',pri:'Orta',desc:'HoReCa satın almada önemli kriter.',ex:'Evet — kompakt tasarım, depo hacmini %30 azaltır'},
+  {name:'Menü Eşleştirme',field:'product_menu_pairing',type:'JSON Array',len:'3-5 öneri',pri:'Yüksek',desc:'"Bu tabakla ne sunulur" sorusuna AI cevabı.',ex:'[{"dish":"Beef tartare","cuisine":"Avrupa"},{"dish":"Risotto","cuisine":"İtalyan"}]'},
+  {name:'Ürün FAQ',field:'product_faq',type:'JSON Array',len:'Min 3 soru-cevap',pri:'Yüksek',desc:'Ürün bazlı sık sorulan sorular.',ex:'[{"q":"Bu tabak pizza için uygun mu?","a":"Evet, 300°C\'ye kadar..."}]'},
+  {name:'Meta Title + Description',field:'product_meta',type:'String × 2',len:'Title 60, Desc 160 karakter',pri:'Kritik',desc:'SEO title ve description.',ex:'Vago Düz Tabak 19cm | Premium Porselen | Bonna'}
+];
+
+function renderNewFields(fields,targetId,label){
+  document.getElementById(targetId).innerHTML=`
+  <table class="tbl"><thead><tr><th>Alan</th><th>ERP Field</th><th>Tip</th><th>Limit</th><th>Öncelik</th><th>Açıklama</th></tr></thead><tbody>
+  ${fields.map(f=>`<tr>
+    <td><strong>${f.name}</strong></td>
+    <td style="font-family:monospace;font-size:11px;color:var(--sand)">${f.field}</td>
+    <td><span class="chip">${f.type}</span></td>
+    <td style="font-size:11px">${f.len}</td>
+    <td><span class="pri ${f.pri==='Kritik'?'pri-h':f.pri==='Yüksek'?'pri-m':'pri-l'}">${f.pri}</span></td>
+    <td style="font-size:12px;color:var(--gray)">${f.desc}${f.ex?'<br><span style="font-family:monospace;font-size:10px;color:var(--sand)">Ör: '+f.ex+'</span>':''}</td>
+  </tr>`).join('')}
+  </tbody></table>`;
+}
+renderNewFields(newCol,'new-collection','Koleksiyon');
+renderNewFields(newProd,'new-product','Ürün');
+
+// === PAGE 5: ENTITIES ===
+const entities=[
+  {name:'Çözüm / Segment',table:'solutions',desc:'Persona bazlı landing page verileri. /cozumler/fine-dining/, /cozumler/otel-restoran/ gibi sayfaları besler.',
+   fields:[
+    {n:'name',t:'String',d:'Fine Dining / Otel-Restoran / Kafe-Brunch / Catering / Kurumsal'},
+    {n:'description',t:'RichText',d:'Segment açıklaması, ihtiyaç analizi (1000-1500 kelime)'},
+    {n:'persona',t:'Enum',d:'Hedef persona kodu'},
+    {n:'collections',t:'FK[] → Collection',d:'Bu segmente önerilen 3-5 koleksiyon'},
+    {n:'case_data',t:'JSON',d:'Müşteri başarı metrikleri: kırılma oranı düşüşü, maliyet tasarrufu gibi somut rakamlar'},
+    {n:'case_study',t:'RichText',d:'Müşteri başarı hikayesi: öncesi/sonrası, metrikler'},
+    {n:'faq',t:'JSON Array',d:'Segment-spesifik 5+ FAQ'},
+    {n:'meta',t:'String × 2',d:'SEO title + description'}
+   ]},
+  {name:'Teknoloji',table:'technologies',desc:'FUSIONtech, Vitrified, Reaktif Sır gibi proprietary teknolojilerin entity sayfaları.',
+   fields:[
+    {n:'name',t:'String',d:'Teknoloji adı'},
+    {n:'definition',t:'RichText',d:'Wikipedia benzeri net tanım (800-1000 kelime)'},
+    {n:'process',t:'RichText',d:'Üretim süreci, aşamalar'},
+    {n:'comparison',t:'JSON',d:'Bu teknoloji vs. geleneksel: dayanıklılık, maliyet, ömür'},
+    {n:'certifications',t:'JSON Array',d:'Test sonuçları, sertifika belgeleri'},
+    {n:'collections',t:'FK[] → Collection',d:'Bu teknolojiyi kullanan koleksiyonlar'}
+   ]},
+  {name:'Blog / İçerik',table:'content',desc:'İçerik hub & topic cluster. /blog/rehber/, /blog/trend/ sayfaları. Şu an sitede 1 terk edilmiş blog yazısı var.',
+   fields:[
+    {n:'title',t:'String',d:'Makale başlığı'},
+    {n:'body',t:'RichText',d:'Ana içerik (800-3000 kelime)'},
+    {n:'type',t:'Enum',d:'Pillar / Spoke / Trend / Vaka Çalışması / Karşılaştırma'},
+    {n:'cluster_parent',t:'FK → Content',d:'Hangi pillar sayfaya bağlı (spoke yazılar için)'},
+    {n:'collections',t:'FK[] → Collection',d:'İlgili koleksiyonlar'},
+    {n:'personas',t:'Multi-Enum',d:'Hedef personalar'},
+    {n:'keywords',t:'String[]',d:'Hedef anahtar kelimeler'}
+   ]},
+  {name:'Sürdürülebilirlik Metrikleri',table:'sustainability',desc:'EPD, karbon ayak izi, sertifikalar. /surdurulebilirlik/ sayfasını besleyecek yapısal veri.',
+   fields:[
+    {n:'cert_name',t:'String',d:'Sertifika: EPD, ISO 9001, ISO 14001...'},
+    {n:'cert_body',t:'String',d:'Veren kurum'},
+    {n:'cert_date',t:'Date',d:'Alınma tarihi'},
+    {n:'document',t:'File URL',d:'Sertifika belgesi PDF'},
+    {n:'metric_value',t:'Decimal + Unit',d:'CO2 emisyon, su tasarrufu, enerji verimliliği rakamları'}
+   ]},
+  {name:'Şef / Referans',table:'chef_references',desc:'Testimonial ve case study. Şeflerin Seçimi bölümü + çözüm sayfalarındaki referanslar.',
+   fields:[
+    {n:'name',t:'String',d:'Şef adı'},
+    {n:'restaurant',t:'String',d:'Restoran / işletme adı'},
+    {n:'title',t:'String',d:'Ünvan: Executive Chef, Head Chef...'},
+    {n:'quote',t:'Text',d:'Testimonial metni'},
+    {n:'collections',t:'FK[] → Collection',d:'Kullandığı koleksiyonlar'}
+   ]}
+];
+
+document.getElementById('new-entities').innerHTML=entities.map(e=>`
+  <div class="entity-card">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <span class="chip chip-green" style="font-size:13px;padding:6px 16px">YENİ TABLO</span>
+      <div>
+        <div class="entity-title">${e.name}</div>
+        <div class="entity-url">${e.table}</div>
+      </div>
+      <span class="counter counter-green" style="margin-left:auto">${e.fields.length} alan</span>
+    </div>
+    <div style="font-size:13px;color:var(--gray);line-height:1.7;margin-bottom:16px">${e.desc}</div>
+    <table class="tbl"><thead><tr><th>Alan</th><th>Tip</th><th>Açıklama</th></tr></thead><tbody>
+    ${e.fields.map(f=>`<tr><td><strong style="font-family:monospace;font-size:11px">${f.n}</strong></td><td><span class="chip">${f.t}</span></td><td style="font-size:12px">${f.d}</td></tr>`).join('')}
+    </tbody></table>
+  </div>`).join('');
+
+// === PAGE 6: SITE & İÇERİK (ERP DIŞI) ===
+document.getElementById('site-content').innerHTML=`
+  <div class="st" style="margin-top:0">URL Yapısı Değişikliği</div><div class="dv"></div>
+  <div class="ai-box" style="margin-bottom:16px">
+    <div class="ai-box-title">Neden Değişmeli?</div>
+    <div class="ai-box-content">Mevcut yapı düz ve sığ: tüm koleksiyonlar /collections/ altında, sayfalar /page/ altında. Yeni yapıda anlamlı URL hiyerarşisi var — AI motorları bu yapıdan bağlam çıkarıyor.</div>
+  </div>
+  <table class="tbl"><thead><tr><th>Mevcut URL</th><th>Yeni URL</th><th>Açıklama</th></tr></thead><tbody>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--gray)">/all-collections</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/koleksiyonlar/</td><td style="font-size:12px">Koleksiyon hub — kategori bazlı alt sayfalar</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--gray)">/collections/[name]</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/koleksiyonlar/[name]/</td><td style="font-size:12px">301 redirect + zengin içerik</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--red)">(yok)</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/cozumler/fine-dining/</td><td style="font-size:12px">YENİ — Persona bazlı landing</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--red)">(yok)</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/cozumler/otel-restoran/</td><td style="font-size:12px">YENİ — F&B Müdürü hedefli</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--red)">(yok)</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/cozumler/kafe-brunch/</td><td style="font-size:12px">YENİ — Kafe segment</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--red)">(yok)</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/cozumler/catering-etkinlik/</td><td style="font-size:12px">YENİ — Etkinlik segmenti</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--red)">(yok)</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/cozumler/kurumsal-tedarik/</td><td style="font-size:12px">YENİ — Satın alma hedefli</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--red)">(yok)</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/teknoloji/fusiontech/</td><td style="font-size:12px">YENİ — FUSIONtech entity sayfası</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--red)">(yok)</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/teknoloji/vitrified/</td><td style="font-size:12px">YENİ — Vitrified entity sayfası</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--red)">(yok)</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/teknoloji/reaktif-sir/</td><td style="font-size:12px">YENİ — Reaktif sır entity</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--gray)">/post/...</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/blog/</td><td style="font-size:12px">İçerik hub — topic cluster yapısı</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--red)">(yok)</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/surdurulebilirlik/</td><td style="font-size:12px">YENİ — EPD, net zero, sertifikalar</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--gray)">/page/aboutus</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/hakkimizda/</td><td style="font-size:12px">Zenginleştirilmiş kurumsal sayfa</td></tr>
+    <tr><td style="font-family:monospace;font-size:11px;color:var(--gray)">/en/...</td><td style="font-family:monospace;font-size:11px;color:var(--green)">/en/...</td><td style="font-size:12px">hreflang + canonical düzenleme</td></tr>
+  </tbody></table>
+
+  <div class="st">Blog / İçerik Hub (CMS'ten Yönetilir)</div><div class="dv"></div>
+  <div class="new-box" style="margin-bottom:16px">
+    <div class="new-box-title">ERP'ye Bağımlı Değil</div>
+    <div class="new-box-content">Blog içerikleri CMS panelinden girilebilir, ERP entegrasyonu gerekmez. Ancak blog yazılarından koleksiyon/ürün sayfalarına link verilmesi için ERP'deki koleksiyon ve ürün ID'lerine erişim gerekir.</div>
+  </div>
+
+  <div class="card"><div class="card-head" onclick="tog(this)"><strong>HoReCa Tabak Rehberi</strong><span style="font-family:monospace;font-size:11px;color:var(--sand);margin-left:8px">/blog/horeca-tabak-rehberi/</span><span class="counter counter-green" style="margin-left:auto">5 spoke</span><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:12px;font-size:13px;line-height:2">
+    1. Restoran için en dayanıklı tabaklar<br>2. Fine dining tabak seçimi kriterleri<br>3. Otel tabak kırılma maliyeti nasıl düşürülür<br>4. Vitrified vs porselen farkı nedir<br>5. Tabak kenar çıtlamazlık garantisi nedir
+  </div></div></div>
+
+  <div class="card"><div class="card-head" onclick="tog(this)"><strong>Restoran Sunum Trendleri</strong><span style="font-family:monospace;font-size:11px;color:var(--sand);margin-left:8px">/blog/sunum-trendleri-2026/</span><span class="counter counter-green" style="margin-left:auto">5 spoke</span><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:12px;font-size:13px;line-height:2">
+    1. 2026 restoran tableware trendleri<br>2. Wabi-sabi sunum estetiği<br>3. Mix & Match tabak kombinasyonları<br>4. Instagram-worthy sunum teknikleri<br>5. Renk psikolojisi ve tabak seçimi
+  </div></div></div>
+
+  <div class="card"><div class="card-head" onclick="tog(this)"><strong>Sürdürülebilir Gastronomi</strong><span style="font-family:monospace;font-size:11px;color:var(--sand);margin-left:8px">/blog/surdurulebilir-gastronomi/</span><span class="counter counter-green" style="margin-left:auto">5 spoke</span><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:12px;font-size:13px;line-height:2">
+    1. EPD sertifikalı tabak nedir<br>2. Restoran karbon ayak izi nasıl azaltılır<br>3. Tek pişirim teknolojisi neden önemli<br>4. Yeşil otel tedarik zinciri rehberi<br>5. ESG raporlama için sürdürülebilir tabak
+  </div></div></div>
+
+  <div class="card"><div class="card-head" onclick="tog(this)"><strong>Restoran Açma Rehberi</strong><span style="font-family:monospace;font-size:11px;color:var(--sand);margin-left:8px">/blog/restoran-acma-rehberi/</span><span class="counter counter-green" style="margin-left:auto">5 spoke</span><span class="arrow">›</span></div><div class="card-body"><div style="padding-top:12px;font-size:13px;line-height:2">
+    1. Restoran ekipman listesi A-Z<br>2. Restoran tabak maliyet hesaplama<br>3. Kafe açmak için gerekli ekipmanlar<br>4. Catering işi kurma rehberi<br>5. Franchise restoran donatım standartları
+  </div></div></div>
+
+  <div class="st">Yeni Sayfa Şablonları (Frontend)</div><div class="dv"></div>
+  <table class="tbl"><thead><tr><th>Şablon</th><th>URL Pattern</th><th>İçerik Kaynağı</th><th>Not</th></tr></thead><tbody>
+    <tr><td><strong>Çözüm Sayfası</strong></td><td style="font-family:monospace;font-size:11px">/cozumler/[segment]/</td><td><span class="chip chip-green">Yeni ERP Tablosu</span></td><td style="font-size:12px">5 segment sayfası</td></tr>
+    <tr><td><strong>Teknoloji Sayfası</strong></td><td style="font-family:monospace;font-size:11px">/teknoloji/[tech]/</td><td><span class="chip chip-green">Yeni ERP Tablosu</span></td><td style="font-size:12px">3 teknoloji sayfası</td></tr>
+    <tr><td><strong>Blog Pillar</strong></td><td style="font-family:monospace;font-size:11px">/blog/[slug]/</td><td><span class="chip chip-blue">CMS</span></td><td style="font-size:12px">4 ana hub sayfası</td></tr>
+    <tr><td><strong>Blog Spoke</strong></td><td style="font-family:monospace;font-size:11px">/blog/[cat]/[slug]/</td><td><span class="chip chip-blue">CMS</span></td><td style="font-size:12px">20+ alt yazı</td></tr>
+    <tr><td><strong>Sürdürülebilirlik Hub</strong></td><td style="font-family:monospace;font-size:11px">/surdurulebilirlik/</td><td><span class="chip chip-green">Yeni ERP Tablosu</span></td><td style="font-size:12px">Sertifika + metrikler</td></tr>
+  </tbody></table>
+`;
+
+// === PAGE 7: TEKNİK SEO & GEO ===
+document.getElementById('technical-content').innerHTML=`
+  <div class="st" style="margin-top:0">Schema Markup (JSON-LD)</div><div class="dv"></div>
+  <div class="ai-box" style="margin-bottom:16px">
+    <div class="ai-box-title">Sitede Şu An Schema Yok</div>
+    <div class="ai-box-content">Hiçbir sayfada yapılandırılmış veri (structured data) bulunmuyor. Google Rich Results ve AI motorları için kritik eksiklik.</div>
+  </div>
+  <table class="tbl"><thead><tr><th>Sayfa</th><th>Eklenecek Schema Tipleri</th></tr></thead><tbody>
+    <tr><td><strong>Ana Sayfa</strong></td><td><span class="chip chip-dark">Organization</span> <span class="chip chip-dark">WebSite</span> <span class="chip chip-dark">SearchAction</span></td></tr>
+    <tr><td><strong>Koleksiyon Sayfası</strong></td><td><span class="chip chip-dark">Product</span> <span class="chip chip-dark">FAQPage</span> <span class="chip chip-dark">BreadcrumbList</span> <span class="chip chip-dark">ImageObject</span></td></tr>
+    <tr><td><strong>Ürün Detay</strong></td><td><span class="chip chip-dark">Product</span> <span class="chip chip-dark">FAQPage</span> <span class="chip chip-dark">BreadcrumbList</span></td></tr>
+    <tr><td><strong>Çözüm Sayfası</strong></td><td><span class="chip chip-dark">WebPage</span> <span class="chip chip-dark">FAQPage</span> <span class="chip chip-dark">BreadcrumbList</span></td></tr>
+    <tr><td><strong>Teknoloji Sayfası</strong></td><td><span class="chip chip-dark">TechArticle</span> <span class="chip chip-dark">HowTo</span> <span class="chip chip-dark">FAQPage</span></td></tr>
+    <tr><td><strong>Blog (Pillar + Spoke)</strong></td><td><span class="chip chip-dark">Article</span> <span class="chip chip-dark">FAQPage</span> <span class="chip chip-dark">BreadcrumbList</span> <span class="chip chip-dark">Person</span></td></tr>
+    <tr><td><strong>Sürdürülebilirlik</strong></td><td><span class="chip chip-dark">Organization</span> <span class="chip chip-dark">Article</span> <span class="chip chip-dark">FAQPage</span></td></tr>
+    <tr><td><strong>Hakkımızda</strong></td><td><span class="chip chip-dark">Organization</span> <span class="chip chip-dark">Person</span></td></tr>
+    <tr><td><strong>İletişim</strong></td><td><span class="chip chip-dark">Organization</span> <span class="chip chip-dark">ContactPoint</span></td></tr>
+  </tbody></table>
+
+  <div class="st">AI Crawler İzinleri (robots.txt)</div><div class="dv"></div>
+  <div class="warn-box" style="margin-bottom:16px">
+    <div class="warn-box-title">Mevcut Durum Bilinmiyor</div>
+    <div class="warn-box-content">Sitede AI crawlerlarına (GPTBot, PerplexityBot, ClaudeBot vb.) izin verilip verilmediği kontrol edilmeli. GEO stratejisinin çalışması için bu botların siteyi taraması şart.</div>
+  </div>
+  <div style="padding:16px 20px;background:var(--light);border-radius:12px;font-family:monospace;font-size:12px;line-height:2.2;margin-bottom:16px;white-space:pre">User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://bonna.com.tr/sitemap.xml
+Sitemap: https://bonna.com.tr/en/sitemap.xml</div>
+
+  <div class="st">hreflang & Çoklu Dil</div><div class="dv"></div>
+  <table class="tbl"><thead><tr><th>Aksiyon</th><th>Açıklama</th></tr></thead><tbody>
+    <tr><td><strong>hreflang etiketleri</strong></td><td style="font-size:12px">Her sayfanın &lt;head&gt; bölümüne TR ↔ EN karşılıklı hreflang eklenmeli. Şu an eksik veya tutarsız.</td></tr>
+    <tr><td><strong>x-default</strong></td><td style="font-size:12px">Dil tercihi olmayan kullanıcılar için x-default etiketi eklenmeli (TR'ye yönlendir).</td></tr>
+    <tr><td><strong>Canonical URL</strong></td><td style="font-size:12px">Her sayfada self-referencing canonical tag olmalı. Duplicate content riskini önler.</td></tr>
+    <tr><td><strong>URL slug tutarlılığı</strong></td><td style="font-size:12px">TR: /koleksiyonlar/vago/ ↔ EN: /en/collections/vago/ — slug'lar tutarlı olmalı.</td></tr>
+  </tbody></table>
+
+  <div class="st">Sitemap Yapısı</div><div class="dv"></div>
+  <table class="tbl"><thead><tr><th>Sitemap</th><th>İçerik</th></tr></thead><tbody>
+    <tr><td><strong>sitemap-collections.xml</strong></td><td style="font-size:12px">Tüm koleksiyon sayfaları + lastmod + priority</td></tr>
+    <tr><td><strong>sitemap-products.xml</strong></td><td style="font-size:12px">2900+ ürün sayfası (bölünmüş: max 1000/dosya)</td></tr>
+    <tr><td><strong>sitemap-solutions.xml</strong></td><td style="font-size:12px">Çözüm sayfaları (5 adet)</td></tr>
+    <tr><td><strong>sitemap-blog.xml</strong></td><td style="font-size:12px">Blog pillar + spoke yazıları</td></tr>
+    <tr><td><strong>sitemap-pages.xml</strong></td><td style="font-size:12px">Hakkımızda, Sürdürülebilirlik, İletişim, Teknoloji</td></tr>
+    <tr><td><strong>sitemap-images.xml</strong></td><td style="font-size:12px">Ürün görselleri — Google Images trafiği için</td></tr>
+  </tbody></table>
+
+  <div class="st">Internal Linking Stratejisi</div><div class="dv"></div>
+  <div class="ai-box" style="margin-bottom:16px">
+    <div class="ai-box-title">Mevcut Sorun</div>
+    <div class="ai-box-content">Sitede internal linking neredeyse yok. Koleksiyon → koleksiyon, ürün → blog, blog → koleksiyon gibi cross-link'ler bulunmuyor. Bu hem kullanıcı hem AI crawl derinliğini etkiliyor.</div>
+  </div>
+  <table class="tbl"><thead><tr><th>Bağlantı Tipi</th><th>Nereden → Nereye</th><th>Amaç</th></tr></thead><tbody>
+    <tr><td><strong>Koleksiyon → Çözüm</strong></td><td style="font-size:12px">Koleksiyon sayfasından ilgili segment sayfasına</td><td style="font-size:12px;color:var(--gray)">Persona eşleştirme, AI bağlam</td></tr>
+    <tr><td><strong>Koleksiyon → Teknoloji</strong></td><td style="font-size:12px">Koleksiyon sayfasından kullanılan teknoloji sayfasına</td><td style="font-size:12px;color:var(--gray)">Entity ilişki ağı</td></tr>
+    <tr><td><strong>Koleksiyon → Koleksiyon</strong></td><td style="font-size:12px">"İlgili Koleksiyonlar" bölümü</td><td style="font-size:12px;color:var(--gray)">Cross-browsing, crawl depth</td></tr>
+    <tr><td><strong>Blog → Koleksiyon</strong></td><td style="font-size:12px">Blog yazısından ilgili koleksiyon/ürüne CTA</td><td style="font-size:12px;color:var(--gray)">Bilgi → ticari dönüşüm</td></tr>
+    <tr><td><strong>Blog → Blog</strong></td><td style="font-size:12px">Spoke → Pillar ve Pillar → Spoke</td><td style="font-size:12px;color:var(--gray)">Topic cluster bağlantısı</td></tr>
+    <tr><td><strong>Ürün → Koleksiyon</strong></td><td style="font-size:12px">Ürün sayfasından koleksiyon sayfasına (mevcut ama zayıf)</td><td style="font-size:12px;color:var(--gray)">Breadcrumb + explicit link</td></tr>
+    <tr><td><strong>Çözüm → Koleksiyon</strong></td><td style="font-size:12px">"Bu segmente önerilen koleksiyonlar" bloğu</td><td style="font-size:12px;color:var(--gray)">Persona → ürün yolu</td></tr>
+  </tbody></table>
+
+  <div class="st">Sayfa Hızı & Core Web Vitals</div><div class="dv"></div>
+  <table class="tbl"><thead><tr><th>Aksiyon</th><th>Açıklama</th></tr></thead><tbody>
+    <tr><td><strong>Görsel optimizasyon</strong></td><td style="font-size:12px">Ürün görselleri WebP/AVIF formatına dönüştürülmeli. Lazy loading uygulanmalı.</td></tr>
+    <tr><td><strong>Alt text ekleme</strong></td><td style="font-size:12px">Tüm ürün görsellerine anlamlı alt text (ERP'den). Image SEO + erişilebilirlik.</td></tr>
+    <tr><td><strong>JS bundle optimizasyonu</strong></td><td style="font-size:12px">Sayfa yükleme hızı (mobil ~45/100). Code splitting + critical CSS gerekli.</td></tr>
+    <tr><td><strong>Server-side rendering</strong></td><td style="font-size:12px">AI crawlerlarının JavaScript'i render etmemesi riski. SSR veya pre-render çözümü.</td></tr>
+  </tbody></table>
+
+  <div class="st">Open Graph & Sosyal Meta</div><div class="dv"></div>
+  <table class="tbl"><thead><tr><th>Tag</th><th>Durum</th><th>Aksiyon</th></tr></thead><tbody>
+    <tr><td><strong>og:title</strong></td><td><span class="chip chip-red">Eksik</span></td><td style="font-size:12px">Her sayfa için dinamik og:title</td></tr>
+    <tr><td><strong>og:description</strong></td><td><span class="chip chip-red">Eksik</span></td><td style="font-size:12px">Meta description ile senkron</td></tr>
+    <tr><td><strong>og:image</strong></td><td><span class="chip chip-red">Eksik</span></td><td style="font-size:12px">Koleksiyon/ürün hero görseli</td></tr>
+    <tr><td><strong>twitter:card</strong></td><td><span class="chip chip-red">Eksik</span></td><td style="font-size:12px">summary_large_image formatı</td></tr>
+  </tbody></table>
+`;
+
+// === PAGE 8: BRIEF ===
+function briefTable(fields,targetId){
+  document.getElementById(targetId).innerHTML=`<table class="tbl"><thead><tr><th>Alan Adı</th><th>ERP Field</th><th>Veri Tipi</th><th>Zorunlu</th><th>Limit</th><th>Validasyon</th></tr></thead><tbody>
+  ${fields.map(f=>`<tr>
+    <td><strong>${f.name}</strong></td>
+    <td style="font-family:monospace;font-size:11px">${f.field}</td>
+    <td><span class="chip">${f.type}</span></td>
+    <td>${f.pri==='Kritik'?'<strong style="color:var(--red)">Evet</strong>':'Hayır'}</td>
+    <td style="font-size:11px">${f.len}</td>
+    <td style="font-size:11px;color:var(--gray)">${f.type==='RichText'?'HTML, min kelime kontrolü':f.type==='JSON Array'?'Geçerli JSON':f.type.startsWith('FK')?'Geçerli referans ID':'Max karakter'}</td>
+  </tr>`).join('')}
+  </tbody></table>`;
+}
+briefTable(newCol,'brief-collection');
+briefTable(newProd,'brief-product');
+
+document.getElementById('brief-entities').innerHTML=entities.map(e=>`
+  <div class="card">
+    <div class="card-head" onclick="tog(this)">
+      <span class="chip chip-green">YENİ</span>
+      <strong>${e.table}</strong> — ${e.name}
+      <span class="counter counter-green">${e.fields.length} alan</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl"><thead><tr><th>Alan</th><th>Tip</th><th>Açıklama</th></tr></thead><tbody>
+      ${e.fields.map(f=>`<tr><td><strong style="font-family:monospace;font-size:11px">${f.n}</strong></td><td><span class="chip">${f.t}</span></td><td style="font-size:12px">${f.d}</td></tr>`).join('')}
+      </tbody></table>
+    </div>
+  </div>`).join('');
+</script>
+</body>
+</html>
