@@ -278,7 +278,10 @@ async function seedIfEmpty() {
       { file: 'Bonna_Pazarlama_Plani_2026_v4.html', title: 'Pazarlama Planı 2026', description: '2026 yılı kapsamlı pazarlama planı', category: 'Pazarlama' },
       { file: 'Bonna_Pazarlama_Plani_Yapisi_2026.html', title: 'Pazarlama Planı Yapısı 2026', description: 'Pazarlama planı çerçeve yapısı ve organizasyonu', category: 'Pazarlama' },
       { file: 'Bonna_SEO_GEO_Strateji_2026.html', title: 'SEO/GEO Strateji 2026', description: 'Arama motoru ve coğrafi optimizasyon stratejisi', category: 'SEO' },
-      { file: 'pazarlama-yol-haritasi-2026.html', title: 'Pazarlama Yol Haritası 2026-2027', description: 'HubSpot metrikleri ve mailing performans dashboard', category: 'Performans' }
+      { file: 'pazarlama-yol-haritasi-2026.html', title: 'Pazarlama Yol Haritası 2026-2027', description: 'HubSpot metrikleri ve mailing performans dashboard', category: 'Performans' },
+      { file: 'dijital-iletisim-raporu-2026.html', title: 'Dijital İletişim Yönetici Raporu 2026', description: 'Ocak-Şubat 2026 dijital iletişim performans raporu — sosyal medya, reklam, lead, mailing', category: 'Performans' },
+      { file: 'Bonna_UIUX_Surec_Plani.html', title: 'UI/UX Süreç Planı', description: 'Bonna dijital ürünler için UI/UX süreç planlaması', category: 'Strateji' },
+      { file: 'Site_Mimarisi_Gorsel.html', title: 'Site Mimarisi Görsel', description: 'bonna.com.tr site mimarisi ve sayfa yapısı görselleştirmesi', category: 'SEO' }
     ];
 
     let seeded = 0;

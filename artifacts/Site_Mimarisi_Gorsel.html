@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonna · Site Mimarisi Gorsel Donusum</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a1a;--sand:#C9A96E;--sand-light:#f4eed9;--sand-pale:#faf7f0;--bg:#fefdfb;--gray:#94918a;--light:#f5f3ef;--border:#e8e4dc;--sidebar:#faf8f5;--red:#b04040;--green:#3a7d44;--blue:#3a6b9f}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);display:flex;height:100vh;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:280px;min-width:280px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh}
+.sb-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border)}
+.sb-logo .brand{font-family:'DM Serif Display',serif;font-size:28px;letter-spacing:4px}
+.sb-logo .sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--sand);margin-top:4px}
+.sb-nav{flex:1;overflow-y:auto;padding:12px 0}
+.sb-section-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);padding:12px 24px 6px;font-weight:600}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 8px;border-radius:8px;cursor:pointer;transition:all .15s;font-size:13px;font-weight:500;border:none;background:none;width:calc(100% - 16px);text-align:left;font-family:inherit;color:var(--ink)}
+.sb-item:hover{background:var(--sand-light)}
+.sb-item.active{background:var(--ink);color:#fff}
+.sb-item .em{width:28px;height:28px;border-radius:6px;background:var(--light);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.sb-item.active .em{background:var(--sand)}
+.sb-footer{padding:16px 24px;border-top:1px solid var(--border);font-size:10px;color:var(--gray);line-height:1.6}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;height:100vh}
+.main-inner{padding:40px 48px;max-width:1200px}
+.page{display:none}.page.visible{display:block}
+.pt{font-family:'DM Serif Display',serif;font-size:32px;margin-bottom:6px}
+.pd{font-size:14px;color:var(--gray);margin-bottom:32px;line-height:1.7}
+.st{font-family:'DM Serif Display',serif;font-size:20px;margin:40px 0 8px}
+.st:first-child{margin-top:0}
+.dv{width:32px;height:2px;background:var(--sand);margin-bottom:20px}
+
+/* CHIPS & BADGES */
+.chip{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;margin:2px;border:1px solid var(--border)}
+.chip-gold{background:var(--sand-light);color:#8a7340;border-color:var(--sand-light)}
+.chip-red{background:#fde8e8;color:var(--red);border-color:#fde8e8}
+.chip-green{background:#e8f5e9;color:var(--green);border-color:#e8f5e9}
+.chip-blue{background:#e3edf7;color:var(--blue);border-color:#e3edf7}
+.chip-dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.kpi{text-align:center;padding:24px 16px;border:1px solid var(--border);border-radius:12px}
+.kpi-num{font-family:'DM Serif Display',serif;font-size:32px}
+.kpi-lab{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-top:2px}
+
+/* ==================== SITE MAP VISUAL ==================== */
+.transform-split{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;margin-bottom:40px;align-items:start}
+.transform-arrow{display:flex;align-items:center;justify-content:center;padding-top:60px;font-size:32px;color:var(--sand)}
+
+/* OLD SITE CARDS */
+.old-site{padding:20px;background:#fff;border:2px solid var(--red);border-radius:16px}
+.old-site .site-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.old-site .site-label::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--red)}
+.old-card{background:#fef7f7;border:1px solid #f0d0d0;border-radius:10px;padding:12px 16px;margin-bottom:10px}
+.old-card .oc-url{font-family:'DM Sans',monospace;font-size:12px;color:var(--red);font-weight:600;margin-bottom:4px}
+.old-card .oc-desc{font-size:11px;color:var(--gray);line-height:1.5}
+
+/* NEW SITE VISUAL MAP */
+.new-site{padding:20px;background:#fff;border:2px solid var(--green);border-radius:16px}
+.new-site .site-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.new-site .site-label::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--green)}
+
+/* TREE MAP VISUAL */
+.tree-map{position:relative}
+.tm-root{background:var(--ink);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;text-align:center;margin-bottom:16px;font-family:'DM Serif Display',serif;letter-spacing:2px}
+.tm-branches{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tm-branch{position:relative}
+.tm-branch::before{content:'';position:absolute;top:-10px;left:50%;width:2px;height:10px;background:var(--border)}
+.tm-node{border-radius:8px;padding:10px 12px;font-size:11px;font-weight:600;text-align:center;border:1px solid;position:relative;cursor:default;transition:transform .15s,box-shadow .15s}
+.tm-node:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.tm-node.gold{background:var(--sand-light);border-color:var(--sand);color:#6b5a2e}
+.tm-node.green{background:#e8f5e9;border-color:#a5d6a7;color:var(--green)}
+.tm-node.blue{background:#e3edf7;border-color:#90b8de;color:var(--blue)}
+.tm-node.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+.tm-badge{position:absolute;top:-8px;right:-4px;font-size:8px;font-weight:700;padding:2px 6px;border-radius:8px;text-transform:uppercase;letter-spacing:.5px}
+.tm-badge.ai{background:var(--green);color:#fff}
+.tm-badge.entity{background:var(--blue);color:#fff}
+.tm-badge.topic{background:var(--sand);color:#fff}
+.tm-sub{font-size:9px;color:inherit;opacity:.7;margin-top:4px;font-weight:400}
+
+.tm-children{display:flex;flex-direction:column;gap:6px;margin-top:8px;padding-left:12px;border-left:2px solid var(--border)}
+.tm-child{font-size:10px;padding:5px 8px;border-radius:5px;background:rgba(255,255,255,.6);border:1px solid var(--border)}
+
+/* ==================== COMPARISON SECTION ==================== */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px}
+.compare-col{padding:24px}
+.compare-col:first-child{border-right:1px solid var(--border);background:#fffbf7}
+.compare-col:last-child{background:#f8fcf8}
+.compare-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.compare-label.old{color:var(--red)}
+.compare-label.old::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--red)}
+.compare-label.new{color:var(--green)}
+.compare-label.new::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--green)}
+
+/* MOCKUP WRAP */
+.mockup-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.mockup-chrome{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--light);border-bottom:1px solid var(--border)}
+.mockup-chrome .dot{width:8px;height:8px;border-radius:50%}
+.mockup-chrome .dot:nth-child(1){background:#f87171}
+.mockup-chrome .dot:nth-child(2){background:#fbbf24}
+.mockup-chrome .dot:nth-child(3){background:#34d399}
+.mockup-chrome .url-bar{flex:1;margin-left:8px;font-size:10px;color:var(--gray);font-family:'DM Sans',monospace;background:#fff;padding:4px 10px;border-radius:4px;border:1px solid var(--border)}
+.mockup-body{padding:0;min-height:200px}
+
+/* MOCKUP ELEMENTS */
+.mk-nav{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#fff;border-bottom:1px solid var(--border)}
+.mk-nav .mk-logo{font-family:'DM Serif Display',serif;font-size:14px;letter-spacing:2px}
+.mk-nav .mk-links{display:flex;gap:10px;margin-left:auto;font-size:9px;color:var(--gray)}
+.mk-nav .mk-links span{padding:4px 8px;border-radius:4px;cursor:default}
+.mk-hero{padding:24px 16px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.mk-hero.gold-bg{background:linear-gradient(135deg,var(--sand) 0%,#a0824d 100%)}
+.mk-hero.green-bg{background:linear-gradient(135deg,var(--green) 0%,#2d6335 100%)}
+.mk-hero.blue-bg{background:linear-gradient(135deg,var(--blue) 0%,#2b4f73 100%)}
+.mk-hero.dark-bg{background:linear-gradient(135deg,var(--ink) 0%,#333 100%)}
+.mk-hero h3{font-family:'DM Serif Display',serif;font-size:16px;margin-bottom:4px}
+.mk-hero p{font-size:9px;opacity:.8;line-height:1.4}
+.mk-hero .mk-btn{display:inline-block;margin-top:8px;padding:5px 14px;border-radius:4px;font-size:9px;font-weight:600;background:#fff;color:var(--ink)}
+
+.mk-section{padding:14px 16px}
+.mk-section-title{font-family:'DM Serif Display',serif;font-size:12px;margin-bottom:8px;color:var(--ink)}
+.mk-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mk-card-grid.g2{grid-template-columns:repeat(2,1fr)}
+.mk-card-grid.g4{grid-template-columns:repeat(4,1fr)}
+.mk-card{border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.mk-card-img{height:40px;background:var(--light)}
+.mk-card-img.gold{background:linear-gradient(135deg,var(--sand-light),var(--sand-pale))}
+.mk-card-img.green{background:linear-gradient(135deg,#e8f5e9,#c8e6c9)}
+.mk-card-img.blue{background:linear-gradient(135deg,#e3edf7,#bbdefb)}
+.mk-card-body{padding:6px 8px}
+.mk-card-body h5{font-size:9px;font-weight:600;margin-bottom:2px}
+.mk-card-body p{font-size:7px;color:var(--gray);line-height:1.3}
+
+.mk-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px 16px}
+.mk-metric{text-align:center;padding:8px 4px;background:var(--sand-pale);border-radius:6px}
+.mk-metric .num{font-family:'DM Serif Display',serif;font-size:14px;color:var(--sand)}
+.mk-metric .lab{font-size:7px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px}
+
+.mk-table{width:100%;font-size:8px;border-collapse:collapse;margin:0 0 0 0}
+.mk-table th{text-align:left;padding:6px 8px;background:var(--light);font-size:7px;text-transform:uppercase;letter-spacing:.5px;color:var(--gray);font-weight:600}
+.mk-table td{padding:6px 8px;border-bottom:1px solid var(--border)}
+
+.mk-faq{padding:0 16px 12px}
+.mk-faq-item{padding:6px 10px;border:1px solid var(--border);border-radius:6px;margin-bottom:4px;font-size:8px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between}
+.mk-faq-item::after{content:'+';color:var(--sand);font-weight:700}
+
+.mk-cta{padding:14px 16px;text-align:center;background:var(--ink);color:#fff}
+.mk-cta h4{font-family:'DM Serif Display',serif;font-size:11px;margin-bottom:4px}
+.mk-cta .btn{display:inline-block;padding:5px 14px;border-radius:4px;font-size:8px;font-weight:600;background:var(--sand);color:#fff;margin-top:4px}
+
+.mk-footer{padding:10px 16px;background:var(--light);font-size:7px;color:var(--gray);display:flex;justify-content:space-between}
+
+/* BORING MOCKUP */
+.mk-boring{padding:20px 16px}
+.mk-boring-title{font-size:14px;font-weight:600;color:var(--gray);margin-bottom:12px}
+.mk-boring-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mk-boring-item{height:60px;background:var(--light);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--gray)}
+
+.mk-empty{display:flex;align-items:center;justify-content:center;height:200px;background:var(--light);color:var(--gray);font-size:12px;font-style:italic}
+
+/* QUICK ANSWER */
+.mk-qa{margin:0 16px 12px;padding:10px 12px;background:var(--sand-pale);border-left:3px solid var(--sand);border-radius:0 6px 6px 0;font-size:8px;color:var(--ink);line-height:1.5}
+.mk-qa strong{font-size:9px}
+
+/* BREADCRUMB */
+.mk-breadcrumb{padding:8px 16px;font-size:8px;color:var(--gray)}
+.mk-breadcrumb span{color:var(--sand)}
+
+/* TYPE BADGE */
+.type-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;margin-bottom:12px}
+.type-badge.exist{background:var(--light);color:var(--gray)}
+.type-badge.new{background:var(--green);color:#fff}
+
+/* ==================== URL MIGRATION ==================== */
+.url-flow{margin-bottom:12px}
+.url-flow-row{display:grid;grid-template-columns:1fr 60px 1fr 100px;gap:0;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.url-flow-row:last-child{border-bottom:none}
+.url-old{font-family:'DM Sans',monospace;font-size:12px;padding:8px 14px;background:#fef7f7;border:1px solid #f0d0d0;border-radius:8px;color:var(--red);font-weight:500}
+.url-old.empty{background:var(--light);border-color:var(--border);color:var(--gray);font-style:italic}
+.url-arrow-col{text-align:center;font-size:20px;color:var(--sand)}
+.url-new{font-family:'DM Sans',monospace;font-size:12px;padding:8px 14px;background:#f0faf0;border:1px solid #a5d6a7;border-radius:8px;color:var(--green);font-weight:600}
+.url-badges{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.url-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.5px}
+.url-badge.yeni{background:var(--green);color:#fff}
+.url-badge.kritik{background:var(--red);color:#fff}
+.url-badge.yuksek{background:var(--sand);color:#fff}
+.url-badge.orta{background:var(--light);color:var(--gray)}
+
+/* ==================== CONTENT BLOCKS ==================== */
+.block-stack{max-width:500px;margin:0 auto 32px}
+.block-item{display:flex;align-items:stretch;margin-bottom:2px}
+.block-bar{width:4px;border-radius:2px;flex-shrink:0}
+.block-bar.gold{background:var(--sand)}
+.block-bar.green{background:var(--green)}
+.block-bar.blue{background:var(--blue)}
+.block-bar.dark{background:var(--ink)}
+.block-bar.gray{background:var(--gray)}
+.block-content{flex:1;padding:10px 14px;background:#fff;border:1px solid var(--border);border-left:none;border-radius:0 8px 8px 0;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:background .15s}
+.block-content:hover{background:var(--sand-pale)}
+.block-name{font-size:12px;font-weight:600}
+.block-meta{display:flex;gap:4px;align-items:center}
+.block-height{font-size:9px;color:var(--gray);font-weight:500;background:var(--light);padding:2px 8px;border-radius:4px}
+.block-type{font-size:8px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px}
+.block-type.text{background:#e3edf7;color:var(--blue)}
+.block-type.media{background:var(--sand-light);color:#8a7340}
+.block-type.interact{background:#e8f5e9;color:var(--green)}
+.block-type.cta-t{background:var(--ink);color:#fff}
+.block-ai{font-size:7px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--green);color:#fff;letter-spacing:.5px}
+.block-connector{width:20px;display:flex;justify-content:center;position:relative}
+.block-connector::after{content:'';position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--border)}
+
+/* ==================== MOBILE VS DESKTOP ==================== */
+.device-compare{display:grid;grid-template-columns:200px 1fr;gap:32px;align-items:start;margin-bottom:40px}
+.device-frame{border:2px solid var(--ink);border-radius:20px;overflow:hidden;position:relative}
+.device-frame.mobile{width:187px}
+.device-frame.desktop{border-radius:12px}
+.device-notch{height:20px;background:var(--ink);display:flex;align-items:center;justify-content:center}
+.device-notch .notch{width:60px;height:6px;background:#333;border-radius:3px}
+.device-statusbar{height:16px;background:var(--ink);display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:6px;color:#fff}
+.device-bottom{height:20px;background:#fff;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.device-bottom .home{width:40px;height:4px;background:var(--ink);border-radius:2px}
+.desktop-bar{height:28px;background:var(--light);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:4px;padding:0 10px}
+.desktop-bar .dot{width:6px;height:6px;border-radius:50%}
+.desktop-bar .dot:nth-child(1){background:#f87171}
+.desktop-bar .dot:nth-child(2){background:#fbbf24}
+.desktop-bar .dot:nth-child(3){background:#34d399}
+
+/* ACCORDION */
+.acc-head{padding:14px 20px;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;background:#fff;transition:all .15s}
+.acc-head:hover{background:var(--sand-pale);border-color:var(--sand)}
+.acc-head.open{background:var(--sand-pale);border-color:var(--sand);border-radius:10px 10px 0 0;margin-bottom:0}
+.acc-head .acc-arrow{margin-left:auto;transition:transform .2s;color:var(--sand)}
+.acc-head.open .acc-arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:20px;border:1px solid var(--sand);border-top:none;border-radius:0 0 10px 10px;margin-bottom:8px;background:#fff}
+.acc-head.open+.acc-body{display:block}
+
+/* SECTION DIVIDER */
+.section-divider{display:flex;align-items:center;gap:12px;margin:32px 0 24px}
+.section-divider .line{flex:1;height:1px;background:var(--border)}
+.section-divider .label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-weight:700}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sb-logo">
+    <div class="brand">BONNA</div>
+    <div class="sub">Site Mimarisi Gorsel</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-section-label">Analiz Bolumleri</div>
+    <button class="sb-item active" onclick="showPage('donusum',this)">
+      <span class="em">&#x1f5fa;</span> Site Donusumu
+    </button>
+    <button class="sb-item" onclick="showPage('karsilastirma',this)">
+      <span class="em">&#x1f50d;</span> Sayfa Karsilastirmasi
+    </button>
+    <button class="sb-item" onclick="showPage('migrasyon',this)">
+      <span class="em">&#x27a1;</span> URL Migrasyonu
+    </button>
+    <button class="sb-item" onclick="showPage('bloklar',this)">
+      <span class="em">&#x1f9f1;</span> Icerik Bloklari
+    </button>
+    <button class="sb-item" onclick="showPage('mobil',this)">
+      <span class="em">&#x1f4f1;</span> Mobil vs Desktop
+    </button>
+  </nav>
+  <div class="sb-footer">
+    Bonna Premium Porcelain<br>
+    Site Mimarisi Donusum Plani 2026
+  </div>
+</div>
+
+<div class="main">
+<div class="main-inner">
+
+<!-- ============================================== -->
+<!-- PAGE 1: SITE DONUSUMU -->
+<!-- ============================================== -->
+<div class="page visible" id="donusum">
+<h1 class="pt">Site Haritasi Donusumu</h1>
+<p class="pd">Mevcut duz ve sig site yapisindan, derin ve anlamli bir AI-ready yapiya gecis. Asagidaki gorsel harita, donusumun kapsamini gostermektedir.</p>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num" style="color:var(--red)">~15</div><div class="kpi-lab">Mevcut Sayfa</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--green)">45+</div><div class="kpi-lab">Hedef Sayfa</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--blue)">7</div><div class="kpi-lab">Sayfa Tipi</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--sand)">5</div><div class="kpi-lab">Persona Segmenti</div></div>
+</div>
+
+<div class="transform-split">
+  <!-- OLD SITE -->
+  <div class="old-site">
+    <div class="site-label">MEVCUT SITE (DUZ YAPI)</div>
+    <div class="old-card">
+      <div class="oc-url">/all-collections</div>
+      <div class="oc-desc">Duz liste, 60+ koleksiyon ayni seviyede. Hiyerarsi yok, filtreleme minimal.</div>
+    </div>
+    <div class="old-card">
+      <div class="oc-url">/collections/vago</div>
+      <div class="oc-desc">Tek tip koleksiyon sayfasi. Sadece urun grid'i, hikaye yok, FAQ yok.</div>
+    </div>
+    <div class="old-card">
+      <div class="oc-url">/collections/cras</div>
+      <div class="oc-desc">Ayni sablon tekrari. Farklilastirma ve derinlik eksik.</div>
+    </div>
+    <div class="old-card">
+      <div class="oc-url">/page/aboutus</div>
+      <div class="oc-desc">Minimal hakkimizda sayfasi. Marka hikayesi eksik.</div>
+    </div>
+    <div class="old-card">
+      <div class="oc-url">/contact</div>
+      <div class="oc-desc">Basit iletisim formu.</div>
+    </div>
+    <div class="old-card">
+      <div class="oc-url">/post/...</div>
+      <div class="oc-desc">Sadece 1 blog yazisi. Icerik stratejisi yok.</div>
+    </div>
+    <div style="margin-top:12px;padding:10px;background:#fef7f7;border-radius:8px;font-size:10px;color:var(--red);font-weight:600;text-align:center">
+      Persona sayfasi YOK &bull; Teknoloji sayfasi YOK &bull; Surdurulebilirlik YOK
+    </div>
+  </div>
+
+  <!-- ARROW -->
+  <div class="transform-arrow">&#x27a1;</div>
+
+  <!-- NEW SITE -->
+  <div class="new-site">
+    <div class="site-label">HEDEF SITE (DERIN YAPI)</div>
+    <div class="tree-map">
+      <div class="tm-root">bonna.com.tr</div>
+      <div class="tm-branches">
+        <!-- KOLEKSIYONLAR -->
+        <div class="tm-branch">
+          <div class="tm-node gold">
+            /koleksiyonlar/
+            <div class="tm-sub">Hub + Derin Sayfalar</div>
+          </div>
+          <div class="tm-children">
+            <div class="tm-child" style="border-color:var(--sand)">/vago/</div>
+            <div class="tm-child" style="border-color:var(--sand)">/cras/</div>
+            <div class="tm-child" style="border-color:var(--sand)">/nia/</div>
+            <div class="tm-child" style="border-color:var(--sand)">+57 koleksiyon...</div>
+          </div>
+        </div>
+        <!-- COZUMLER -->
+        <div class="tm-branch">
+          <div class="tm-node green" style="position:relative">
+            /cozumler/
+            <span class="tm-badge ai">AI PERSONA</span>
+            <div class="tm-sub">5 Segment Sayfasi</div>
+          </div>
+          <div class="tm-children">
+            <div class="tm-child" style="border-color:#a5d6a7">/fine-dining/</div>
+            <div class="tm-child" style="border-color:#a5d6a7">/otel-restoran/</div>
+            <div class="tm-child" style="border-color:#a5d6a7">/kafe-brunch/</div>
+            <div class="tm-child" style="border-color:#a5d6a7">/catering-etkinlik/</div>
+            <div class="tm-child" style="border-color:#a5d6a7">/kurumsal-tedarik/</div>
+          </div>
+        </div>
+        <!-- TEKNOLOJI -->
+        <div class="tm-branch">
+          <div class="tm-node blue" style="position:relative">
+            /teknoloji/
+            <span class="tm-badge entity">ENTITY</span>
+            <div class="tm-sub">3 Teknoloji Sayfasi</div>
+          </div>
+          <div class="tm-children">
+            <div class="tm-child" style="border-color:#90b8de">/fusiontech/</div>
+            <div class="tm-child" style="border-color:#90b8de">/vitrified/</div>
+            <div class="tm-child" style="border-color:#90b8de">/reaktif-sir/</div>
+          </div>
+        </div>
+      </div>
+      <div class="tm-branches" style="margin-top:12px">
+        <!-- BLOG -->
+        <div class="tm-branch">
+          <div class="tm-node green" style="position:relative">
+            /blog/
+            <span class="tm-badge topic">TOPIC CLUSTER</span>
+            <div class="tm-sub">4 Kategori Hub</div>
+          </div>
+          <div class="tm-children">
+            <div class="tm-child" style="border-color:#a5d6a7">/rehber/</div>
+            <div class="tm-child" style="border-color:#a5d6a7">/trend/</div>
+            <div class="tm-child" style="border-color:#a5d6a7">/vaka-calismasi/</div>
+            <div class="tm-child" style="border-color:#a5d6a7">/karsilastirma/</div>
+          </div>
+        </div>
+        <!-- SURDURULEBILIRLIK -->
+        <div class="tm-branch">
+          <div class="tm-node green">
+            /surdurulebilirlik/
+            <div class="tm-sub">ESG & Cevresel Etki</div>
+          </div>
+        </div>
+        <!-- KAYNAKLAR -->
+        <div class="tm-branch">
+          <div class="tm-node gold">
+            /kaynaklar/
+            <div class="tm-sub">Araclar & Kaynaklar</div>
+          </div>
+          <div class="tm-children">
+            <div class="tm-child" style="border-color:var(--sand)">/roi-hesaplayici/</div>
+            <div class="tm-child" style="border-color:var(--sand)">/katalog/</div>
+            <div class="tm-child" style="border-color:var(--sand)">/numune-talebi/</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"><span class="line"></span><span class="label">Renk Kodlari</span><span class="line"></span></div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:20px">
+  <span class="chip chip-gold">Altin = Koleksiyon & Kaynak</span>
+  <span class="chip chip-green">Yesil = Cozum & Icerik</span>
+  <span class="chip chip-blue">Mavi = Teknoloji & Entity</span>
+  <span class="chip chip-dark">Koyu = Ana Sayfa / Root</span>
+</div>
+</div>
+
+<!-- ============================================== -->
+<!-- PAGE 2: SAYFA KARSILASTIRMASI -->
+<!-- ============================================== -->
+<div class="page" id="karsilastirma">
+<h1 class="pt">Sayfa Tipi Karsilastirmasi</h1>
+<p class="pd">7 sayfa tipinin mevcut (ONCE) ve hedef (SONRA) durumlarinin gorsel mockup karsilastirmasi.</p>
+
+<!-- 1. ANA SAYFA -->
+<div class="acc-head open" onclick="toggleAcc(this)">
+  <span class="type-badge exist">MEVCUT</span> 1. Ana Sayfa
+  <span class="acc-arrow">&#9660;</span>
+</div>
+<div class="acc-body">
+<div class="compare-grid">
+  <div class="compare-col">
+    <div class="compare-label old">ONCE - Mevcut Durum</div>
+    <div class="mockup-wrap">
+      <div class="mockup-chrome">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="url-bar">bfrancollection.com</span>
+      </div>
+      <div class="mockup-body">
+        <div class="mk-nav">
+          <span class="mk-logo">BONNA</span>
+          <div class="mk-links"><span>Koleksiyonlar</span><span>Hakkimizda</span><span>Iletisim</span></div>
+        </div>
+        <div class="mk-boring">
+          <div class="mk-boring-title">Tum Koleksiyonlar</div>
+          <div class="mk-boring-grid">
+            <div class="mk-boring-item">Vago</div><div class="mk-boring-item">Cras</div><div class="mk-boring-item">Nia</div>
+            <div class="mk-boring-item">Stoneware</div><div class="mk-boring-item">Iris</div><div class="mk-boring-item">+55 daha</div>
+          </div>
+          <p style="text-align:center;font-size:8px;color:var(--gray);margin-top:12px">Duz liste, segmentasyon yok, CTA yok</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="compare-col">
+    <div class="compare-label new">SONRA - Hedef Durum</div>
+    <div class="mockup-wrap">
+      <div class="mockup-chrome">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="url-bar">bonna.com.tr</span>
+      </div>
+      <div class="mockup-body">
+        <div class="mk-nav">
+          <span class="mk-logo">BONNA</span>
+          <div class="mk-links"><span>Koleksiyonlar</span><span>Cozumler</span><span>Teknoloji</span><span>Blog</span><span>Iletisim</span></div>
+        </div>
+        <div class="mk-hero gold-bg">
+          <h3>Profesyonel Mutfaklar Icin Premium Porselen</h3>
+          <p>60+ koleksiyon, 5 segment, FusionTech teknolojisi</p>
+          <span class="mk-btn">Koleksiyonlari Kesfet</span>
+        </div>
+        <div class="mk-section">
+          <div class="mk-section-title">Cozum Segmentleri</div>
+          <div class="mk-card-grid">
+            <div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Fine Dining</h5><p>Michelin duzeyinde sunum</p></div></div>
+            <div class="mk-card"><div class="mk-card-img green"></div><div class="mk-card-body"><h5>Otel & Restoran</h5><p>Dayanikli & sik</p></div></div>
+            <div class="mk-card"><div class="mk-card-img blue"></div><div class="mk-card-body"><h5>Kafe & Brunch</h5><p>Instagram dostu</p></div></div>
+          </div>
+        </div>
+        <div class="mk-metrics">
+          <div class="mk-metric"><div class="num">60+</div><div class="lab">Koleksiyon</div></div>
+          <div class="mk-metric"><div class="num">5</div><div class="lab">Segment</div></div>
+          <div class="mk-metric"><div class="num">80+</div><div class="lab">Ulke</div></div>
+          <div class="mk-metric"><div class="num">3x</div><div class="lab">Dayaniklilik</div></div>
+        </div>
+        <div class="mk-cta"><h4>Numune Talep Edin</h4><span class="btn">Ucretsiz Numune</span></div>
+        <div class="mk-footer"><span>BONNA 2026</span><span>Surdurulebilirlik | Teknoloji | Blog</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 2. KOLEKSIYON -->
+<div class="acc-head" onclick="toggleAcc(this)">
+  <span class="type-badge exist">MEVCUT</span> 2. Koleksiyon Sayfasi
+  <span class="acc-arrow">&#9660;</span>
+</div>
+<div class="acc-body">
+<div class="compare-grid">
+  <div class="compare-col">
+    <div class="compare-label old">ONCE</div>
+    <div class="mockup-wrap">
+      <div class="mockup-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url-bar">bfrancollection.com/collections/vago</span></div>
+      <div class="mockup-body">
+        <div class="mk-nav"><span class="mk-logo">BONNA</span></div>
+        <div class="mk-boring">
+          <div class="mk-boring-title">Vago Collection</div>
+          <div class="mk-boring-grid">
+            <div class="mk-boring-item">Urun 1</div><div class="mk-boring-item">Urun 2</div><div class="mk-boring-item">Urun 3</div>
+            <div class="mk-boring-item">Urun 4</div><div class="mk-boring-item">Urun 5</div><div class="mk-boring-item">Urun 6</div>
+          </div>
+          <p style="text-align:center;font-size:8px;color:var(--gray);margin-top:12px">Sadece urun grid. Hikaye, FAQ, spec yok.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="compare-col">
+    <div class="compare-label new">SONRA</div>
+    <div class="mockup-wrap">
+      <div class="mockup-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url-bar">bonna.com.tr/koleksiyonlar/vago/</span></div>
+      <div class="mockup-body">
+        <div class="mk-nav"><span class="mk-logo">BONNA</span><div class="mk-links"><span>Koleksiyonlar</span><span>Cozumler</span><span>Teknoloji</span></div></div>
+        <div class="mk-breadcrumb">Ana Sayfa <span>&rsaquo;</span> Koleksiyonlar <span>&rsaquo;</span> Vago</div>
+        <div class="mk-hero gold-bg">
+          <h3>Vago Koleksiyonu</h3>
+          <p>Organik formlar, dogal tonlar, fine-dining estetige</p>
+        </div>
+        <div class="mk-qa"><strong>Hizli Cevap:</strong> Vago, organik formlu fine-dining porselen serisidir. FusionTech ile 3x dayaniklilik, -40/+250C termal sok direnci.</div>
+        <div class="mk-section">
+          <div class="mk-section-title">Koleksiyon Hikayesi</div>
+          <p style="font-size:8px;color:var(--gray);line-height:1.5;padding:0 16px 12px">Doganin organik cizgilerinden ilham alan Vago, sefler icin tasarlandi...</p>
+        </div>
+        <div class="mk-section" style="padding-top:0">
+          <div class="mk-section-title">Teknik Ozellikler</div>
+          <table class="mk-table"><tr><th>Ozellik</th><th>Deger</th></tr><tr><td>Malzeme</td><td>FusionTech Porselen</td></tr><tr><td>Termal Sok</td><td>-40C / +250C</td></tr><tr><td>Dayaniklilik</td><td>3x Standart</td></tr></table>
+        </div>
+        <div class="mk-section" style="padding-top:0">
+          <div class="mk-section-title">Urunler</div>
+          <div class="mk-card-grid"><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Duz Tabak 27cm</h5></div></div><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Kase 12cm</h5></div></div><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Servis Tabagi</h5></div></div></div>
+        </div>
+        <div class="mk-faq">
+          <div class="mk-faq-item">Vago hangi segmentlere uygun?</div>
+          <div class="mk-faq-item">FusionTech nedir?</div>
+          <div class="mk-faq-item">Numune nasil talep edilir?</div>
+        </div>
+        <div class="mk-cta"><h4>Vago Numune Talep Edin</h4><span class="btn">Ucretsiz Numune</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 3. COZUM -->
+<div class="acc-head" onclick="toggleAcc(this)">
+  <span class="type-badge new">YENI</span> 3. Cozum Sayfasi (Persona)
+  <span class="acc-arrow">&#9660;</span>
+</div>
+<div class="acc-body">
+<div class="compare-grid">
+  <div class="compare-col">
+    <div class="compare-label old">ONCE</div>
+    <div class="mk-empty">Bu sayfa tipi mevcut sitede BULUNMUYOR</div>
+  </div>
+  <div class="compare-col">
+    <div class="compare-label new">SONRA - Cozum Sayfasi</div>
+    <div class="mockup-wrap">
+      <div class="mockup-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url-bar">bonna.com.tr/cozumler/fine-dining/</span></div>
+      <div class="mockup-body">
+        <div class="mk-nav"><span class="mk-logo">BONNA</span><div class="mk-links"><span>Koleksiyonlar</span><span style="background:var(--sand-light);border-radius:4px">Cozumler</span><span>Teknoloji</span></div></div>
+        <div class="mk-hero dark-bg">
+          <h3>Fine Dining Cozumleri</h3>
+          <p>Michelin yildizli restoranlarin tercihi. Her tabak bir sanat eseri.</p>
+          <span class="mk-btn">Koleksiyonlari Gor</span>
+        </div>
+        <div class="mk-metrics">
+          <div class="mk-metric"><div class="num">%40</div><div class="lab">Kirilma Azalmasi</div></div>
+          <div class="mk-metric"><div class="num">3x</div><div class="lab">Omur</div></div>
+          <div class="mk-metric"><div class="num">15+</div><div class="lab">Koleksiyon</div></div>
+          <div class="mk-metric"><div class="num">%25</div><div class="lab">TCO Tasarruf</div></div>
+        </div>
+        <div class="mk-section">
+          <div class="mk-section-title">Onerilen Koleksiyonlar</div>
+          <div class="mk-card-grid"><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Vago</h5><p>Organik fine-dining</p></div></div><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Cras</h5><p>Minimalist sunum</p></div></div><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Iris</h5><p>Renkli karakter</p></div></div></div>
+        </div>
+        <div class="mk-section" style="padding-top:0">
+          <div class="mk-section-title">TCO Karsilastirma</div>
+          <table class="mk-table"><tr><th></th><th>Bonna</th><th>Rakip A</th><th>Rakip B</th></tr><tr><td>3 Yillik Maliyet</td><td style="color:var(--green);font-weight:700">$8,400</td><td>$12,200</td><td>$14,800</td></tr><tr><td>Yillik Kirilma</td><td style="color:var(--green);font-weight:700">%5</td><td>%15</td><td>%20</td></tr></table>
+        </div>
+        <div class="mk-section" style="padding-top:0">
+          <div class="mk-section-title">Basari Hikayesi</div>
+          <div style="padding:0 16px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="padding:10px;background:#fef7f7;border-radius:6px;text-align:center;font-size:8px"><div style="font-weight:700;color:var(--red);font-size:10px">ONCE</div>Yillik $14K kirilma maliyeti</div>
+            <div style="padding:10px;background:#f0faf0;border-radius:6px;text-align:center;font-size:8px"><div style="font-weight:700;color:var(--green);font-size:10px">SONRA</div>Yillik $5.6K, %60 tasarruf</div>
+          </div>
+        </div>
+        <div class="mk-faq">
+          <div class="mk-faq-item">Fine dining icin hangi koleksiyon secilmeli?</div>
+          <div class="mk-faq-item">TCO hesaplamasini nasil yaparim?</div>
+        </div>
+        <div class="mk-cta"><h4>Fine Dining Danismanligi</h4><span class="btn">Uzmanla Gorusun</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 4. TEKNOLOJI -->
+<div class="acc-head" onclick="toggleAcc(this)">
+  <span class="type-badge new">YENI</span> 4. Teknoloji Sayfasi
+  <span class="acc-arrow">&#9660;</span>
+</div>
+<div class="acc-body">
+<div class="compare-grid">
+  <div class="compare-col">
+    <div class="compare-label old">ONCE</div>
+    <div class="mk-empty">Bu sayfa tipi mevcut sitede BULUNMUYOR</div>
+  </div>
+  <div class="compare-col">
+    <div class="compare-label new">SONRA - Teknoloji Sayfasi</div>
+    <div class="mockup-wrap">
+      <div class="mockup-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url-bar">bonna.com.tr/teknoloji/fusiontech/</span></div>
+      <div class="mockup-body">
+        <div class="mk-nav"><span class="mk-logo">BONNA</span><div class="mk-links"><span>Koleksiyonlar</span><span>Cozumler</span><span style="background:var(--sand-light);border-radius:4px">Teknoloji</span></div></div>
+        <div class="mk-hero blue-bg">
+          <h3>FusionTech Teknolojisi</h3>
+          <p>Feldspat ve kuvars fuzyon teknolojisi ile ustun mekanik dayanim</p>
+        </div>
+        <div class="mk-qa"><strong>Tanimm:</strong> FusionTech, Bonna'nin patentli porselen uretim teknolojisidir. 1400C'de pisirilen ozel formul, 3x dayaniklilik saglar.</div>
+        <div class="mk-section">
+          <div class="mk-section-title">Uretim Sureci</div>
+          <div style="display:flex;gap:4px;padding:0 16px 12px">
+            <div style="flex:1;padding:8px;background:var(--sand-pale);border-radius:6px;text-align:center;font-size:7px;font-weight:600">1. Hammadde Secimi</div>
+            <div style="flex:0;display:flex;align-items:center;font-size:10px;color:var(--sand)">&#x27a1;</div>
+            <div style="flex:1;padding:8px;background:var(--sand-pale);border-radius:6px;text-align:center;font-size:7px;font-weight:600">2. Fuzyon Karimi</div>
+            <div style="flex:0;display:flex;align-items:center;font-size:10px;color:var(--sand)">&#x27a1;</div>
+            <div style="flex:1;padding:8px;background:var(--sand-pale);border-radius:6px;text-align:center;font-size:7px;font-weight:600">3. 1400C Pisirme</div>
+            <div style="flex:0;display:flex;align-items:center;font-size:10px;color:var(--sand)">&#x27a1;</div>
+            <div style="flex:1;padding:8px;background:var(--sand-pale);border-radius:6px;text-align:center;font-size:7px;font-weight:600">4. Kalite Kontrol</div>
+          </div>
+        </div>
+        <div class="mk-section" style="padding-top:0">
+          <div class="mk-section-title">Karsilastirma</div>
+          <table class="mk-table"><tr><th>Ozellik</th><th>FusionTech</th><th>Standart</th></tr><tr><td>Dayaniklilik</td><td style="color:var(--green);font-weight:700">3x</td><td>1x</td></tr><tr><td>Termal Sok</td><td style="color:var(--green);font-weight:700">-40/+250C</td><td>-20/+150C</td></tr><tr><td>Omur</td><td style="color:var(--green);font-weight:700">10+ yil</td><td>3-5 yil</td></tr></table>
+        </div>
+        <div class="mk-section" style="padding-top:0">
+          <div class="mk-section-title">Sertifikalar</div>
+          <div style="display:flex;gap:6px;padding:0 16px 12px;flex-wrap:wrap">
+            <span style="padding:4px 10px;background:var(--light);border-radius:4px;font-size:8px;font-weight:600">ISO 9001</span>
+            <span style="padding:4px 10px;background:var(--light);border-radius:4px;font-size:8px;font-weight:600">FDA Approved</span>
+            <span style="padding:4px 10px;background:var(--light);border-radius:4px;font-size:8px;font-weight:600">EU Food Contact</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 5. BLOG -->
+<div class="acc-head" onclick="toggleAcc(this)">
+  <span class="type-badge new">YENI</span> 5. Blog Sistemi
+  <span class="acc-arrow">&#9660;</span>
+</div>
+<div class="acc-body">
+<div class="compare-grid">
+  <div class="compare-col">
+    <div class="compare-label old">ONCE</div>
+    <div class="mockup-wrap">
+      <div class="mockup-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url-bar">bfrancollection.com/post/...</span></div>
+      <div class="mockup-body">
+        <div class="mk-nav"><span class="mk-logo">BONNA</span></div>
+        <div class="mk-boring">
+          <div class="mk-boring-title">Blog</div>
+          <div style="padding:16px;background:var(--light);border-radius:8px;text-align:center">
+            <p style="font-size:10px;color:var(--gray)">Sadece 1 blog yazisi mevcut</p>
+            <p style="font-size:8px;color:var(--gray);margin-top:4px">Icerik stratejisi yok, kategori yok</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="compare-col">
+    <div class="compare-label new">SONRA - Blog Cluster Sistemi</div>
+    <div class="mockup-wrap">
+      <div class="mockup-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url-bar">bonna.com.tr/blog/rehber/porselen-secim-rehberi/</span></div>
+      <div class="mockup-body">
+        <div class="mk-nav"><span class="mk-logo">BONNA</span><div class="mk-links"><span>Koleksiyonlar</span><span>Cozumler</span><span style="background:var(--sand-light);border-radius:4px">Blog</span></div></div>
+        <div class="mk-breadcrumb">Blog <span>&rsaquo;</span> Rehber <span>&rsaquo;</span> Porselen Secim Rehberi</div>
+        <div class="mk-hero green-bg">
+          <h3>Porselen Secim Rehberi 2026</h3>
+          <p>Pillar Content - 3500+ kelime kapsamli rehber</p>
+        </div>
+        <div class="mk-section">
+          <div class="mk-section-title">Icindekiler</div>
+          <div style="padding:0 16px 12px;font-size:8px;line-height:2">
+            <div style="padding-left:0">1. Porselen Turleri</div>
+            <div style="padding-left:12px;color:var(--gray)">1.1 Bone China vs Vitrifiye</div>
+            <div style="padding-left:12px;color:var(--gray)">1.2 FusionTech Farki</div>
+            <div style="padding-left:0">2. Segment Bazli Secim</div>
+            <div style="padding-left:0">3. Maliyet Analizi</div>
+            <div style="padding-left:0">4. Sonuc & CTA</div>
+          </div>
+        </div>
+        <div class="mk-section" style="padding-top:0">
+          <div class="mk-section-title">Iliskili Yazilar (Spoke)</div>
+          <div class="mk-card-grid"><div class="mk-card"><div class="mk-card-img green"></div><div class="mk-card-body"><h5>Fine Dining Porselen Trendi</h5><p>Spoke - Trend</p></div></div><div class="mk-card"><div class="mk-card-img green"></div><div class="mk-card-body"><h5>Hotel X Vaka Calismasi</h5><p>Spoke - Vaka</p></div></div><div class="mk-card"><div class="mk-card-img green"></div><div class="mk-card-body"><h5>Bonna vs Rakip</h5><p>Spoke - Karsilastirma</p></div></div></div>
+        </div>
+        <div class="mk-cta"><h4>Rehberin PDF'ini Indirin</h4><span class="btn">Ucretsiz Indir</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 6. SURDURULEBILIRLIK -->
+<div class="acc-head" onclick="toggleAcc(this)">
+  <span class="type-badge new">YENI</span> 6. Surdurulebilirlik Sayfasi
+  <span class="acc-arrow">&#9660;</span>
+</div>
+<div class="acc-body">
+<div class="compare-grid">
+  <div class="compare-col">
+    <div class="compare-label old">ONCE</div>
+    <div class="mk-empty">Bu sayfa tipi mevcut sitede BULUNMUYOR</div>
+  </div>
+  <div class="compare-col">
+    <div class="compare-label new">SONRA</div>
+    <div class="mockup-wrap">
+      <div class="mockup-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url-bar">bonna.com.tr/surdurulebilirlik/</span></div>
+      <div class="mockup-body">
+        <div class="mk-nav"><span class="mk-logo">BONNA</span><div class="mk-links"><span>Koleksiyonlar</span><span>Surdurulebilirlik</span></div></div>
+        <div class="mk-hero green-bg">
+          <h3>Surdurulebilirlik Taahhudumuz</h3>
+          <p>Cevre dostu uretim, dongusel ekonomi, karbon azaltma</p>
+        </div>
+        <div class="mk-metrics">
+          <div class="mk-metric"><div class="num" style="color:var(--green)">%30</div><div class="lab">Karbon Azaltma</div></div>
+          <div class="mk-metric"><div class="num" style="color:var(--green)">%85</div><div class="lab">Geri Donusum</div></div>
+          <div class="mk-metric"><div class="num" style="color:var(--green)">10+</div><div class="lab">Yil Omur</div></div>
+          <div class="mk-metric"><div class="num" style="color:var(--green)">0</div><div class="lab">Atik Hedefi</div></div>
+        </div>
+        <div class="mk-section">
+          <div class="mk-section-title">Sertifikalar</div>
+          <div style="display:flex;gap:6px;padding:0 16px 12px;flex-wrap:wrap">
+            <span style="padding:6px 12px;background:#e8f5e9;border-radius:6px;font-size:8px;font-weight:600;color:var(--green)">ISO 14001</span>
+            <span style="padding:6px 12px;background:#e8f5e9;border-radius:6px;font-size:8px;font-weight:600;color:var(--green)">FSC</span>
+            <span style="padding:6px 12px;background:#e8f5e9;border-radius:6px;font-size:8px;font-weight:600;color:var(--green)">Carbon Trust</span>
+          </div>
+        </div>
+        <div class="mk-section" style="padding-top:0">
+          <div class="mk-section-title">2030 Yol Haritasi</div>
+          <div style="display:flex;gap:4px;padding:0 16px 12px">
+            <div style="flex:1;padding:8px;background:#e8f5e9;border-radius:6px;text-align:center;font-size:7px;font-weight:600;color:var(--green)">2024: %30 azaltma</div>
+            <div style="flex:1;padding:8px;background:#c8e6c9;border-radius:6px;text-align:center;font-size:7px;font-weight:600;color:var(--green)">2026: %50 azaltma</div>
+            <div style="flex:1;padding:8px;background:#a5d6a7;border-radius:6px;text-align:center;font-size:7px;font-weight:600;color:#fff">2030: Karbon notr</div>
+          </div>
+        </div>
+        <div class="mk-cta" style="background:var(--green)"><h4>Surdurulebilirlik Raporumuzu Indirin</h4><span class="btn">PDF Indir</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 7. KAYNAKLAR -->
+<div class="acc-head" onclick="toggleAcc(this)">
+  <span class="type-badge new">YENI</span> 7. Kaynaklar Sayfasi
+  <span class="acc-arrow">&#9660;</span>
+</div>
+<div class="acc-body">
+<div class="compare-grid">
+  <div class="compare-col">
+    <div class="compare-label old">ONCE</div>
+    <div class="mk-empty">Bu sayfa tipi mevcut sitede BULUNMUYOR</div>
+  </div>
+  <div class="compare-col">
+    <div class="compare-label new">SONRA</div>
+    <div class="mockup-wrap">
+      <div class="mockup-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url-bar">bonna.com.tr/kaynaklar/roi-hesaplayici/</span></div>
+      <div class="mockup-body">
+        <div class="mk-nav"><span class="mk-logo">BONNA</span><div class="mk-links"><span>Koleksiyonlar</span><span style="background:var(--sand-light);border-radius:4px">Kaynaklar</span></div></div>
+        <div class="mk-hero gold-bg">
+          <h3>ROI Hesaplayici</h3>
+          <p>Bonna'ya gecis yatirim getirisini hesaplayin</p>
+        </div>
+        <div class="mk-section">
+          <div class="mk-section-title">Hesaplama Formu</div>
+          <div style="padding:0 16px 12px">
+            <div style="padding:8px 12px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;font-size:8px;color:var(--gray);display:flex;justify-content:space-between"><span>Aylik tabak kullanimi</span><span style="background:var(--light);padding:2px 10px;border-radius:4px">500</span></div>
+            <div style="padding:8px 12px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;font-size:8px;color:var(--gray);display:flex;justify-content:space-between"><span>Mevcut kirilma orani (%)</span><span style="background:var(--light);padding:2px 10px;border-radius:4px">15</span></div>
+            <div style="padding:8px 12px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;font-size:8px;color:var(--gray);display:flex;justify-content:space-between"><span>Birim fiyat ($)</span><span style="background:var(--light);padding:2px 10px;border-radius:4px">12</span></div>
+            <div style="padding:12px;background:var(--sand-pale);border-radius:8px;text-align:center;margin-top:8px">
+              <div style="font-size:8px;color:var(--gray);text-transform:uppercase;letter-spacing:1px">Yillik Tasarruf</div>
+              <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--sand)">$7,200</div>
+            </div>
+          </div>
+        </div>
+        <div class="mk-section" style="padding-top:0">
+          <div class="mk-section-title">Diger Kaynaklar</div>
+          <div class="mk-card-grid g2"><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Dijital Katalog</h5><p>Tum koleksiyonlar PDF</p></div></div><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Numune Talebi</h5><p>Ucretsiz numune gonderin</p></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<!-- ============================================== -->
+<!-- PAGE 3: URL MIGRASYONU -->
+<!-- ============================================== -->
+<div class="page" id="migrasyon">
+<h1 class="pt">URL Migrasyon Haritasi</h1>
+<p class="pd">Mevcut URL yapisi ile hedef URL yapisinin gorsel akis diyagrami. Oklar yonlendirme rotalarini, rozetler oncelik seviyelerini gostermektedir.</p>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num" style="color:var(--red)">3</div><div class="kpi-lab">Mevcut Yonlendirme</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--green)">10</div><div class="kpi-lab">Yeni Sayfa</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--sand)">15</div><div class="kpi-lab">Toplam Rota</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--blue)">5</div><div class="kpi-lab">Kritik Oncelik</div></div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 60px 1fr 110px;gap:0;padding:12px 16px;background:var(--light);border-radius:10px 10px 0 0;border:1px solid var(--border);border-bottom:none">
+  <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--red)">Eski URL</div>
+  <div></div>
+  <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green)">Yeni URL</div>
+  <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);text-align:right">Durum</div>
+</div>
+
+<div class="url-flow" style="border:1px solid var(--border);border-radius:0 0 10px 10px;overflow:hidden">
+  <!-- 1 -->
+  <div class="url-flow-row">
+    <div class="url-old">/all-collections</div>
+    <div class="url-arrow-col">&#x27a1;</div>
+    <div class="url-new">/koleksiyonlar/</div>
+    <div class="url-badges"><span class="url-badge kritik">Kritik</span></div>
+  </div>
+  <!-- 2 -->
+  <div class="url-flow-row">
+    <div class="url-old">/collections/[name]</div>
+    <div class="url-arrow-col">&#x27a1;</div>
+    <div class="url-new">/koleksiyonlar/[name]/</div>
+    <div class="url-badges"><span class="url-badge kritik">Kritik</span></div>
+  </div>
+  <!-- 3 -->
+  <div class="url-flow-row">
+    <div class="url-old empty">(yok)</div>
+    <div class="url-arrow-col">&#x2728;</div>
+    <div class="url-new">/cozumler/fine-dining/</div>
+    <div class="url-badges"><span class="url-badge yeni">Yeni</span><span class="url-badge kritik">Kritik</span></div>
+  </div>
+  <!-- 4 -->
+  <div class="url-flow-row">
+    <div class="url-old empty">(yok)</div>
+    <div class="url-arrow-col">&#x2728;</div>
+    <div class="url-new">/cozumler/otel-restoran/</div>
+    <div class="url-badges"><span class="url-badge yeni">Yeni</span><span class="url-badge kritik">Kritik</span></div>
+  </div>
+  <!-- 5 -->
+  <div class="url-flow-row">
+    <div class="url-old empty">(yok)</div>
+    <div class="url-arrow-col">&#x2728;</div>
+    <div class="url-new">/cozumler/kafe-brunch/</div>
+    <div class="url-badges"><span class="url-badge yeni">Yeni</span><span class="url-badge kritik">Kritik</span></div>
+  </div>
+  <!-- 6 -->
+  <div class="url-flow-row">
+    <div class="url-old empty">(yok)</div>
+    <div class="url-arrow-col">&#x2728;</div>
+    <div class="url-new">/cozumler/catering-etkinlik/</div>
+    <div class="url-badges"><span class="url-badge yeni">Yeni</span><span class="url-badge yuksek">Yuksek</span></div>
+  </div>
+  <!-- 7 -->
+  <div class="url-flow-row">
+    <div class="url-old empty">(yok)</div>
+    <div class="url-arrow-col">&#x2728;</div>
+    <div class="url-new">/cozumler/kurumsal-tedarik/</div>
+    <div class="url-badges"><span class="url-badge yeni">Yeni</span><span class="url-badge yuksek">Yuksek</span></div>
+  </div>
+  <!-- 8 -->
+  <div class="url-flow-row">
+    <div class="url-old empty">(yok)</div>
+    <div class="url-arrow-col">&#x2728;</div>
+    <div class="url-new">/teknoloji/fusiontech/</div>
+    <div class="url-badges"><span class="url-badge yeni">Yeni</span><span class="url-badge kritik">Kritik</span></div>
+  </div>
+  <!-- 9 -->
+  <div class="url-flow-row">
+    <div class="url-old empty">(yok)</div>
+    <div class="url-arrow-col">&#x2728;</div>
+    <div class="url-new">/teknoloji/vitrified/</div>
+    <div class="url-badges"><span class="url-badge yeni">Yeni</span><span class="url-badge yuksek">Yuksek</span></div>
+  </div>
+  <!-- 10 -->
+  <div class="url-flow-row">
+    <div class="url-old empty">(yok)</div>
+    <div class="url-arrow-col">&#x2728;</div>
+    <div class="url-new">/teknoloji/reaktif-sir/</div>
+    <div class="url-badges"><span class="url-badge yeni">Yeni</span><span class="url-badge orta">Orta</span></div>
+  </div>
+  <!-- 11 -->
+  <div class="url-flow-row">
+    <div class="url-old">/post/...</div>
+    <div class="url-arrow-col">&#x27a1;</div>
+    <div class="url-new">/blog/</div>
+    <div class="url-badges"><span class="url-badge yeni">Yeni Hub</span><span class="url-badge kritik">Kritik</span></div>
+  </div>
+  <!-- 12 -->
+  <div class="url-flow-row">
+    <div class="url-old empty">(yok)</div>
+    <div class="url-arrow-col">&#x2728;</div>
+    <div class="url-new">/surdurulebilirlik/</div>
+    <div class="url-badges"><span class="url-badge yeni">Yeni</span><span class="url-badge yuksek">Yuksek</span></div>
+  </div>
+  <!-- 13 -->
+  <div class="url-flow-row">
+    <div class="url-old empty">(yok)</div>
+    <div class="url-arrow-col">&#x2728;</div>
+    <div class="url-new">/kaynaklar/roi-hesaplayici/</div>
+    <div class="url-badges"><span class="url-badge yeni">Yeni</span><span class="url-badge orta">Orta</span></div>
+  </div>
+  <!-- 14 -->
+  <div class="url-flow-row">
+    <div class="url-old">/page/aboutus</div>
+    <div class="url-arrow-col">&#x27a1;</div>
+    <div class="url-new">/hakkimizda/</div>
+    <div class="url-badges"><span class="url-badge orta">Orta</span></div>
+  </div>
+  <!-- 15 -->
+  <div class="url-flow-row">
+    <div class="url-old">/en/...</div>
+    <div class="url-arrow-col">&#x27a1;</div>
+    <div class="url-new">/en/... hreflang mirror</div>
+    <div class="url-badges"><span class="url-badge yuksek">Yuksek</span></div>
+  </div>
+</div>
+
+<div class="section-divider"><span class="line"></span><span class="label">Oncelik Dagalimi</span><span class="line"></span></div>
+<div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+  <div style="display:flex;align-items:center;gap:6px"><span class="url-badge kritik">Kritik</span><span style="font-size:12px;font-weight:600">5 rota</span></div>
+  <div style="display:flex;align-items:center;gap:6px"><span class="url-badge yuksek">Yuksek</span><span style="font-size:12px;font-weight:600">5 rota</span></div>
+  <div style="display:flex;align-items:center;gap:6px"><span class="url-badge orta">Orta</span><span style="font-size:12px;font-weight:600">3 rota</span></div>
+  <div style="display:flex;align-items:center;gap:6px"><span class="url-badge yeni">Yeni</span><span style="font-size:12px;font-weight:600">10 sayfa</span></div>
+</div>
+</div>
+
+<!-- ============================================== -->
+<!-- PAGE 4: ICERIK BLOKLARI -->
+<!-- ============================================== -->
+<div class="page" id="bloklar">
+<h1 class="pt">Icerik Blok Haritasi</h1>
+<p class="pd">Her sayfa tipinin icerik bloklarini wireframe tarzinda gosteren gorsel yigin diyagramlari. Her blok icin isim, yaklasik yukseklik, icerik tipi ve AI sinyal rozeti yer almaktadir.</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+
+<!-- KOLEKSIYON BLOKLARI -->
+<div>
+<h3 class="st" style="margin-top:0">Koleksiyon Sayfasi</h3>
+<div class="dv"></div>
+<div class="block-stack" style="max-width:100%">
+  <div class="block-item">
+    <div class="block-bar gray"></div>
+    <div class="block-content"><span class="block-name">BREADCRUMB</span><div class="block-meta"><span class="block-height">~40px</span><span class="block-type text">NAV</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar gold"></div>
+    <div class="block-content"><span class="block-name">HERO (Gorsel + Baslik)</span><div class="block-meta"><span class="block-height">~400px</span><span class="block-type media">MEDYA</span><span class="block-ai">AI</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar green"></div>
+    <div class="block-content"><span class="block-name">QUICK ANSWER (~200 kelime)</span><div class="block-meta"><span class="block-height">~120px</span><span class="block-type text">METIN</span><span class="block-ai">AI</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar gold"></div>
+    <div class="block-content"><span class="block-name">HIKAYE (2 sutun)</span><div class="block-meta"><span class="block-height">~300px</span><span class="block-type text">METIN</span><span class="block-ai">AI</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar blue"></div>
+    <div class="block-content"><span class="block-name">SPEC TABLE</span><div class="block-meta"><span class="block-height">~200px</span><span class="block-type text">VERI</span><span class="block-ai">AI</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar gold"></div>
+    <div class="block-content"><span class="block-name">PRODUCT GALLERY (grid)</span><div class="block-meta"><span class="block-height">~500px</span><span class="block-type media">MEDYA</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar green"></div>
+    <div class="block-content"><span class="block-name">FAQ ACCORDION</span><div class="block-meta"><span class="block-height">~250px</span><span class="block-type interact">ETKILESIM</span><span class="block-ai">AI</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar gold"></div>
+    <div class="block-content"><span class="block-name">RELATED SLIDER</span><div class="block-meta"><span class="block-height">~200px</span><span class="block-type interact">ETKILESIM</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar dark"></div>
+    <div class="block-content"><span class="block-name">CTA BANNER</span><div class="block-meta"><span class="block-height">~120px</span><span class="block-type cta-t">CTA</span></div></div>
+  </div>
+</div>
+</div>
+
+<!-- COZUM BLOKLARI -->
+<div>
+<h3 class="st" style="margin-top:0">Cozum Sayfasi (Persona)</h3>
+<div class="dv"></div>
+<div class="block-stack" style="max-width:100%">
+  <div class="block-item">
+    <div class="block-bar gray"></div>
+    <div class="block-content"><span class="block-name">BREADCRUMB</span><div class="block-meta"><span class="block-height">~40px</span><span class="block-type text">NAV</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar dark"></div>
+    <div class="block-content"><span class="block-name">PERSONA HERO</span><div class="block-meta"><span class="block-height">~450px</span><span class="block-type media">MEDYA</span><span class="block-ai">AI</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar gold"></div>
+    <div class="block-content"><span class="block-name">VALUE METRICS (4x)</span><div class="block-meta"><span class="block-height">~100px</span><span class="block-type text">VERI</span><span class="block-ai">AI</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar green"></div>
+    <div class="block-content"><span class="block-name">SEGMENT ANALIZI</span><div class="block-meta"><span class="block-height">~300px</span><span class="block-type text">METIN</span><span class="block-ai">AI</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar gold"></div>
+    <div class="block-content"><span class="block-name">ONERILEN KOLEKSIYONLAR (3 kart)</span><div class="block-meta"><span class="block-height">~280px</span><span class="block-type interact">ETKILESIM</span><span class="block-ai">AI</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar blue"></div>
+    <div class="block-content"><span class="block-name">TCO KARSILASTIRMA TABLOSU</span><div class="block-meta"><span class="block-height">~250px</span><span class="block-type text">VERI</span><span class="block-ai">AI</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar green"></div>
+    <div class="block-content"><span class="block-name">VAKA CALISMASI (once/sonra)</span><div class="block-meta"><span class="block-height">~300px</span><span class="block-type media">MEDYA</span><span class="block-ai">AI</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar green"></div>
+    <div class="block-content"><span class="block-name">FAQ</span><div class="block-meta"><span class="block-height">~200px</span><span class="block-type interact">ETKILESIM</span><span class="block-ai">AI</span></div></div>
+  </div>
+  <div class="block-item">
+    <div class="block-bar dark"></div>
+    <div class="block-content"><span class="block-name">FLOATING CTA</span><div class="block-meta"><span class="block-height">~60px</span><span class="block-type cta-t">CTA</span></div></div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<div class="section-divider"><span class="line"></span><span class="label">Blok Tipi Aciklamalari</span><span class="line"></span></div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:20px">
+  <span class="block-type text" style="padding:6px 14px;font-size:10px">METIN / VERI</span>
+  <span class="block-type media" style="padding:6px 14px;font-size:10px">MEDYA / GORSEL</span>
+  <span class="block-type interact" style="padding:6px 14px;font-size:10px">ETKILESIM</span>
+  <span class="block-type cta-t" style="padding:6px 14px;font-size:10px">CTA</span>
+  <span class="block-ai" style="padding:4px 12px;font-size:10px">AI SINYALI</span>
+</div>
+</div>
+
+<!-- ============================================== -->
+<!-- PAGE 5: MOBIL VS DESKTOP -->
+<!-- ============================================== -->
+<div class="page" id="mobil">
+<h1 class="pt">Mobil vs Desktop Karsilastirmasi</h1>
+<p class="pd">Anahtar sayfalarin mobil (375px) ve masaustu (1440px) gorunumlerinin cihaz cercevesi mockup'lari ile yan yana karsilastirmasi.</p>
+
+<!-- ANA SAYFA -->
+<h3 class="st">1. Ana Sayfa</h3>
+<div class="dv"></div>
+<div class="device-compare">
+  <!-- MOBILE -->
+  <div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;text-align:center">Mobil - 375px</div>
+    <div class="device-frame mobile">
+      <div class="device-notch"><span class="notch"></span></div>
+      <div style="overflow:hidden">
+        <div class="mk-nav" style="padding:6px 10px">
+          <span class="mk-logo" style="font-size:11px">BONNA</span>
+          <span style="font-size:12px;margin-left:auto;cursor:default">&#9776;</span>
+        </div>
+        <div class="mk-hero gold-bg" style="padding:20px 12px">
+          <h3 style="font-size:13px">Premium Porselen</h3>
+          <p style="font-size:8px">Profesyonel mutfaklar icin</p>
+          <span class="mk-btn" style="font-size:8px;padding:4px 10px">Kesfet</span>
+        </div>
+        <div style="padding:10px">
+          <div style="font-family:'DM Serif Display',serif;font-size:10px;margin-bottom:6px">Segmentler</div>
+          <div style="padding:8px;border:1px solid var(--border);border-radius:6px;margin-bottom:4px;font-size:8px;font-weight:600">Fine Dining &#x27a4;</div>
+          <div style="padding:8px;border:1px solid var(--border);border-radius:6px;margin-bottom:4px;font-size:8px;font-weight:600">Otel & Restoran &#x27a4;</div>
+          <div style="padding:8px;border:1px solid var(--border);border-radius:6px;margin-bottom:4px;font-size:8px;font-weight:600">Kafe & Brunch &#x27a4;</div>
+        </div>
+        <div style="padding:6px 10px;display:grid;grid-template-columns:1fr 1fr;gap:4px">
+          <div style="text-align:center;padding:6px;background:var(--sand-pale);border-radius:4px"><div style="font-family:'DM Serif Display',serif;font-size:12px;color:var(--sand)">60+</div><div style="font-size:6px;color:var(--gray)">Koleksiyon</div></div>
+          <div style="text-align:center;padding:6px;background:var(--sand-pale);border-radius:4px"><div style="font-family:'DM Serif Display',serif;font-size:12px;color:var(--sand)">80+</div><div style="font-size:6px;color:var(--gray)">Ulke</div></div>
+        </div>
+        <div style="padding:8px 10px;background:var(--ink);text-align:center;color:#fff;font-size:7px;margin-top:6px">
+          <div style="font-family:'DM Serif Display',serif;font-size:9px">Numune Talebi</div>
+          <span style="display:inline-block;margin-top:3px;padding:3px 8px;background:var(--sand);border-radius:3px;font-size:7px;font-weight:600">Talep Et</span>
+        </div>
+      </div>
+      <div class="device-bottom"><span class="home"></span></div>
+    </div>
+    <div style="text-align:center;margin-top:6px;font-size:9px;color:var(--gray)">Yigin duzeni, hamburger menu</div>
+  </div>
+
+  <!-- DESKTOP -->
+  <div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;text-align:center">Masaustu - 1440px</div>
+    <div class="device-frame desktop">
+      <div class="desktop-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div style="overflow:hidden">
+        <div class="mk-nav">
+          <span class="mk-logo">BONNA</span>
+          <div class="mk-links"><span>Koleksiyonlar</span><span>Cozumler</span><span>Teknoloji</span><span>Blog</span><span>Iletisim</span></div>
+        </div>
+        <div class="mk-hero gold-bg">
+          <h3>Profesyonel Mutfaklar Icin Premium Porselen</h3>
+          <p>60+ koleksiyon, 5 segment, FusionTech teknolojisi ile ustun kalite</p>
+          <span class="mk-btn">Koleksiyonlari Kesfet</span>
+        </div>
+        <div class="mk-section">
+          <div class="mk-section-title">Cozum Segmentleri</div>
+          <div class="mk-card-grid" style="grid-template-columns:repeat(5,1fr)">
+            <div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Fine Dining</h5></div></div>
+            <div class="mk-card"><div class="mk-card-img green"></div><div class="mk-card-body"><h5>Otel</h5></div></div>
+            <div class="mk-card"><div class="mk-card-img blue"></div><div class="mk-card-body"><h5>Kafe</h5></div></div>
+            <div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Catering</h5></div></div>
+            <div class="mk-card"><div class="mk-card-img green"></div><div class="mk-card-body"><h5>Kurumsal</h5></div></div>
+          </div>
+        </div>
+        <div class="mk-metrics">
+          <div class="mk-metric"><div class="num">60+</div><div class="lab">Koleksiyon</div></div>
+          <div class="mk-metric"><div class="num">5</div><div class="lab">Segment</div></div>
+          <div class="mk-metric"><div class="num">80+</div><div class="lab">Ulke</div></div>
+          <div class="mk-metric"><div class="num">3x</div><div class="lab">Dayaniklilik</div></div>
+        </div>
+        <div class="mk-cta"><h4>Numune Talep Edin</h4><span class="btn">Ucretsiz Numune</span></div>
+        <div class="mk-footer"><span>BONNA 2026</span><span>Surdurulebilirlik | Teknoloji | Blog</span></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:6px;font-size:9px;color:var(--gray)">Grid duzeni, genis navbar, 5 segment yan yana</div>
+  </div>
+</div>
+
+<!-- KOLEKSIYON -->
+<h3 class="st">2. Koleksiyon Sayfasi</h3>
+<div class="dv"></div>
+<div class="device-compare">
+  <div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;text-align:center">Mobil - 375px</div>
+    <div class="device-frame mobile">
+      <div class="device-notch"><span class="notch"></span></div>
+      <div style="overflow:hidden">
+        <div class="mk-nav" style="padding:6px 10px"><span class="mk-logo" style="font-size:11px">BONNA</span><span style="font-size:12px;margin-left:auto">&#9776;</span></div>
+        <div style="padding:4px 10px;font-size:7px;color:var(--gray)">Ana Sayfa &rsaquo; Koleksiyonlar &rsaquo; Vago</div>
+        <div class="mk-hero gold-bg" style="padding:16px 10px">
+          <h3 style="font-size:12px">Vago</h3>
+          <p style="font-size:7px">Organik formlar</p>
+        </div>
+        <div style="margin:6px 10px;padding:6px 8px;background:var(--sand-pale);border-left:2px solid var(--sand);border-radius:0 4px 4px 0;font-size:7px;line-height:1.4">
+          <strong style="font-size:8px">Hizli Cevap</strong><br>Vago organik fine-dining serisidir...
+        </div>
+        <div style="padding:6px 10px">
+          <div style="font-size:9px;font-weight:600;margin-bottom:4px">Urunler</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+            <div style="border:1px solid var(--border);border-radius:4px"><div style="height:30px;background:var(--light);border-radius:4px 4px 0 0"></div><div style="padding:3px 4px;font-size:7px;font-weight:600">Duz Tabak</div></div>
+            <div style="border:1px solid var(--border);border-radius:4px"><div style="height:30px;background:var(--light);border-radius:4px 4px 0 0"></div><div style="padding:3px 4px;font-size:7px;font-weight:600">Kase</div></div>
+          </div>
+        </div>
+        <div style="padding:4px 10px">
+          <div style="padding:5px 8px;border:1px solid var(--border);border-radius:4px;font-size:7px;font-weight:600;margin-bottom:3px;display:flex;justify-content:space-between">FusionTech nedir? <span style="color:var(--sand)">+</span></div>
+          <div style="padding:5px 8px;border:1px solid var(--border);border-radius:4px;font-size:7px;font-weight:600;display:flex;justify-content:space-between">Numune nasil alinir? <span style="color:var(--sand)">+</span></div>
+        </div>
+      </div>
+      <div class="device-bottom"><span class="home"></span></div>
+    </div>
+    <div style="text-align:center;margin-top:6px;font-size:9px;color:var(--gray)">Dikey kaydirma, 2 sutun grid</div>
+  </div>
+
+  <div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;text-align:center">Masaustu - 1440px</div>
+    <div class="device-frame desktop">
+      <div class="desktop-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div style="overflow:hidden">
+        <div class="mk-nav"><span class="mk-logo">BONNA</span><div class="mk-links"><span>Koleksiyonlar</span><span>Cozumler</span><span>Teknoloji</span><span>Blog</span></div></div>
+        <div class="mk-breadcrumb">Ana Sayfa <span>&rsaquo;</span> Koleksiyonlar <span>&rsaquo;</span> Vago</div>
+        <div class="mk-hero gold-bg"><h3>Vago Koleksiyonu</h3><p>Organik formlar, dogal tonlar, fine-dining estetige</p></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+          <div style="padding:12px 16px">
+            <div class="mk-qa" style="margin:0"><strong>Hizli Cevap:</strong> Vago, organik formlu fine-dining porselen serisidir.</div>
+            <div style="padding:12px 0;font-size:8px;line-height:1.6;color:var(--gray)">Doganin cizgilerinden ilham alan Vago koleksiyonu sefler icin tasarlandi...</div>
+          </div>
+          <div style="padding:12px 16px">
+            <div style="font-family:'DM Serif Display',serif;font-size:11px;margin-bottom:6px">Teknik Ozellikler</div>
+            <table class="mk-table"><tr><th>Ozellik</th><th>Deger</th></tr><tr><td>Malzeme</td><td>FusionTech</td></tr><tr><td>Termal Sok</td><td>-40/+250C</td></tr></table>
+          </div>
+        </div>
+        <div class="mk-section" style="padding-top:0"><div class="mk-section-title">Urunler</div><div class="mk-card-grid" style="grid-template-columns:repeat(4,1fr)"><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Duz Tabak</h5></div></div><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Kase</h5></div></div><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Servis</h5></div></div><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Fincan</h5></div></div></div></div>
+        <div class="mk-faq"><div class="mk-faq-item">FusionTech nedir?</div><div class="mk-faq-item">Numune nasil alinir?</div></div>
+        <div class="mk-cta"><h4>Vago Numune Talebi</h4><span class="btn">Ucretsiz Numune</span></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:6px;font-size:9px;color:var(--gray)">2 sutun yerlesiml, 4'lu grid, genis FAQ</div>
+  </div>
+</div>
+
+<!-- COZUM -->
+<h3 class="st">3. Cozum Sayfasi</h3>
+<div class="dv"></div>
+<div class="device-compare">
+  <div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;text-align:center">Mobil - 375px</div>
+    <div class="device-frame mobile">
+      <div class="device-notch"><span class="notch"></span></div>
+      <div style="overflow:hidden">
+        <div class="mk-nav" style="padding:6px 10px"><span class="mk-logo" style="font-size:11px">BONNA</span><span style="font-size:12px;margin-left:auto">&#9776;</span></div>
+        <div class="mk-hero dark-bg" style="padding:16px 10px">
+          <h3 style="font-size:12px">Fine Dining</h3>
+          <p style="font-size:7px">Michelin restoranlarin tercihi</p>
+          <span class="mk-btn" style="font-size:7px;padding:3px 8px">Koleksiyonlari Gor</span>
+        </div>
+        <div style="padding:6px 10px;display:grid;grid-template-columns:1fr 1fr;gap:4px">
+          <div style="text-align:center;padding:6px;background:var(--sand-pale);border-radius:4px"><div style="font-family:'DM Serif Display',serif;font-size:11px;color:var(--sand)">%40</div><div style="font-size:6px;color:var(--gray)">Kirilma Azalmasi</div></div>
+          <div style="text-align:center;padding:6px;background:var(--sand-pale);border-radius:4px"><div style="font-family:'DM Serif Display',serif;font-size:11px;color:var(--sand)">3x</div><div style="font-size:6px;color:var(--gray)">Omur</div></div>
+        </div>
+        <div style="padding:4px 10px">
+          <div style="font-size:9px;font-weight:600;margin-bottom:4px">Onerilen Koleksiyonlar</div>
+          <div style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;margin-bottom:3px;font-size:8px;font-weight:600;display:flex;justify-content:space-between">Vago <span style="color:var(--sand)">&#x27a4;</span></div>
+          <div style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;margin-bottom:3px;font-size:8px;font-weight:600;display:flex;justify-content:space-between">Cras <span style="color:var(--sand)">&#x27a4;</span></div>
+          <div style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;font-size:8px;font-weight:600;display:flex;justify-content:space-between">Iris <span style="color:var(--sand)">&#x27a4;</span></div>
+        </div>
+        <div style="padding:4px 10px">
+          <div style="padding:5px 8px;border:1px solid var(--border);border-radius:4px;font-size:7px;font-weight:600;margin-bottom:3px;display:flex;justify-content:space-between">TCO Karsilastirma <span style="color:var(--sand)">+</span></div>
+          <div style="padding:5px 8px;border:1px solid var(--border);border-radius:4px;font-size:7px;font-weight:600;display:flex;justify-content:space-between">Basari Hikayesi <span style="color:var(--sand)">+</span></div>
+        </div>
+        <div style="position:sticky;bottom:0;padding:6px 10px;background:var(--ink);text-align:center">
+          <span style="display:inline-block;padding:4px 12px;background:var(--sand);border-radius:4px;font-size:8px;font-weight:600;color:#fff">Uzmanla Gorusun</span>
+        </div>
+      </div>
+      <div class="device-bottom"><span class="home"></span></div>
+    </div>
+    <div style="text-align:center;margin-top:6px;font-size:9px;color:var(--gray)">Accordion yapisi, floating CTA</div>
+  </div>
+
+  <div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;text-align:center">Masaustu - 1440px</div>
+    <div class="device-frame desktop">
+      <div class="desktop-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div style="overflow:hidden">
+        <div class="mk-nav"><span class="mk-logo">BONNA</span><div class="mk-links"><span>Koleksiyonlar</span><span style="background:var(--sand-light);border-radius:4px">Cozumler</span><span>Teknoloji</span><span>Blog</span></div></div>
+        <div class="mk-hero dark-bg"><h3>Fine Dining Cozumleri</h3><p>Michelin yildizli restoranlarin tercihi</p><span class="mk-btn">Koleksiyonlari Gor</span></div>
+        <div class="mk-metrics">
+          <div class="mk-metric"><div class="num">%40</div><div class="lab">Kirilma Azalmasi</div></div>
+          <div class="mk-metric"><div class="num">3x</div><div class="lab">Omur</div></div>
+          <div class="mk-metric"><div class="num">15+</div><div class="lab">Koleksiyon</div></div>
+          <div class="mk-metric"><div class="num">%25</div><div class="lab">TCO Tasarruf</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px 1fr;gap:0">
+          <div style="padding:12px 16px;border-right:1px solid var(--border);background:var(--sand-pale)">
+            <div style="font-size:9px;font-weight:700;margin-bottom:8px;color:var(--gray);text-transform:uppercase;letter-spacing:1px">Sayfa Ici</div>
+            <div style="font-size:8px;line-height:2.2;font-weight:500">
+              <div style="color:var(--sand)">Segment Analizi</div>
+              <div>Onerilen Koleksiyonlar</div>
+              <div>TCO Karsilastirma</div>
+              <div>Basari Hikayesi</div>
+              <div>SSS</div>
+            </div>
+          </div>
+          <div>
+            <div class="mk-section"><div class="mk-section-title">Onerilen Koleksiyonlar</div><div class="mk-card-grid"><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Vago</h5></div></div><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Cras</h5></div></div><div class="mk-card"><div class="mk-card-img gold"></div><div class="mk-card-body"><h5>Iris</h5></div></div></div></div>
+            <div class="mk-section" style="padding-top:0"><div class="mk-section-title">TCO Karsilastirma</div><table class="mk-table"><tr><th></th><th>Bonna</th><th>Rakip A</th><th>Rakip B</th></tr><tr><td>3 Yillik</td><td style="color:var(--green);font-weight:700">$8.4K</td><td>$12.2K</td><td>$14.8K</td></tr></table></div>
+          </div>
+        </div>
+        <div class="mk-cta"><h4>Fine Dining Danismanligi</h4><span class="btn">Uzmanla Gorusun</span></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:6px;font-size:9px;color:var(--gray)">Sidebar navigasyon, genis tablo, 3'lu kart grid</div>
+  </div>
+</div>
+
+</div>
+
+</div><!-- /main-inner -->
+</div><!-- /main -->
+
+<script>
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('visible'));
+  document.getElementById(id).classList.add('visible');
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelector('.main').scrollTop=0;
+}
+function toggleAcc(el){
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>
