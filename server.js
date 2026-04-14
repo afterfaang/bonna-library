@@ -263,50 +263,31 @@ app.delete('/api/users/:id', requireAdmin, async (req, res) => {
 });
 
 // ========================
-// API: SEED MISSING ARTIFACTS (admin only)
+// API: ADD SINGLE ARTIFACT FROM FILE (admin only)
 // ========================
-app.post('/api/seed-artifacts', requireAdmin, async (req, res) => {
+app.post('/api/add-artifact-from-file', requireAdmin, async (req, res) => {
+  const { file, title, description, category, static_url } = req.body;
+  if (!file || !title) return res.status(400).json({ error: 'file and title required' });
+
+  // Check if already exists
   const existing = await database.getAllArtifacts();
-  const existingTitles = new Set(existing.map(a => a.title));
-
-  const seedData = [
-    { file: 'Bonna_ERP_Projeksiyon_2026.html', title: 'ERP Alan Projeksiyon Raporu 2026', description: 'bonna.com.tr SEO/GEO uyumlu ERP dönüşüm projeksiyon raporu', category: 'ERP' },
-    { file: 'bonna-cati-iletisim-stratejisi.html', title: 'Bonna 2026 İletişim Projesi', description: 'Bonna markası için bütünleşik çatı iletişim stratejisi', category: 'İletişim' },
-    { file: 'bonna-iletisim-stratejileri.html', title: 'İletişim Stratejileri', description: 'Bonna iletişim kanalları ve mesaj stratejileri', category: 'İletişim' },
-    { file: 'bonna-fikir-havuzu.html', title: 'Fikir Havuzu', description: 'Pazarlama ve iletişim fikir havuzu', category: 'Strateji' },
-    { file: 'Bonna_AI_Content_Mimarisi_2026.html', title: 'AI İçerik Mimarisi 2026', description: 'AI destekli içerik üretim ve yönetim mimarisi', category: 'AI' },
-    { file: 'Bonna_Mikro_Hedefleme_2026_v4.html', title: 'Mikro Hedefleme 2026', description: 'Segmentasyon bazlı mikro hedefleme stratejisi', category: 'Pazarlama' },
-    { file: 'Bonna_Pazarlama_Plani_2026_v4.html', title: 'Pazarlama Planı 2026', description: '2026 yılı kapsamlı pazarlama planı', category: 'Pazarlama' },
-    { file: 'Bonna_Pazarlama_Plani_Yapisi_2026.html', title: 'Pazarlama Planı Yapısı 2026', description: 'Pazarlama planı çerçeve yapısı ve organizasyonu', category: 'Pazarlama' },
-    { file: 'Bonna_SEO_GEO_Strateji_2026.html', title: 'SEO/GEO Strateji 2026', description: 'Arama motoru ve coğrafi optimizasyon stratejisi', category: 'SEO' },
-    { file: 'pazarlama-yol-haritasi-2026.html', title: 'Pazarlama Yol Haritası 2026-2027', description: 'HubSpot metrikleri ve mailing performans dashboard', category: 'Performans' },
-  ];
-
-  let added = 0;
-  for (const item of seedData) {
-    if (existingTitles.has(item.title)) continue;
-    const seedPath = path.join(__dirname, 'artifacts', item.file);
-    if (fs.existsSync(seedPath)) {
-      const html = fs.readFileSync(seedPath, 'utf-8');
-      await database.createArtifact(item.title, item.description, html, item.category);
-      added++;
-    }
+  if (existing.find(a => a.title === title)) {
+    return res.json({ success: true, message: 'Already exists', added: 0 });
   }
 
-  // Dijital İletişim Raporu - static URL (multi-file with iframes)
-  const reportTitle = 'Dijital İletişim Yönetici Raporu 2026';
-  if (!existingTitles.has(reportTitle)) {
-    const { rows } = await database.pool.query(
-      `INSERT INTO artifacts (title, description, html_content, category, static_url) VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-      [reportTitle, 'Ocak-Şubat 2026 dijital iletişim performans raporu — sosyal medya, reklam, lead, mailing, AI algoritmaları, site mimarisi, UI/UX süreci', '<p>Bu rapor static olarak sunulmaktadır.</p>', 'Performans', '/reports/dijital-iletisim-2026/index.html']
+  if (static_url) {
+    await database.pool.query(
+      `INSERT INTO artifacts (title, description, html_content, category, static_url) VALUES ($1, $2, $3, $4, $5)`,
+      [title, description || '', '<p>Static rapor</p>', category || 'Genel', static_url]
     );
-    added++;
   } else {
-    // Update existing to use static_url
-    await database.pool.query(`UPDATE artifacts SET static_url = $1 WHERE title = $2`, ['/reports/dijital-iletisim-2026/index.html', reportTitle]);
+    const filePath = path.join(__dirname, 'artifacts', file);
+    if (!fs.existsSync(filePath)) return res.status(404).json({ error: 'File not found' });
+    const html = fs.readFileSync(filePath, 'utf-8');
+    await database.createArtifact(title, description || '', html, category || 'Genel');
   }
 
-  res.json({ success: true, added, total: existing.length + added });
+  res.json({ success: true, added: 1 });
 });
 
 // ========================
